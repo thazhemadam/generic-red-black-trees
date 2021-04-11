@@ -20,4 +20,7 @@ class RBTree
 		Iterator end();
 };
 
+template <typename T>
+RBNode<T> *RBTree<T>::NIL = nullptr;
+
 #endif
