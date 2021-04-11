@@ -4,7 +4,8 @@
 #include "rb_tree.h"
 #include "rb_node.h"
 
-class RBTree::Iterator
+template<typename T>
+class RBTree<T>::Iterator
 {
 	private:
 		RBNode *p_it_;
@@ -19,30 +20,35 @@ class RBTree::Iterator
 };
 
 
-RBTree::Iterator& RBTree::Iterator::operator++() // pre
+template<typename T>
+typename RBTree<T>::Iterator& RBTree<T>::Iterator::operator++() // pre
 {
 	++p_it_;
 	return *this;
 }
 
-RBTree::Iterator RBTree::Iterator::operator++(int) // post
+template<typename T>
+typename RBTree<T>::Iterator RBTree<T>::Iterator::operator++(int) // post
 {
 	Iterator temp(*this);
 	++*this;
 	return temp;
 }
 
-RBNode RBTree::Iterator::operator*()
+template<typename T>
+RBNode RBTree<T>::Iterator::operator*()
 {
 	return *p_it_;
 }
 
-bool RBTree::Iterator::operator==(const Iterator& rhs) const
+template<typename T>
+bool RBTree<T>::Iterator::operator==(const Iterator& rhs) const
 {
 	return p_it_ == rhs.p_it_;
 }
 
-bool RBTree::Iterator::operator!=(const Iterator& rhs) const
+template<typename T>
+bool RBTree<T>::Iterator::operator!=(const Iterator& rhs) const
 {
 	return !(*this == rhs);
 }

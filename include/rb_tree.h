@@ -2,6 +2,8 @@
 #define RB_TREE_H
 
 using namespace std;
+
+template <typename T>
 class RBTree
 {
 	private:
