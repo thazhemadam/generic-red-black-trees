@@ -3,6 +3,7 @@
 
 enum Color { Red, Black };
 
+template <typename T>
 class RBNode
 {
 	private:

@@ -8,13 +8,13 @@ template<typename T>
 class RBTree<T>::Iterator
 {
 	private:
-		RBNode *p_it_;
+		RBNode<T> *p_it_;
 
 	public:
-		Iterator(RBNode *p_it) : p_it_(p_it) { }
+		Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
 		Iterator& operator++();		// pre-increment
 		Iterator operator++(int);	// post-increment
-		RBNode operator*();		// dereference
+		RBNode<T> operator*();		// dereference
 		bool operator==(const Iterator& rhs) const;	// equality
 		bool operator!=(const Iterator& rhs) const;	// inequality
 };
@@ -36,7 +36,7 @@ typename RBTree<T>::Iterator RBTree<T>::Iterator::operator++(int) // post
 }
 
 template<typename T>
-RBNode RBTree<T>::Iterator::operator*()
+RBNode<T> RBTree<T>::Iterator::operator*()
 {
 	return *p_it_;
 }
