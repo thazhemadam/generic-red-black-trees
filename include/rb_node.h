@@ -13,6 +13,11 @@ class RBNode
 		RBNode *right_;
 		Color color_;
 	public:
+		RBNode() = default;
+		RBNode(const T& value, RBNode<T> *left_node, RBNode<T> *right_node, RBNode<T> *parent_node, Color color)
+		: value_(value), left_(left_node), right_(right_node), parent_(parent_node), color_(color)
+		{}
+
 	/*
 	 * 1. Define ctor.
 	 * 2. Define setters and getters too? (so code looks a bit cleaner)
