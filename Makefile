@@ -7,11 +7,11 @@ ODIR=bin
 CFLAGS=-I $(IDIR)
 
 # enter names of header files defined in `include/` here
-_DEPS =
+_DEPS = rb_tree.h rb_node.h rb_iterator.h rb.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 # enter `path/to/file.o` for each file defined in `src/` here
-_OBJ =
+_OBJ = rb_tree.o  rb_node.o  rb_iterator.o client.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 # generate object files for all source files, following the same directory structure
@@ -20,10 +20,10 @@ $(ODIR)/%.o: $(SRC)/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 # final executable image
-image: $(OBJ)
+RBT : $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
 
 clean:
-	rm -rf $(ODIR) image
+	rm -rf $(ODIR) RBT
