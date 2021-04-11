@@ -18,7 +18,15 @@ class RBTree
 		// constructor
 		RBTree();
 
+		// operations on tree
+
+		// if value is not present in the tree, insert it and return a pair - with the iterator pointing to the node where the value was inserted, and the bool value = true.
+		// if value is already present in the tree, return a pair - with the iterator pointing to the existing item, and the bool value = false.
+
 		class Iterator;
+
+		pair<Iterator, bool> insert_node(const T& value);
+
 		Iterator begin();
 		Iterator end();
 };
@@ -30,11 +38,29 @@ template<typename T>
 RBTree<T>::RBTree()
 {
 	if(NIL == nullptr) {
-		NIL = new RBNode<T>(NULL, NULL, NULL, BLACK);
+		NIL = new RBNode<T>(0, NULL, NULL, NULL, BLACK);
 	}
 	root = NIL;
 	tree_size = 0;
 }
+
+template<typename T>
+pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
+{
+	// Top Down Insertion
+	RBNode<T> *curr = root, *parent = NIL, *new_node;
+
+	// either find the location to insert new node at, or find the value pre-existing in the tree
+	while(curr != NIL)  {
+		#ifdef RBT_UNIQUE
+		if(curr->value_ = value) {
+			// should should <Iterator of pre-existing node with same value, false>
+			return pair<Iterator, bool> (Iterator(curr), false);
+		}
+		#endif
+	}
+}
+
 
 
 #endif
