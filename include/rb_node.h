@@ -7,23 +7,24 @@ template <typename T>
 class RBNode
 {
 	private:
-		int value_;
+		T value_;
 		RBNode *parent_;
 		RBNode *left_;
 		RBNode *right_;
 		Color color_;
 	public:
 		RBNode() = default;
-		RBNode(const T& value) :  value_(value), left_(nullptr), right_(nullptr), parent_(nullptr), color_(RED)
-		{}
-		RBNode(const T& value, RBNode<T> *left_node, RBNode<T> *right_node, RBNode<T> *parent_node, Color color)
-		: value_(value), left_(left_node), right_(right_node), parent_(parent_node), color_(color)
+
+		RBNode(const T& value = 0, RBNode<T> *parent = nullptr, RBNode<T> *left= nullptr, RBNode<T> *right= nullptr, Color color = RED)
+		: value_(value), left_(left), right_(right), parent_(parent), color_(color)
 		{}
 
-	/*
-	 * 1. Define ctor.
-	 * 2. Define setters and getters too? (so code looks a bit cleaner)
-	 */		
+		T get_value() { return value_; }
+		RBNode *get_parent() { return parent_; }
+		RBNode *get_left() { return left_; }
+		RBNode *get_right() { return right_; }
+		Color get_color() { return color_; }
+
 };
 
 #endif
