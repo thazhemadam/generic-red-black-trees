@@ -9,9 +9,12 @@ template <typename T>
 class RBTree
 {
 	private:
-		int tree_size;
-		RBNode<T> *root;
+		int tree_size_;
+		RBNode<T> *root_;
 		static RBNode<T> *NIL;
+
+		void rotate_left (RBNode<T> *pivot);
+		void rotate_right (RBNode<T> *pivot);
 
 	public:
 		// special functions
@@ -23,11 +26,10 @@ class RBTree
 		Iterator end();
 
 		// operations on tree
-
-		// if value is not present in the tree, insert it and return a pair - with the iterator pointing to the node where the value was inserted, and the bool value = true.
-		// if value is already present in the tree, return a pair - with the iterator pointing to the existing item, and the bool value = false.
-
 		pair<Iterator, bool> insert_node(const T& value);
+
+		// utility functions
+		inline bool is_empty() const { return tree_size_ == 0; }
 
 		// display functions
 		void inorder(RBNode<T> *root);
@@ -39,21 +41,23 @@ class RBTree
 template <typename T>
 RBNode<T> *RBTree<T>::NIL = nullptr;
 
+// constructors
 template<typename T>
 RBTree<T>::RBTree()
 {
 	if(NIL == nullptr) {
 		NIL = new RBNode<T>(0, NULL, NULL, NULL, BLACK);
 	}
-	root = NIL;
-	tree_size = 0;
+	root_ = NIL;
+	tree_size_ = 0;
 }
 
+// operations on trees
 template<typename T>
 pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
 {
 	// Top Down Insertion
-	RBNode<T> *curr = root, *parent = NIL, *new_node;
+	RBNode<T> *curr = root_, *parent = NIL, *new_node;
 
 	// either find the location to insert new node at, or find the value pre-existing in the tree
 	while(curr != NIL)  {
@@ -66,15 +70,16 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
 	}
 }
 
+// display functions
 template<typename T>
 void RBTree<T>::inorder(RBNode<T> *root)
 {
 	if (root == nullptr)
 		return;
 
-	inorder(root->get_left());
-	cout << root->get_value() << "\t";
-	inorder(root->get_right());
+	inorder(root->left_);
+	cout << root->value_ << "\t";
+	inorder(root->right_);
 
 }
 
@@ -84,9 +89,9 @@ void RBTree<T>::preorder(RBNode<T> *root)
 	if (root == nullptr)
 		return;
 
-	cout << root->get_value() << "\t";
-	preorder(root->get_left());
-	preorder(root->get_right());
+	cout << root->value_ << "\t";
+	preorder(root->left_);
+	preorder(root->right_);
 
 }
 
@@ -96,9 +101,9 @@ void RBTree<T>::postorder(RBNode<T> *root)
 	if (root == nullptr)
 		return;
 
-	postorder(root->get_left());
-	postorder(root->get_right());
-	cout << root->get_value() << "\t";
+	postorder(root->left_);
+	postorder(root->right_);
+	cout << root->value_ << "\t";
 
 }
 
