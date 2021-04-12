@@ -18,17 +18,22 @@ class RBTree
 		// constructor
 		RBTree();
 
+		class Iterator;
+		Iterator begin();
+		Iterator end();
+
 		// operations on tree
 
 		// if value is not present in the tree, insert it and return a pair - with the iterator pointing to the node where the value was inserted, and the bool value = true.
 		// if value is already present in the tree, return a pair - with the iterator pointing to the existing item, and the bool value = false.
 
-		class Iterator;
-
 		pair<Iterator, bool> insert_node(const T& value);
 
-		Iterator begin();
-		Iterator end();
+		// display functions
+		void inorder(RBNode<T> *root);
+		void preorder(RBNode<T> *root);
+		void postorder(RBNode<T> *root);
+
 };
 
 template <typename T>
@@ -61,6 +66,40 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
 	}
 }
 
+template<typename T>
+void RBTree<T>::inorder(RBNode<T> *root)
+{
+	if (root == nullptr)
+		return;
 
+	inorder(root->get_left());
+	cout << root->get_value() << "\t";
+	inorder(root->get_right());
+
+}
+
+template<typename T>
+void RBTree<T>::preorder(RBNode<T> *root)
+{
+	if (root == nullptr)
+		return;
+
+	cout << root->get_value() << "\t";
+	preorder(root->get_left());
+	preorder(root->get_right());
+
+}
+
+template<typename T>
+void RBTree<T>::postorder(RBNode<T> *root)
+{
+	if (root == nullptr)
+		return;
+
+	postorder(root->get_left());
+	postorder(root->get_right());
+	cout << root->get_value() << "\t";
+
+}
 
 #endif
