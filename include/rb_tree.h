@@ -17,7 +17,7 @@ class RBTree
 		void rotate_right (RBNode<T> *&pivot);
 
 	public:
-		// special functions
+	// special functions
 		// constructor
 		RBTree();
 
@@ -25,11 +25,11 @@ class RBTree
 		Iterator begin();
 		Iterator end();
 
-		// operations on tree
+	// operations on tree
 		pair<Iterator, bool> insert_node(const T& value);
 		bool delete_node(const T& value);
 
-		// utility functions
+	// utility functions
 		inline bool is_empty() const { return tree_size_ == 0; }
 		bool adjust_RBdelete(RBNode<T> *&node);
 		int getColor(RBNode<T> *&node);
@@ -49,9 +49,9 @@ RBNode<T> *RBTree<T>::NIL = nullptr;
 template<typename T>
 RBTree<T>::RBTree()
 {
-	if(NIL == nullptr) {
+	if(NIL == nullptr)
 		NIL = new RBNode<T>(0, NULL, NULL, NULL, BLACK);
-	}
+
 	root_ = NIL;
 	tree_size_ = 0;
 }
@@ -98,17 +98,14 @@ void RBTree<T>::rotate_left(RBNode<T> *pivot)
 		pivot->right_->parent_=pivot;
 		pivot_right->parent_=pivot->parent_;
 	if(pivot->parent_==nullptr)
-	{
 		root=pivot_right;
-	}
+
 	else if( pivot== pivot->parent_->left_)
-	{
 		pivot->parent->left_=pivot_right;
-	}
+
 	else
-	{
 		pivot->parent_->right_=pivot_right;
-	}
+
 	pivot_right->left_=pivot;
 	pivot->parent_=pivot_right;
 }
@@ -121,17 +118,12 @@ void RBTree<T>::rotate_right(RBNode<T> *pivot)
 		pivot->left_->parent_=pivot;
 		pivot_left->parent_=pivot->parent_;
 	if(pivot->parent_==nullptr)
-	{
 		root=pivot_left;
-	}
 	else if( pivot== pivot->parent_->right_)
-	{
 		pivot->parent->right_=pivot_left;
-	}
 	else
-	{
 		pivot->parent_->left_=pivot_left;
-	}
+
 	pivot_left->right_=pivot;
 	pivot->parent_=pivot_left;
 }
