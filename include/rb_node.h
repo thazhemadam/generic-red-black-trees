@@ -1,7 +1,7 @@
 #ifndef RB_NODE_H
 #define RB_NODE_H
 
-enum Color { RED, BLACK };
+enum Color { RED, BLACK , DOUBLE_BLACK};
 
 template <typename T>
 class RBNode
@@ -12,7 +12,7 @@ class RBNode
 		RBNode *left_;
 		RBNode *right_;
 		Color color_;
-
+	
 		RBNode() = default;
 
 		RBNode(const T& value = 0, RBNode<T> *parent = nullptr, RBNode<T> *left= nullptr, RBNode<T> *right= nullptr, Color color = RED)
