@@ -70,6 +70,53 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
 	}
 }
 
+//rotate functions
+template<typename T>
+void RBTree<T>::rotate_left(RBNode<T> *pivot)
+{
+    RBNode<T>* pivot_right = pivot->right_;
+    pivot->right_=pivot_right->left_;
+    if(pivot_right!=nullptr)
+        pivot->right_->parent_=pivot;
+        pivot_right->parent_=pivot->parent_;
+    if(pivot->parent_==nullptr)
+    {
+        root=pivot_right;
+    }
+    else if( pivot== pivot->parent_->left_)
+    {
+        pivot->parent->left_=pivot_right;
+    }
+    else
+    {
+        pivot->parent_->right_=pivot_right;
+    }
+    pivot_right->left_=pivot;
+    pivot->parent_=pivot_right;
+}
+template<typename T>
+void RBTree<T>::rotate_right(RBNode<T> *pivot)
+{
+    RBNode<T>* pivot_left = pivot->left_;
+    pivot->left=pivot_left->right_;
+    if(pivot_left!=nullptr)
+        pivot->left_->parent_=pivot;
+        pivot_left->parent_=pivot->parent_;
+    if(pivot->parent_==nullptr)
+    {
+        root=pivot_left;
+    }
+    else if( pivot== pivot->parent_->right_)
+    {
+        pivot->parent->right_=pivot_left;
+    }
+    else
+    {
+        pivot->parent_->left_=pivot_left;
+    }
+    pivot_left->right_=pivot;
+    pivot->parent_=pivot_left;
+}
 // display functions
 template<typename T>
 void RBTree<T>::inorder(RBNode<T> *root)
