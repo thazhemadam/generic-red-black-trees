@@ -56,18 +56,6 @@ RBTree<T>::RBTree()
 	tree_size_ = 0;
 }
 
-// Rotations on tree
-void rotate_left (RBNode<T> *&pivot)
-{
-
-}
-
-void rotate_right (RBNode<T> *&pivot)
-{
-
-}
-
-
 // operations on trees
 
 //Insertion
