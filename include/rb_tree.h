@@ -92,48 +92,48 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
 template<typename T>
 void RBTree<T>::rotate_left(RBNode<T> *pivot)
 {
-    RBNode<T>* pivot_right = pivot->right_;
-    pivot->right_=pivot_right->left_;
-    if(pivot_right!=nullptr)
-        pivot->right_->parent_=pivot;
-        pivot_right->parent_=pivot->parent_;
-    if(pivot->parent_==nullptr)
-    {
-        root=pivot_right;
-    }
-    else if( pivot== pivot->parent_->left_)
-    {
-        pivot->parent->left_=pivot_right;
-    }
-    else
-    {
-        pivot->parent_->right_=pivot_right;
-    }
-    pivot_right->left_=pivot;
-    pivot->parent_=pivot_right;
+	RBNode<T>* pivot_right = pivot->right_;
+	pivot->right_=pivot_right->left_;
+	if(pivot_right!=nullptr)
+		pivot->right_->parent_=pivot;
+		pivot_right->parent_=pivot->parent_;
+	if(pivot->parent_==nullptr)
+	{
+		root=pivot_right;
+	}
+	else if( pivot== pivot->parent_->left_)
+	{
+		pivot->parent->left_=pivot_right;
+	}
+	else
+	{
+		pivot->parent_->right_=pivot_right;
+	}
+	pivot_right->left_=pivot;
+	pivot->parent_=pivot_right;
 }
 template<typename T>
 void RBTree<T>::rotate_right(RBNode<T> *pivot)
 {
-    RBNode<T>* pivot_left = pivot->left_;
-    pivot->left=pivot_left->right_;
-    if(pivot_left!=nullptr)
-        pivot->left_->parent_=pivot;
-        pivot_left->parent_=pivot->parent_;
-    if(pivot->parent_==nullptr)
-    {
-        root=pivot_left;
-    }
-    else if( pivot== pivot->parent_->right_)
-    {
-        pivot->parent->right_=pivot_left;
-    }
-    else
-    {
-        pivot->parent_->left_=pivot_left;
-    }
-    pivot_left->right_=pivot;
-    pivot->parent_=pivot_left;
+	RBNode<T>* pivot_left = pivot->left_;
+	pivot->left=pivot_left->right_;
+	if(pivot_left!=nullptr)
+		pivot->left_->parent_=pivot;
+		pivot_left->parent_=pivot->parent_;
+	if(pivot->parent_==nullptr)
+	{
+		root=pivot_left;
+	}
+	else if( pivot== pivot->parent_->right_)
+	{
+		pivot->parent->right_=pivot_left;
+	}
+	else
+	{
+		pivot->parent_->left_=pivot_left;
+	}
+	pivot_left->right_=pivot;
+	pivot->parent_=pivot_left;
 }
 
 // delete the node
@@ -306,10 +306,10 @@ RBNode<T> * successor(const RBNode<T> *& pivot)
 {
 	 RBNode<T> *cur_node = pivot->right_;
 
-    while (cur_node->left_ != nullptr)
-        cur_node = cur_node->left_;
+	while (cur_node->left_ != nullptr)
+		cur_node = cur_node->left_;
 
-    return cur_node;
+	return cur_node;
 }
 
 template<typename T>
@@ -317,27 +317,27 @@ RBNode<T> * predecessor(const RBNode<T> *& pivot)
 {
 	 RBNode<T> *cur_node = pivot->left_;
 
-    while (cur_node->right_ != nullptr)
-        cur_node = cur_node->right_;
+	while (cur_node->right_ != nullptr)
+		cur_node = cur_node->right_;
 
-    return cur_node;
+	return cur_node;
 }
 
 //Utitlity Functions
 template<typename T>
 int RBTree<T>::getColor(RBNode<T> *&node) {
-    if (node == nullptr)
-        return BLACK;
+	if (node == nullptr)
+		return BLACK;
 
-    return node->color_;
+	return node->color_;
 }
 
 template<typename T>
 void RBTree<T>::setColor(RBNode<T> *&node, int color) {
-    if (node == nullptr)
-        return;
+	if (node == nullptr)
+		return;
 
-    node->color_ = color;
+	node->color_ = color;
 }
 
 // display functions
