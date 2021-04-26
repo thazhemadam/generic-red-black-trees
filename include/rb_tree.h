@@ -13,8 +13,8 @@ class RBTree
 		RBNode<T> *root_;
 		static RBNode<T> *NIL;
 
-		void rotate_left (RBNode<T> *&pivot);
-		void rotate_right (RBNode<T> *&pivot);
+		void rotate_left (RBNode<T> *pivot);
+		void rotate_right (RBNode<T> *pivot);
 
 	public:
 	// special functions
