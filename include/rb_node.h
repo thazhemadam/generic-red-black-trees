@@ -1,7 +1,7 @@
 #ifndef RB_NODE_H
 #define RB_NODE_H
 
-enum Color { RED, BLACK , DOUBLE_BLACK};
+enum Color { BLACK, RED, DOUBLE_BLACK};
 
 template <typename T>
 class RBNode

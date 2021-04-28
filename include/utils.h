@@ -6,18 +6,18 @@
 #include "rb_node.h"
 
 template<typename T>
-void print_binary_tree(const std::string& prefix, const RBNode<T> *node, bool is_left)
+void print_tree(std::ostream& os, const std::string& prefix, const RBNode<T> *node, bool is_left)
 {
 	if(node == nullptr)
 		return;
 
-	std::cout << prefix;
-	std::cout << (is_left ? "├──" : "└──" );
+	os << prefix;
+	os << (is_left ? "├──" : "└──" );
 
-	std::cout << node->value_ << " - " << (node->color_ == 0 ? "black" : "red") << "\n";
+	os << node->value_ << " - " << (node->color_ == 0 ? "black" : "red") << "\n";
 
-	print_binary_tree( prefix + (is_left ? "│   " : "    "), node->left_, true);
-	print_binary_tree( prefix + (is_left ? "│   " : "    "), node->right_, false);
+	print_tree(os, prefix + (is_left ? "│   " : "    "), node->left_, true);
+	print_tree(os, prefix + (is_left ? "│   " : "    "), node->right_, false);
 }
 
 template<typename T>

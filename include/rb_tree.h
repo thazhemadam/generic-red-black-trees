@@ -18,10 +18,13 @@ public:
 // special functions
 	// constructor
 	RBTree();
+	RBNode<T> *root_;
+	static RBNode<T> *NIL;
 
-	RBNode<T> *root_;		//temporarily public
-	static RBNode<T> *NIL;		//temporarily public
-
+	// operator function
+	template<typename O>
+	friend ostream& operator<<(ostream& os, const RBTree<O>& tree);
+// Iterator class
 	class Iterator;
 	Iterator begin();
 	Iterator end();
@@ -40,7 +43,6 @@ public:
 	void print_inorder();
 	void print_preorder();
 	void print_postorder();
-	void print_tree();
 };
 
 // constructors
@@ -51,10 +53,7 @@ RBNode<T> *RBTree<T>::NIL = nullptr;
 template<typename T>
 RBTree<T>::RBTree()
 {
-	if(NIL == nullptr)
-		NIL = new RBNode<T>(0, NULL, NULL, NULL, BLACK);
-
-	root_ = NIL;
+	root_ = nullptr;
 	tree_size_ = 0;
 }
 
@@ -118,6 +117,13 @@ void RBTree<T>::rotate_right(RBNode<T> *pivot)
 
 	pivot_left->right_=pivot;
 	pivot->parent_=pivot_left;
+}
+
+template<typename O>
+ostream& operator<<(ostream& os, const RBTree<O>& tree)
+{
+	print_tree(os, "", tree.root_, false);
+	return os;
 }
 
 /*
@@ -323,13 +329,6 @@ void RBTree<T>::setColor(RBNode<T> *&node, int color) {
 		return;
 
 	node->color_ = color;
-}
-
-// display functions
-template<typename T>
-void RBTree<T>::print_tree()
-{
-	print_binary_tree("", root_, false);
 }
 
 template<typename T>
