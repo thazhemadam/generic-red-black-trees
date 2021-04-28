@@ -7,7 +7,7 @@ ODIR=bin
 CFLAGS=-I $(IDIR)
 
 # enter names of header files defined in `include/` here
-_DEPS = rb_tree.h rb_node.h rb_iterator.h rb.h
+_DEPS = rb_tree.h rb_node.h rb_iterator.h utils.h rb.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 # enter `path/to/file.o` for each file defined in `src/` here

@@ -28,8 +28,7 @@ int main(void)
 	cout << tree->root_<<"\n";
 	cout << rootnode <<"\n";
 
-	tree->inorder(tree->root_);
-
+	tree->print_tree();
 
 	return 0;
 }

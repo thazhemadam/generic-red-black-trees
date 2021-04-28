@@ -2,7 +2,7 @@
 #define RB_TREE_H
 
 #include "rb_node.h"
-
+#include "utils.h"
 using namespace std;
 
 template <typename T>
@@ -37,12 +37,13 @@ public:
 	void setColor(RBNode<T> *&node, int color);
 
 // display functions
-	void inorder(RBNode<T> *root);
-	void preorder(RBNode<T> *root);
-	void postorder(RBNode<T> *root);
-
+	void print_inorder();
+	void print_preorder();
+	void print_postorder();
+	void print_tree();
 };
 
+// constructors
 template <typename T>
 RBNode<T> *RBTree<T>::NIL = nullptr;
 
@@ -326,39 +327,27 @@ void RBTree<T>::setColor(RBNode<T> *&node, int color) {
 
 // display functions
 template<typename T>
-void RBTree<T>::inorder(RBNode<T> *root)
+void RBTree<T>::print_tree()
 {
-	if (root == nullptr)
-		return;
-
-	inorder(root->left_);
-	cout << root->value_ << "\t";
-	inorder(root->right_);
-
+	print_binary_tree("", root_, false);
 }
 
 template<typename T>
-void RBTree<T>::preorder(RBNode<T> *root)
+void RBTree<T>::print_inorder()
 {
-	if (root == nullptr)
-		return;
-
-	cout << root->value_ << "\t";
-	preorder(root->left_);
-	preorder(root->right_);
-
+	inorder(root_);
 }
 
 template<typename T>
-void RBTree<T>::postorder(RBNode<T> *root)
+void RBTree<T>::print_preorder()
 {
-	if (root == nullptr)
-		return;
+	preorder(root_);
+}
 
-	postorder(root->left_);
-	postorder(root->right_);
-	cout << root->value_ << "\t";
-
+template<typename T>
+void RBTree<T>::print_postorder()
+{
+	postorder(root_);
 }
 
 #endif
