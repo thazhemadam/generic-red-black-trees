@@ -29,7 +29,14 @@ public:
 	Iterator end();
 
 // operations on tree
-	pair<Iterator, bool> insert(const T& value);
+#ifdef RBT_UNIQUE	//TODO
+	pair<Iterator, bool> insert(T& value);
+	pair<Iterator, bool> insert(RBNode<T> *node);
+#else
+	Iterator insert(T& value);
+	Iterator insert(RBNode<T> *node);
+#endif
+
 	bool delete_node(const T& value);
 
 // utility functions
@@ -89,23 +96,31 @@ void RBTree<T>::tree_insert(RBNode<T> *node)
 
 }
 
-
+#ifdef RBT_UNIQUE
 template<typename T>
-pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(const T& value)
+pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(T& value)
 {
 	// Top Down Insertion
 	RBNode<T> *curr = root_, *parent = NIL, *new_node;
 
 	// either find the location to insert new node at, or find the value pre-existing in the tree
 	while(curr != NIL)  {
-		#ifdef RBT_UNIQUE
+
 		if(curr->value_ = value) {
 			// should should <Iterator of pre-existing node with same value, false>
 			return pair<Iterator, bool> (Iterator(curr), false);
 		}
-		#endif
 	}
 }
+
+template<typename T>
+pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(RBTNode<T> *node)
+
+
+#else
+
+
+#endif
 
 
 //rotate functions
