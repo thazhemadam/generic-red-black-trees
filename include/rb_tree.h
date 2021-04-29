@@ -198,6 +198,7 @@ typename RBTree<T>::Iterator RBTree<T>::insert(RBNode<T> *node)
 	RBNode<T> *uncle;
 
 	tree_insert(node);
+	RBTree<T>::Iterator it = Iterator(node);
 
 	while((node != root_) && (node->parent_->color_ == RED)) {
 
@@ -243,7 +244,7 @@ typename RBTree<T>::Iterator RBTree<T>::insert(RBNode<T> *node)
 		}
 	}
 	root_->color_ = BLACK;
-	return nullptr;
+	return it;
 }
 
 #endif
