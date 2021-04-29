@@ -122,7 +122,9 @@ void RBTree<T>::rotate_right(RBNode<T> *pivot)
 template<typename O>
 ostream& operator<<(ostream& os, const RBTree<O>& tree)
 {
+	os << "_\n";
 	print_tree(os, "", tree.root_, false);
+	os << "\n";
 	return os;
 }
 
