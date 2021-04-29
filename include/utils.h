@@ -44,6 +44,7 @@ void preorder(RBNode<T> *root)
 
 }
 
+
 template<typename T>
 void postorder(RBNode<T> *root)
 {
@@ -54,6 +55,24 @@ void postorder(RBNode<T> *root)
 	postorder(root->right_);
 	std::cout << root->value_ << "\t";
 
+}
+
+
+template<typename T>
+RBNode<T>* preorder_successor(RBNode<T> *node)
+{
+	if (node->left_)
+		return node->left_;
+
+	RBNode<T> *curr = node, *parent = curr->parent_;
+	while (parent != nullptr && parent->right_ == curr) {
+		curr = curr->parent_;
+		parent = parent->parent_;
+	}
+	if (parent == NULL)
+		return NULL;
+
+	return parent->right_;
 }
 
 #endif
