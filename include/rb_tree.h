@@ -17,7 +17,8 @@ public:
 
 // special functions
 	// constructor
-	RBTree();
+	RBTree();	// empty tree
+	RBTree(RBNode<T> node);	// tree with a root node
 
 	// operator function
 	template<typename O>
@@ -29,7 +30,10 @@ public:
 	{
 		return Iterator(root_);
 	}
-	Iterator end();
+	Iterator end()
+	{
+		return NIL;
+	}
 
 // operations on tree
 #ifdef RBT_UNIQUE	//TODO
@@ -70,6 +74,11 @@ RBTree<T>::RBTree()
 	tree_size_ = 0;
 }
 
+// TODO - TEST THIS. Can be done only after copy constructor is created for RBNode.
+template<typename T>
+RBTree<T>::RBTree(RBNode<T> node)
+: root_(new RBNode<T>(node)), tree_size_(1)
+{}
 // operations on trees
 
 //Insertion
