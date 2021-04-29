@@ -37,10 +37,10 @@ public:
 
 // operations on tree
 #ifdef RBT_UNIQUE	//TODO
-	pair<Iterator, bool> insert(T& value);
-	pair<Iterator, bool> insert(RBNode<T> *node);
+	pair<Iterator, bool> insert(const T& value);
+	pair<Iterator, bool> insert(const RBNode<T> *node);
 #else
-	Iterator insert(T& value);
+	Iterator insert(const T& value);
 	Iterator insert(RBNode<T> *node);
 #endif
 
@@ -82,10 +82,15 @@ RBTree<T>::RBTree(RBNode<T> node)
 // operations on trees
 
 //Insertion
+/*
+ * tree_insert: inserts an RBNode into an RBTree, as though it were a regular tree.
+		This only modifies the tree_size_ value.
+ * @node:	pointer to the node that must be inserted
+ */
 template<typename T>
 void RBTree<T>::tree_insert(RBNode<T> *node)
 {
-	RBNode<T> *y = NIL;
+	RBNode<T> *y = nullptr;
 	RBNode<T> *x = root_;
 
 	while (x != NIL){
@@ -98,14 +103,16 @@ void RBTree<T>::tree_insert(RBNode<T> *node)
 	}
 	node->parent_ = y;
 
-	if(y == NIL)
+	if(y == nullptr)
 		root_ = node;
 
-	if(node->value_ < y->value_)
-		y->left_ = node;
-	else
-		y-> right_ = node;
-
+	else {
+		if(node->value_ < y->value_)
+			y->left_ = node;
+		else
+			y-> right_ = node;
+	}
+	++tree_size_;
 }
 
 #ifdef RBT_UNIQUE
@@ -130,7 +137,65 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(RBTNode<T> *node)
 
 
 #else
+template<typename T>
+typename RBTree<T>::Iterator RBTree<T>::insert(const T& value)
+{
+	// TODO: is this actually required? need to test things more first.
+}
 
+template<typename T>
+typename RBTree<T>::Iterator RBTree<T>::insert(RBNode<T> *node)
+{
+	RBNode<T> *uncle;
+
+	tree_insert(node);
+
+	while((node != root_) && (node->parent_->color_ == RED)) {
+
+		if(node->parent_ == node->parent_->parent_->left_) {
+
+			uncle = node->parent_->parent_->right_;
+
+			if(uncle->color_ == RED) {
+				node->parent_->color_ = BLACK;
+				uncle->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				node = node->parent_->parent_;
+			}
+			else {
+				if (node = node->parent_->right_) {
+					node = node->parent_;
+					rotate_left(node);
+				}
+				node->parent_->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				rotate_right(node->parent_->parent_);
+			}
+		}
+		else {
+
+			uncle = node->parent_->parent_->left_;
+
+			if(uncle->color_ == RED) {
+				node->parent_->color_ = BLACK;
+				uncle->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				node = node->parent_->parent_;
+			}
+			else {
+				if (node = node->parent_->left_) {
+					node = node->parent_;
+					rotate_right(node);
+				}
+				node->parent_->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				rotate_left(node->parent_->parent_);
+			}
+		}
+	}
+	root_->color_ = BLACK;
+	return nullptr;
+}
 
 #endif
 
