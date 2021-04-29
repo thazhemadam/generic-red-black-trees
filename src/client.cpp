@@ -49,8 +49,12 @@ int main(void)
 	tree->root_ = rootnode;
 
 	cout << *tree;
-	tree->rotate_left(r);
-	cout <<"\n";
+	// tree->rotate_left(r);
+
+	RBNode<int> *insnode = new RBNode<int>(5);
+	tree->tree_insert(insnode);
 	cout << *tree;
+	tree->print_inorder();
+
 	return 0;
 }

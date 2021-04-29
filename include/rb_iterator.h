@@ -12,6 +12,8 @@ class RBTree<T>::Iterator
 
 	public:
 		Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
+
+		// Note: incrementing follows standard pre-order traversal
 		Iterator& operator++();		// pre-increment
 		Iterator operator++(int);	// post-increment
 		RBNode<T> operator*();		// dereference
@@ -21,14 +23,14 @@ class RBTree<T>::Iterator
 
 
 template<typename T>
-typename RBTree<T>::Iterator& RBTree<T>::Iterator::operator++() // pre
+typename RBTree<T>::Iterator& RBTree<T>::Iterator::operator++() // pre-increment
 {
 	++p_it_;
 	return *this;
 }
 
 template<typename T>
-typename RBTree<T>::Iterator RBTree<T>::Iterator::operator++(int) // post
+typename RBTree<T>::Iterator RBTree<T>::Iterator::operator++(int) // post-increment
 {
 	Iterator temp(*this);
 	++*this;

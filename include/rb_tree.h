@@ -8,30 +8,28 @@ using namespace std;
 template <typename T>
 class RBTree
 {
-private:
-	int tree_size_;
-
 
 public:
-	void rotate_left (RBNode<T> *pivot);
-	void rotate_right (RBNode<T> *pivot);
+	void rotate_left (RBNode<T> *pivot);	// to be made private
+	void rotate_right (RBNode<T> *pivot);   // to be made private
+	RBNode<T> *root_;			// to be made private
+	static RBNode<T> *NIL;			// to be made private
 
 // special functions
 	// constructor
 	RBTree();
-	RBNode<T> *root_;
-	static RBNode<T> *NIL;
 
 	// operator function
 	template<typename O>
 	friend ostream& operator<<(ostream& os, const RBTree<O>& tree);
+
 // Iterator class
 	class Iterator;
 	Iterator begin();
 	Iterator end();
 
 // operations on tree
-	pair<Iterator, bool> insert_node(const T& value);
+	pair<Iterator, bool> insert(const T& value);
 	bool delete_node(const T& value);
 
 // utility functions
@@ -44,6 +42,10 @@ public:
 	void print_inorder();
 	void print_preorder();
 	void print_postorder();
+	void tree_insert(RBNode<T> *node);	// to be made private
+
+private:
+	int tree_size_;
 };
 
 // constructors
@@ -62,7 +64,34 @@ RBTree<T>::RBTree()
 
 //Insertion
 template<typename T>
-pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
+void RBTree<T>::tree_insert(RBNode<T> *node)
+{
+	RBNode<T> *y = NIL;
+	RBNode<T> *x = root_;
+
+	while (x != NIL){
+		y = x;
+
+		if(node->value_ < x->value_)
+			x = x->left_;
+		else
+			x = x->right_;
+	}
+	node->parent_ = y;
+
+	if(y == NIL)
+		root_ = node;
+
+	if(node->value_ < y->value_)
+		y->left_ = node;
+	else
+		y-> right_ = node;
+
+}
+
+
+template<typename T>
+pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(const T& value)
 {
 	// Top Down Insertion
 	RBNode<T> *curr = root_, *parent = NIL, *new_node;
@@ -78,27 +107,6 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert_node(const T& value)
 	}
 }
 
-// //rotate functions
-// template<typename T>
-// void RBTree<T>::rotate_left(RBNode<T> *pivot)
-// {
-// 	RBNode<T>* pivot_right = pivot->right_;
-// 	pivot->right_=pivot_right->left_;
-// 	if(pivot_right!=nullptr)
-// 		pivot->right_->parent_=pivot;
-// 		pivot_right->parent_=pivot->parent_;
-// 	if(pivot->parent_==nullptr)
-// 		root_=pivot_right;
-
-// 	else if( pivot== pivot->parent_->left_)
-// 		pivot->parent_->left_=pivot_right;
-
-// 	else
-// 		pivot->parent_->right_=pivot_right;
-
-// 	pivot_right->left_=pivot;
-// 	pivot->parent_=pivot_right;
-// }
 
 //rotate functions
 template<typename T>
@@ -129,6 +137,7 @@ void RBTree<T>::rotate_left(RBNode<T> *pivot)
 	pivot->parent_ = pivot_right;
 }
 
+
 template<typename T>
 void RBTree<T>::rotate_right(RBNode<T> *pivot)
 {
@@ -157,6 +166,7 @@ void RBTree<T>::rotate_right(RBNode<T> *pivot)
 	pivot->parent_ = pivot_left;
 }
 
+
 template<typename O>
 ostream& operator<<(ostream& os, const RBTree<O>& tree)
 {
@@ -166,6 +176,8 @@ ostream& operator<<(ostream& os, const RBTree<O>& tree)
 	return os;
 }
 
+
+/*
 // delete the node
 template<typename T>
 bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
@@ -327,6 +339,7 @@ bool RBTree<T>::delete_node(const T& value) {
 	RBNode<T> *node = deleteBST(root_, value);
 	return adjust_RBdelete(node);
 }
+*/
 
 // Free Functions
 template<typename T>
