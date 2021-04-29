@@ -7,25 +7,34 @@
 template<typename T>
 class RBTree<T>::Iterator
 {
-	private:
-		RBNode<T> *p_it_;
+private:
+	RBNode<T> *p_it_;
 
-	public:
-		Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
+public:
+	Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
 
-		// Note: incrementing follows standard pre-order traversal
-		Iterator& operator++();		// pre-increment
-		Iterator operator++(int);	// post-increment
-		RBNode<T> operator*();		// dereference
-		bool operator==(const Iterator& rhs) const;	// equality
-		bool operator!=(const Iterator& rhs) const;	// inequality
+	// Note: incrementing follows standard pre-order traversal
+	Iterator& operator++();		// pre-increment
+	Iterator operator++(int);	// post-increment
+	RBNode<T> operator*();		// dereference
+	bool operator==(const Iterator& rhs) const;	// equality
+	bool operator!=(const Iterator& rhs) const;	// inequality
+
+	friend ostream& operator<<(ostream& os, const Iterator& iterator)
+	{
+		os << iterator.p_it_->value_ << "\t" << (iterator.p_it_->color_ == 0 ? "black" : "red")  << "\n";
+		return os;
+	}
+
 };
 
 
 template<typename T>
 typename RBTree<T>::Iterator& RBTree<T>::Iterator::operator++() // pre-increment
 {
-	++p_it_;
+	RBTree<T>::Iterator next = p_it_;
+	p_it_ = successor(p_it_);
+	// ++p_it_;
 	return *this;
 }
 

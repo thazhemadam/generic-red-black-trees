@@ -54,7 +54,9 @@ int main(void)
 	RBNode<int> *insnode = new RBNode<int>(5);
 	tree->tree_insert(insnode);
 	cout << *tree;
-	tree->print_inorder();
+	// tree->print_inorder();
+
+	cout << tree->begin();
 
 	return 0;
 }

@@ -25,7 +25,10 @@ public:
 
 // Iterator class
 	class Iterator;
-	Iterator begin();
+	Iterator begin()
+	{
+		return Iterator(root_);
+	}
 	Iterator end();
 
 // operations on tree
