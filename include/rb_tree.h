@@ -19,6 +19,7 @@ public:
 	// constructor
 	RBTree();	// empty tree
 	RBTree(RBNode<T> node);	// tree with a root node
+	RBTree(const RBTree<T> &rhs);
 
 	// operator function
 	template<typename O>
