@@ -24,6 +24,11 @@ public:
 	template<typename O>
 	friend ostream& operator<<(ostream& os, const RBTree<O>& tree);
 
+
+// TEMPORARY FUNCTIONS!
+ 	//void copy_tree(RBNode<T>*one,RBNode<T>*two);
+ 	//void clone(RBTree<T>*one,RBTree<T>*two);
+
 // Iterator class
 	class Iterator;
 	Iterator begin()
@@ -49,8 +54,8 @@ public:
 // utility functions
 	inline bool is_empty() const { return tree_size_ == 0; }
 	bool adjust_RBdelete(RBNode<T> *&node);
-	int getColor(RBNode<T> *&node);
-	void setColor(RBNode<T> *&node, int color);
+	Color getColor(RBNode<T> *&node);
+	void setColor(RBNode<T> *&node, Color color);
 
 // display functions
 	void print_inorder();
@@ -79,6 +84,49 @@ template<typename T>
 RBTree<T>::RBTree(RBNode<T> node)
 : root_(new RBNode<T>(node)), tree_size_(1)
 {}
+
+// copy ctor
+template<typename T>
+RBTree<T>::RBTree(const RBTree<T> &rhs)
+:root_(new RBTree<T>())
+{
+	cout << "Yo";
+	//copy_tree(root_,rhs.root_);
+}
+
+template<typename T>
+void clone(RBTree<T>*&one,RBTree<T>*&two)
+{
+	two = new RBTree<T>();
+	cout << two->root_->value_ <<"  1\n";
+	copy_tree(one->root_,two->root_);
+	cout << "5\n";
+	
+}
+
+template<typename T>
+void copy_tree(RBNode<T>* &one,RBNode<T>* &two)
+{
+	two->value_= one->value_;
+	cout << "2\n";
+	if(one->left_)
+	{
+		cout << "3\n";
+		RBNode<T> * temp = new RBNode<T>(one->left_->value_);
+		temp->parent_=two;
+		two->left_=temp;
+		copy_tree(one->left_,two->left_);
+	}
+	if(one->right_)
+	{
+		cout << "4\n";
+		RBNode<T> * temp = new RBNode<T>(one->right_->value_);
+		temp->parent_=two;
+		two->right_=temp;
+		copy_tree(one->right_,two->right_);
+	}
+}
+
 // operations on trees
 
 //Insertion
@@ -275,7 +323,7 @@ template<typename T>
 bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
 	// nothing to delete
 	if (node == nullptr)
-		return false;
+		// return false;
 	
 	// removed root_
 	if (node == root_) {
@@ -283,23 +331,23 @@ bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
 		return true;
 	}
 	// CASE 1: if the node is of RED color simply delete it
-	if (getColor(node) == RED || getColor(node->left) == RED || getColor(node->right) == RED) {
-		RBNode<T> *child = node->left != nullptr ? node->left : node->right;
+	if (getColor(node) == RED || getColor(node->left_) == RED || getColor(node->right_) == RED) {
+		RBNode<T> *child = node->left_ != nullptr ? node->left_ : node->right_;
 		
 		//if node is a left child
-		if (node == node->parent->left) {
+		if (node == node->parent_->left_) {
 			// linking the nodes child as the parents child
-			node->parent->left = child;
+			node->parent->left_ = child;
 			if (child != nullptr) {
-				child->parent = node->parent;
+				child->parent_ = node->parent;
 				setColor(child, BLACK);
 				delete (node);
 			}
 		}
 		else {
-			node->parent->right = child;
+			node->parent->right_ = child;
 			if (child != nullptr){
-				child->parent = node->parent;
+				child->parent_ = node->parent;
 				setColor(child, BLACK);
 				delete (node);
 			}
@@ -310,13 +358,13 @@ bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
 		RBNode<T> *sibling = nullptr;
 		RBNode<T> *parent = nullptr;
 		RBNode<T> *cur_node = node;
-		setColor(cur_node, DOUBLE_BLACK);
+		setColor(cur_node, BLACK);
 
 		// while the root_ is not double black
-		while (cur_node != root_ && getColor(cur_node) == DOUBLE_BLACK) {
+		while (cur_node != root_ && getColor(cur_node) == BLACK) {
 			parent = cur_node->parent_;
 			// if the node is a left child
-			if (cur_node == parent_->left_) {
+			if (cur_node == parent->left_) {
 				sibling = parent->right_;
 				// if node's sibling is RED
 				if (getColor(sibling) == RED) {
@@ -335,7 +383,7 @@ bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
 						if(getColor(parent) == RED)
 							setColor(parent, BLACK);
 						else {
-							setColor(parent, DOUBLE_BLACK);
+							setColor(parent, BLACK);
 							// current node is set to a node with DOUBLE BLACK
 							cur_node = parent;
 						}
@@ -391,20 +439,21 @@ bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
 			}
 		}
 		// CASE 2: if the root_ is DOUBLE BLACK , then simply set root_ to BLACK 
-		if (node == node->parent_->left_)
+		if (node == node->parent_->left_){
 			node->parent_->left_ = nullptr;
 			delete(node);
-		else
+			setColor(root_, BLACK);}
+		else {
 			node->parent_->right_ = nullptr;
 			delete(node);
-			setColor(root_, BLACK);
+			setColor(root_, BLACK);}
 		}
 	return true;
 }
 
 // finding the node for delete
 template<typename T>
-RBNode<T>* deleteBST(const RBNode<T> *& root, int val) {
+RBNode<T>* deleteBST(RBNode<T> * root, int val) {
 	if (root == nullptr)
 		return root;
 	
@@ -414,7 +463,8 @@ RBNode<T>* deleteBST(const RBNode<T> *& root, int val) {
 	if (val > root->value_)
 		return deleteBST(root->right_, val);
 	
-	if (root->left_ == nullptr || root->right_ == nullptr)
+	// if (root->left_ == nullptr || root->right_ == nullptr)
+	if (root->value_==val)// == nullptr || root->right_ == nullptr)
 		return root;
 	
 	// finding the inorder successor 
@@ -435,7 +485,7 @@ bool RBTree<T>::delete_node(const T& value) {
 
 // Free Functions
 template<typename T>
-RBNode<T> * successor(const RBNode<T> *& pivot)
+RBNode<T> * successor(const RBNode<T> * pivot)
 {
 	 RBNode<T> *cur_node = pivot->right_;
 
@@ -458,7 +508,7 @@ RBNode<T> * predecessor(const RBNode<T> *& pivot)
 
 //Utitlity Functions
 template<typename T>
-int RBTree<T>::getColor(RBNode<T> *&node) {
+Color RBTree<T>::getColor(RBNode<T> *&node) {
 	if (node == nullptr)
 		return BLACK;
 
@@ -466,7 +516,7 @@ int RBTree<T>::getColor(RBNode<T> *&node) {
 }
 
 template<typename T>
-void RBTree<T>::setColor(RBNode<T> *&node, int color) {
+void RBTree<T>::setColor(RBNode<T> *&node, Color color) {
 	if (node == nullptr)
 		return;
 
