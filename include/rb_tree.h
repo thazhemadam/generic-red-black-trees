@@ -126,7 +126,6 @@ ostream& operator<<(ostream& os, const RBTree<O>& tree)
 	return os;
 }
 
-/*
 // delete the node
 template<typename T>
 bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
@@ -288,8 +287,6 @@ bool RBTree<T>::delete_node(const T& value) {
 	RBNode<T> *node = deleteBST(root_, value);
 	return adjust_RBdelete(node);
 }
-
-*/
 
 // Free Functions
 template<typename T>
