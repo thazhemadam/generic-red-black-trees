@@ -55,9 +55,12 @@ int main(void)
 	
 	cout << "---- cloning -------\n";
 
-	RBTree<int> *tree1 = new RBTree<int>();
-	clone(tree,tree1); // clone function modified
-	cout << *tree1;
+	
+	RBTree<int> tree1(tree); // tree1 is an object
+	
+	
+	//clone(tree,tree1); // clone function modified
+	cout << tree1;
 
 	return 0;
 }

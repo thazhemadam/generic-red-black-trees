@@ -19,8 +19,7 @@ public:
 // special functions
 	// constructor
 	RBTree();
-	RBTree(const RBTree<T>* & rhs);
-	RBTree(const RBTree<T> &rhs);
+	RBTree(const RBTree<T> *rhs);
 
 	RBNode<T> *root_;		// to be made private!
 	static RBNode<T> *NIL;		// to made private!
@@ -68,32 +67,30 @@ RBTree<T>::RBTree()
 }
 
 // copy ctor
+// copy ctor
 template<typename T>
-RBTree<T>::RBTree(const RBTree<T> &rhs)
-:root_(new RBTree<T>())
+RBTree<T>::RBTree(const RBTree<T> *rhs)
 {
-	cout << "Yo";
-	//copy_tree(root_,rhs.root_);
+	cout << "Bruh y u give me bt\n";
+	clone(rhs,this);
 }
 
 template<typename T>
-void clone(RBTree<T>*one,RBTree<T>*two)
+void clone(const RBTree<T>*&one,RBTree<T>*two)
 {
 	two->root_ = new RBNode<T>(one->root_->value_);
-	cout << two->root_->value_ <<"  1\n";
+	//cout << two->root_->value_ <<"  1\n";
 	copy_tree(one->root_,two->root_);
-	//cout << "5\n";
 	
 }
 
 template<typename T>
-void copy_tree(RBNode<T>* &one,RBNode<T>* &two)
+void copy_tree(RBNode<T>* const &one,RBNode<T>* &two)
 {
 	two->value_= one->value_;
-	cout << "2\n";
+
 	if(one->left_)
 	{
-		cout << "3\n";
 		RBNode<T> * temp = new RBNode<T>(one->left_->value_);
 		temp->parent_=two;
 		two->left_=temp;
@@ -101,7 +98,6 @@ void copy_tree(RBNode<T>* &one,RBNode<T>* &two)
 	}
 	if(one->right_)
 	{
-		cout << "4\n";
 		RBNode<T> * temp = new RBNode<T>(one->right_->value_);
 		temp->parent_=two;
 		two->right_=temp;
