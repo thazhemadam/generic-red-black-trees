@@ -76,5 +76,19 @@ int main(void)
 	#endif
 
 
+	cout << *tree;
+	tree->rotate_left(r);
+	cout <<"\n";
+	cout << *tree;
+	
+	cout << "---- cloning -------\n";
+
+	
+	RBTree<int> tree1(tree); // tree1 is an object
+	
+	
+	//clone(tree,tree1); // clone function modified
+	cout << tree1;
+
 	return 0;
 }

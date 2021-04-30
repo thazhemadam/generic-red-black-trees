@@ -19,7 +19,7 @@ public:
 	// constructor
 	RBTree();	// empty tree
 	RBTree(RBNode<T> node);	// tree with a root node
-	RBTree(const RBTree<T> &rhs);
+	RBTree(const RBTree<T> *rhs);
 
 	// operator function
 	template<typename O>
@@ -87,32 +87,30 @@ RBTree<T>::RBTree(RBNode<T> node)
 {}
 
 // copy ctor
+// copy ctor
 template<typename T>
-RBTree<T>::RBTree(const RBTree<T> &rhs)
-:root_(new RBTree<T>())
+RBTree<T>::RBTree(const RBTree<T> *rhs)
 {
-	cout << "Yo";
-	//copy_tree(root_,rhs.root_);
+	cout << "Bruh y u give me bt\n";
+	clone(rhs,this);
 }
 
 template<typename T>
-void clone(RBTree<T>*&one,RBTree<T>*&two)
+void clone(const RBTree<T>*&one,RBTree<T>*two)
 {
-	two = new RBTree<T>();
-	cout << two->root_->value_ <<"  1\n";
+	two->root_ = new RBNode<T>(one->root_->value_);
+	//cout << two->root_->value_ <<"  1\n";
 	copy_tree(one->root_,two->root_);
-	cout << "5\n";
 	
 }
 
 template<typename T>
-void copy_tree(RBNode<T>* &one,RBNode<T>* &two)
+void copy_tree(RBNode<T>* const &one,RBNode<T>* &two)
 {
 	two->value_= one->value_;
-	cout << "2\n";
+
 	if(one->left_)
 	{
-		cout << "3\n";
 		RBNode<T> * temp = new RBNode<T>(one->left_->value_);
 		temp->parent_=two;
 		two->left_=temp;
@@ -120,7 +118,6 @@ void copy_tree(RBNode<T>* &one,RBNode<T>* &two)
 	}
 	if(one->right_)
 	{
-		cout << "4\n";
 		RBNode<T> * temp = new RBNode<T>(one->right_->value_);
 		temp->parent_=two;
 		two->right_=temp;
@@ -319,7 +316,8 @@ ostream& operator<<(ostream& os, const RBTree<O>& tree)
 }
 
 
-/*
+
+#if 0
 // delete the node
 template<typename T>
 bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
@@ -483,30 +481,8 @@ bool RBTree<T>::delete_node(const T& value) {
 	RBNode<T> *node = deleteBST(root_, value);
 	return adjust_RBdelete(node);
 }
-*/
+#endif
 
-// Free Functions
-template<typename T>
-RBNode<T> * successor(const RBNode<T> * pivot)
-{
-	 RBNode<T> *cur_node = pivot->right_;
-
-	while (cur_node->left_ != nullptr)
-		cur_node = cur_node->left_;
-
-	return cur_node;
-}
-
-template<typename T>
-RBNode<T> * predecessor(const RBNode<T> *& pivot)
-{
-	 RBNode<T> *cur_node = pivot->left_;
-
-	while (cur_node->right_ != nullptr)
-		cur_node = cur_node->right_;
-
-	return cur_node;
-}
 
 //Utitlity Functions
 template<typename T>

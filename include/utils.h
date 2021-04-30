@@ -57,7 +57,6 @@ void postorder(RBNode<T> *root)
 
 }
 
-
 template<typename T>
 RBNode<T>* preorder_successor(RBNode<T> *node)
 {
@@ -87,4 +86,25 @@ RBNode<T>* preorder_successor(RBNode<T> *node)
 	return nullptr;
 }
 
+template<typename T>
+RBNode<T> * inorder_succ(const RBNode<T> * pivot)
+{
+	 RBNode<T> *cur_node = pivot->right_;
+
+	while (cur_node->left_ != nullptr)
+		cur_node = cur_node->left_;
+
+	return cur_node;
+}
+
+template<typename T>
+RBNode<T> * inorder_pred(const RBNode<T> *& pivot)
+{
+	 RBNode<T> *cur_node = pivot->left_;
+
+	while (cur_node->right_ != nullptr)
+		cur_node = cur_node->right_;
+
+	return cur_node;
+}
 #endif
