@@ -71,8 +71,7 @@ int main(void)
 		RBTree<int>::Iterator it_lrl = tree->insert(lrl);
 		RBTree<int>::Iterator it_lrr = tree->insert(lrr);
 		RBTree<int>::Iterator it_new = tree->insert(newNode);
-		RBTree<int>::Iterator it1 = tree->root_;
-		RBTree<int>::Iterator it2 = tree->root_;
+		RBTree<int>::Iterator it_1 = tree->begin();
 
 		// cout << *tree;
 		// cout << "Levelorder successors!\n";

@@ -10,17 +10,15 @@ class RBTree
 {
 
 public:
-	void rotate_left (RBNode<T> *pivot);	// to be made private
-	void rotate_right (RBNode<T> *pivot);   // to be made private
 	RBNode<T> *root_;			// to be made private
-	static RBNode<T> *NIL;			// to be made private
+	static RBNode<T> *NIL;			// to be made private?
 
 // special functions
 	// constructor
 	RBTree();	// empty tree
 	RBTree(RBNode<T> node);	// tree with a root node
 	RBTree(const RBTree<T> &rhs);
-	RBNode<T> *copy_tree(RBNode<T> *t);
+
 	// operator function
 	template<typename O>
 	friend ostream& operator<<(ostream& os, const RBTree<O>& tree);
@@ -57,10 +55,15 @@ public:
 	void print_inorder();
 	void print_preorder();
 	void print_postorder();
-	void tree_insert(RBNode<T> *node);	// to be made private
 
 private:
 	int tree_size_;
+
+	void rotate_left (RBNode<T> *pivot);
+	void rotate_right (RBNode<T> *pivot);
+	void tree_insert(RBNode<T> *node);
+	RBNode<T> *copy_tree(RBNode<T> *t);
+
 };
 
 // constructors
@@ -91,7 +94,7 @@ RBTree<T>::RBTree(const RBTree<T> &rhs)
 		return;
 	}
 
-	root_ = copy_tree((rhs.root_));
+	root_ = copy_tree(rhs.root_);
 }
 
 template<typename T>
@@ -114,7 +117,7 @@ RBNode<T>* RBTree<T>::copy_tree(RBNode<T> *root)
 
 	if(new_right != nullptr)
 		new_right -> parent_ = new_node;
-		
+
 	return new_node;
 }
 
