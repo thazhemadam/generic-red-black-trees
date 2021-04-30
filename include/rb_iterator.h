@@ -7,31 +7,45 @@
 template<typename T>
 class RBTree<T>::Iterator
 {
-	private:
-		RBNode<T> *p_it_;
+private:
+	RBNode<T> *p_it_;
 
-	public:
-		Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
-		Iterator& operator++();		// pre-increment
-		Iterator operator++(int);	// post-increment
-		RBNode<T> operator*();		// dereference
-		bool operator==(const Iterator& rhs) const;	// equality
-		bool operator!=(const Iterator& rhs) const;	// inequality
+public:
+	Iterator() = default;
+	Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
+
+	// Note: incrementing follows standard pre-order traversal
+	Iterator& operator++();		// pre-increment
+	Iterator operator++(int);	// post-increment
+	RBNode<T> operator*();		// dereference
+	bool operator==(const Iterator& rhs) const;	// equality
+	bool operator!=(const Iterator& rhs) const;	// inequality
+
+	friend ostream& operator<<(ostream& os, const Iterator& iterator)
+	{
+		if(iterator.p_it_ == nullptr) {
+			os << "nullptr\n";
+			return os;
+		}
+		os << iterator.p_it_->value_ << "\t" << (iterator.p_it_->color_ == 0 ? "black" : "red")  << "\n";
+		return os;
+	}
+
 };
 
 
 template<typename T>
-typename RBTree<T>::Iterator& RBTree<T>::Iterator::operator++() // pre
+typename RBTree<T>::Iterator& RBTree<T>::Iterator::operator++() // pre-increment
 {
-	++p_it_;
+	p_it_ = preorder_successor(p_it_);
 	return *this;
 }
 
 template<typename T>
-typename RBTree<T>::Iterator RBTree<T>::Iterator::operator++(int) // post
+typename RBTree<T>::Iterator RBTree<T>::Iterator::operator++(int) // post-increment
 {
 	Iterator temp(*this);
-	++*this;
+	p_it_ = preorder_successor(temp.p_it_);
 	return temp;
 }
 
