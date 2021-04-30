@@ -3,6 +3,7 @@
 #define UTILS_H
 
 #include <iostream>
+#include <queue>
 #include "rb_node.h"
 
 template<typename T>
@@ -57,6 +58,37 @@ void postorder(RBNode<T> *root)
 
 }
 
+template<typename T>
+RBNode<T>* levelorder_successor(RBNode<T> *root, RBNode<T> *node)
+{
+	if(root == nullptr)
+		return nullptr;
+
+	if(root == node) {
+		if(root->left_ != nullptr)
+			return root->left_;
+		else if(root->right_ != nullptr)
+			return root->left_;
+		else
+			return nullptr;
+	}
+	std::queue<RBNode<T>*> q;
+	q.push(root);
+	while(!q.empty()) {
+		RBNode<T> *temp = q.front();
+		q.pop();
+
+		if(temp -> left_ != nullptr)
+			q.push(temp->left_);
+
+		if(temp -> right_ != nullptr)
+			q.push(temp->right_);
+		if(temp == node)
+			break;
+	}
+	return q.front();
+		
+}
 template<typename T>
 RBNode<T>* preorder_successor(RBNode<T> *node)
 {

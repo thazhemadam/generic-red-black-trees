@@ -19,13 +19,14 @@ public:
 	: value_(value), left_(left), right_(right), parent_(parent), color_(color)
 	{}
 
+	RBNode(const RBNode<T> &rhs);
 	friend std::ostream& operator<<(std::ostream& os, const RBNode& node)
 	{
 		os << node.value_ << "\t";
 		os << (node.color_ == 0 ? "black" : "red") <<"\n";
 		os << node.parent_ << "\t";
 		os << node.left_ << "\t";
-		os << node.right_ << "\t";
+		os << node.right_ << "\n";
 		return os;
 	}
 
@@ -33,6 +34,16 @@ public:
 	void setColor(Color color);
 		
 };
+
+template<typename T>
+RBNode<T>::RBNode(const RBNode<T> &rhs)
+{
+	parent_ = nullptr;
+	left_ = nullptr;
+	right_ = nullptr;
+	value_ = rhs.value_;
+	color_ = rhs.color_;
+}
 
 template<typename T>
 Color RBNode<T>::getColor() {
