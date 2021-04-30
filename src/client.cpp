@@ -49,7 +49,7 @@ int main(void)
 		tree->root_ = rootnode;
 	#endif
 
-	#if 1
+	#if 1 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
 		RBNode<int> *roots = new RBNode<int>(11);
 		RBNode<int> *l = new RBNode<int>(2);
@@ -73,46 +73,87 @@ int main(void)
 		RBTree<int>::Iterator it_new = tree->insert(newNode);
 		RBTree<int>::Iterator it_1 = tree->begin();
 
-		// cout << *tree;
-		// cout << "Levelorder successors!\n";
-		// cout << *it_lr;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, lr))) << "\n\n";
-		// cout << it_l;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, l))) << "\n\n";
-		// cout << it_roots;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, roots))) << "\n\n";
-		// cout << it_ll;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, ll))) << "\n\n";
-		// cout << it_lrl;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrl))) << "\n\n";
-		// cout << it_lrr;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrr))) << "\n\n";
-		// cout << it_r;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, r))) << "\n\n";
-		// cout << it_rr;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, rr))) << "\n\n";
-		// cout << it_new;
-		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, newNode))) << "\n\n";
+		#if 0 // Test for level-order successors
+		
+		cout << *tree;
+		cout << "Levelorder successors!\n";
+		cout << it_lr;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, lr))) << "\n\n";
+		cout << it_l;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, l))) << "\n\n";
+		cout << it_roots;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, roots))) << "\n\n";
+		cout << it_ll;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, ll))) << "\n\n";
+		cout << it_lrl;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrl))) << "\n\n";
+		cout << it_lrr;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrr))) << "\n\n";
+		cout << it_r;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, r))) << "\n\n";
+		cout << it_rr;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, rr))) << "\n\n";
+		cout << it_new;
+		cout << (RBTree<int>::Iterator(levelorder_successor(lr, newNode))) << "\n\n";
+		cout << *tree <<"\n";
+		RBTree<int> newTree = RBTree<int>(*tree);
+		cout << "\n"<< newTree;
+		#endif
+
+		#if 0 // Test for pre-order successors
+		tree->print_preorder();
+		cout << "Pre-order successors!\n";
+		cout << it_lr;
+		cout << RBTree<int>::Iterator(preorder_successor(lr)) << "\n\n";
+		cout << it_l;
+		cout << (RBTree<int>::Iterator(preorder_successor(l))) << "\n";
+		cout << it_roots;
+		cout << (RBTree<int>::Iterator(preorder_successor(roots))) << "\n";
+		cout << it_ll;
+		cout << (RBTree<int>::Iterator(preorder_successor(ll))) << "\n";
+		cout << it_lrl;
+		cout << (RBTree<int>::Iterator(preorder_successor(lrl))) << "\n";
+		cout << it_lrr;
+		cout << (RBTree<int>::Iterator(preorder_successor(lrr))) << "\n";
+		cout << it_r;
+		cout << (RBTree<int>::Iterator(preorder_successor(r))) << "\n";
+		cout << it_rr;
+		cout << (RBTree<int>::Iterator(preorder_successor(rr))) << "\n";
+		cout << it_new;
+		cout << (RBTree<int>::Iterator(preorder_successor(newNode))) << "\n";
 		cout << *tree <<"\n";
 		RBTree<int> newTree = RBTree<int>(*tree);
 		cout << "\n"<< newTree;
 
+		#endif
+
+		#if 1 // Test for post-order successors
+		tree->print_postorder();
+		cout << "Post-order successors!\n";
+		cout << it_lr;
+		cout << RBTree<int>::Iterator(postorder_successor(lr)) << "\n\n";
+		cout << it_l;
+		cout << (RBTree<int>::Iterator(postorder_successor(l))) << "\n";
+		cout << it_roots;
+		cout << (RBTree<int>::Iterator(postorder_successor(roots))) << "\n";
+		cout << it_ll;
+		cout << (RBTree<int>::Iterator(postorder_successor(ll))) << "\n";
+		cout << it_lrl;
+		cout << (RBTree<int>::Iterator(postorder_successor(lrl))) << "\n";
+		cout << it_lrr;
+		cout << (RBTree<int>::Iterator(postorder_successor(lrr))) << "\n";
+		cout << it_r;
+		cout << (RBTree<int>::Iterator(postorder_successor(r))) << "\n";
+		cout << it_rr;
+		cout << (RBTree<int>::Iterator(postorder_successor(rr))) << "\n";
+		cout << it_new;
+		cout << (RBTree<int>::Iterator(postorder_successor(newNode))) << "\n";
+		cout << *tree <<"\n";
+		RBTree<int> newTree = RBTree<int>(*tree);
+		cout << "\n"<< newTree;
+
+		#endif
 	#endif
-
-
-	// cout << *tree;
-	// tree->rotate_left(r);
-	// cout <<"\n";
-	// cout << *tree;
-	
-	// cout << "---- cloning -------\n";
-
-	
-	// RBTree<int> tree1(tree); // tree1 is an object
-	
-	
-	//clone(tree,tree1); // clone function modified
-	// cout << tree1;
 
 	return 0;
 }
