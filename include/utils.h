@@ -75,19 +75,13 @@ RBNode<T>* preorder_successor(RBNode<T> *node)
 
 	RBNode<T> *parent = node->parent_;
 
-	if(node == parent->left_ && parent->right_ != nullptr)	// leaf node, which has a right sibling.
-		return parent->right_;
-
-	// leaf node. has an ancestor, which is a left child, with a right sibling
-	RBNode<T> *ancestor = node->parent_;
-	parent = ancestor->parent_;		// parent is the parent of the ancestor
-	while ((parent != nullptr) && (parent->left_ != ancestor) && (parent->right_ == nullptr)) {
-		ancestor = parent;
-		parent = ancestor->parent_;
+	// leaf node. has an ancestor/is a node which is a left child + has a sibling.
+	while(parent != nullptr) {
+		if(parent->left_ == node && parent->right_!=nullptr)
+			return parent->right_;
+		node = parent;
+		parent = node->parent_;
 	}
-
-	if(ancestor == parent->left_)
-		return parent -> right_;
 
 	// undefined case.
 	return nullptr;

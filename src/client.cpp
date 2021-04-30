@@ -50,27 +50,29 @@ int main(void)
 	#endif
 
 	#if 1
-	// 11, 2, 14, 1, 15, 7, 5, 8, 4
-	RBNode<int> *roots = new RBNode<int>(11);
-	RBNode<int> *l = new RBNode<int>(2);
-	RBNode<int> *ll = new RBNode<int>(1);
-	RBNode<int> *lr = new RBNode<int>(7);
-	RBNode<int> *lrl = new RBNode<int>(5);
-	RBNode<int> *lrr = new RBNode<int>(8);
-	RBNode<int> *r = new RBNode<int>(14);
-	RBNode<int> *rr = new RBNode<int>(15);
-	RBNode<int> *newNode = new RBNode<int>(4);
+		// 11, 2, 14, 1, 15, 7, 5, 8, 4
+		RBNode<int> *roots = new RBNode<int>(11);
+		RBNode<int> *l = new RBNode<int>(2);
+		RBNode<int> *ll = new RBNode<int>(1);
+		RBNode<int> *lr = new RBNode<int>(7);
+		RBNode<int> *lrl = new RBNode<int>(5);
+		RBNode<int> *lrr = new RBNode<int>(8);
+		RBNode<int> *r = new RBNode<int>(14);
+		RBNode<int> *rr = new RBNode<int>(15);
+		RBNode<int> *newNode = new RBNode<int>(4);
 
-	tree->insert(roots);
-	tree->insert(l);
-	tree->insert(r);
-	tree->insert(ll);
-	tree->insert(lr);
-	tree->insert(rr);
-	tree->insert(lrl);
-	tree->insert(lrr);
-	tree->insert(newNode);
-	cout << *tree;
+
+		RBTree<int>::Iterator it_roots = tree->insert(roots);
+		RBTree<int>::Iterator it_l = tree->insert(l);
+		RBTree<int>::Iterator it_r = tree->insert(r);
+		RBTree<int>::Iterator it_ll = tree->insert(ll);
+		RBTree<int>::Iterator it_lr = tree->insert(lr);
+		RBTree<int>::Iterator it_rr = tree->insert(rr);
+		RBTree<int>::Iterator it_lrl = tree->insert(lrl);
+		RBTree<int>::Iterator it_lrr = tree->insert(lrr);
+		RBTree<int>::Iterator it_new = tree->insert(newNode);
+		RBTree<int>::Iterator it1 = tree->root_;
+		RBTree<int>::Iterator it2 = tree->root_;
 	#endif
 
 
