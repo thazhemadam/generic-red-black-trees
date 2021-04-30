@@ -77,12 +77,12 @@ RBTree<T>::RBTree(const RBTree<T> &rhs)
 }
 
 template<typename T>
-void clone(RBTree<T>*&one,RBTree<T>*&two)
+void clone(RBTree<T>*one,RBTree<T>*two)
 {
-	two = new RBTree<T>();
+	two->root_ = new RBNode<T>(one->root_->value_);
 	cout << two->root_->value_ <<"  1\n";
 	copy_tree(one->root_,two->root_);
-	cout << "5\n";
+	//cout << "5\n";
 	
 }
 
@@ -219,7 +219,7 @@ ostream& operator<<(ostream& os, const RBTree<O>& tree)
 	os << "\n";
 	return os;
 }
-
+#if 0
 // delete the node
 template<typename T>
 bool RBTree<T>::adjust_RBdelete(RBNode<T> *&node) {
@@ -383,6 +383,7 @@ bool RBTree<T>::delete_node(const T& value) {
 	RBNode<T> *node = deleteBST(root_, value);
 	return adjust_RBdelete(node);
 }
+#endif
 
 // Free Functions
 template<typename T>
