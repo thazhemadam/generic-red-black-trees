@@ -29,6 +29,25 @@ public:
 		return os;
 	}
 
+	Color getColor();
+	void setColor(Color color);
+		
 };
+
+template<typename T>
+Color RBNode<T>::getColor() {
+	if (this == nullptr)
+		return BLACK;
+
+	return this->color_;
+}
+
+template<typename T>
+void RBNode<T>::setColor( Color color) {
+	if (this == nullptr)
+		return;
+
+	this->color_ = color;
+}
 
 #endif
