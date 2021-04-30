@@ -309,6 +309,11 @@ void RBTree<T>::rotate_right(RBNode<T> *pivot)
 template<typename O>
 ostream& operator<<(ostream& os, const RBTree<O>& tree)
 {
+	if(tree.root_ == nullptr) {
+		os << "\nTree does not exist.\n";
+		return os;
+	}
+
 	os << "_\n";
 	print_tree(os, "", tree.root_, false);
 	os << "\n";
