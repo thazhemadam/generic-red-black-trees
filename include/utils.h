@@ -44,7 +44,6 @@ void preorder(RBNode<T> *root)
 
 }
 
-
 template<typename T>
 void postorder(RBNode<T> *root)
 {
@@ -55,35 +54,6 @@ void postorder(RBNode<T> *root)
 	postorder(root->right_);
 	std::cout << root->value_ << "\t";
 
-}
-
-template<typename T>
-RBNode<T>* preorder_successor(RBNode<T> *node)
-{
-	if(node == nullptr)
-		return nullptr;
-
-	if (node->left_)		// has left child.
-		return node->left_;
-
-	else if (node->right_)		// has right child.
-		return node->right_;
-
-	if(node->parent_ == nullptr)	// has no children, and is root.
-		return nullptr;
-
-	RBNode<T> *parent = node->parent_;
-
-	// leaf node. has an ancestor/is a node which is a left child + has a sibling.
-	while(parent != nullptr) {
-		if(parent->left_ == node && parent->right_!=nullptr)
-			return parent->right_;
-		node = parent;
-		parent = node->parent_;
-	}
-
-	// undefined case.
-	return nullptr;
 }
 
 template<typename T>
@@ -107,4 +77,6 @@ RBNode<T> * inorder_pred(const RBNode<T> *& pivot)
 
 	return cur_node;
 }
+#endif
+
 #endif
