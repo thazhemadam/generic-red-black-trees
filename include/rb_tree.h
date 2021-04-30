@@ -19,16 +19,11 @@ public:
 	// constructor
 	RBTree();	// empty tree
 	RBTree(RBNode<T> node);	// tree with a root node
-	RBTree(const RBTree<T> *rhs);
-
+	RBTree(const RBTree<T> &rhs);
+	RBNode<T> *copy_tree(RBNode<T> *t);
 	// operator function
 	template<typename O>
 	friend ostream& operator<<(ostream& os, const RBTree<O>& tree);
-
-
-// TEMPORARY FUNCTIONS!
- 	//void copy_tree(RBNode<T>*one,RBNode<T>*two);
- 	//void clone(RBTree<T>*one,RBTree<T>*two);
 
 // Iterator class
 	class Iterator;
@@ -87,42 +82,40 @@ RBTree<T>::RBTree(RBNode<T> node)
 {}
 
 // copy ctor
-// copy ctor
 template<typename T>
-RBTree<T>::RBTree(const RBTree<T> *rhs)
+RBTree<T>::RBTree(const RBTree<T> &rhs)
+: tree_size_(rhs.tree_size_)
 {
-	cout << "Bruh y u give me bt\n";
-	clone(rhs,this);
+	if(rhs.root_ == nullptr) {
+		root_ = nullptr;
+		return;
+	}
+
+	root_ = copy_tree((rhs.root_));
 }
 
 template<typename T>
-void clone(const RBTree<T>*&one,RBTree<T>*two)
+RBNode<T>* RBTree<T>::copy_tree(RBNode<T> *root)
 {
-	two->root_ = new RBNode<T>(one->root_->value_);
-	//cout << two->root_->value_ <<"  1\n";
-	copy_tree(one->root_,two->root_);
-	
-}
+	RBNode<T> *new_left, *new_right, *new_node;
+	if(root == nullptr)
+		return nullptr;
 
-template<typename T>
-void copy_tree(RBNode<T>* const &one,RBNode<T>* &two)
-{
-	two->value_= one->value_;
+	new_left = copy_tree(root->left_);
+	new_right = copy_tree(root->right_);
 
-	if(one->left_)
-	{
-		RBNode<T> * temp = new RBNode<T>(one->left_->value_);
-		temp->parent_=two;
-		two->left_=temp;
-		copy_tree(one->left_,two->left_);
-	}
-	if(one->right_)
-	{
-		RBNode<T> * temp = new RBNode<T>(one->right_->value_);
-		temp->parent_=two;
-		two->right_=temp;
-		copy_tree(one->right_,two->right_);
-	}
+	new_node = new RBNode<int>(*root);
+	new_node -> left_ = new_left;
+	new_node-> right_ = new_right;
+
+	if(new_left != nullptr)
+		new_left -> parent_ = new_node;
+
+
+	if(new_right != nullptr)
+		new_right -> parent_ = new_node;
+		
+	return new_node;
 }
 
 // operations on trees

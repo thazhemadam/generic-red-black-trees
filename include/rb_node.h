@@ -26,7 +26,7 @@ public:
 		os << (node.color_ == 0 ? "black" : "red") <<"\n";
 		os << node.parent_ << "\t";
 		os << node.left_ << "\t";
-		os << node.right_ << "\t";
+		os << node.right_ << "\n";
 		return os;
 	}
 

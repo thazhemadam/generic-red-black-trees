@@ -74,26 +74,30 @@ int main(void)
 		RBTree<int>::Iterator it1 = tree->root_;
 		RBTree<int>::Iterator it2 = tree->root_;
 
-		cout << *tree;
-		cout << "Levelorder successors!\n";
-		cout << it_lr;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, lr))) << "\n\n";
-		cout << it_l;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, l))) << "\n\n";
-		cout << it_roots;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, roots))) << "\n\n";
-		cout << it_ll;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, ll))) << "\n\n";
-		cout << it_lrl;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrl))) << "\n\n";
-		cout << it_lrr;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrr))) << "\n\n";
-		cout << it_r;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, r))) << "\n\n";
-		cout << it_rr;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, rr))) << "\n\n";
-		cout << it_new;
-		cout << (RBTree<int>::Iterator(levelorder_successor(lr, newNode))) << "\n\n";
+		// cout << *tree;
+		// cout << "Levelorder successors!\n";
+		// cout << *it_lr;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, lr))) << "\n\n";
+		// cout << it_l;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, l))) << "\n\n";
+		// cout << it_roots;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, roots))) << "\n\n";
+		// cout << it_ll;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, ll))) << "\n\n";
+		// cout << it_lrl;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrl))) << "\n\n";
+		// cout << it_lrr;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, lrr))) << "\n\n";
+		// cout << it_r;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, r))) << "\n\n";
+		// cout << it_rr;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, rr))) << "\n\n";
+		// cout << it_new;
+		// cout << (RBTree<int>::Iterator(levelorder_successor(lr, newNode))) << "\n\n";
+		cout << *tree <<"\n";
+		RBTree<int> newTree = RBTree<int>(*tree);
+		cout << "\n"<< newTree;
+
 	#endif
 
 
