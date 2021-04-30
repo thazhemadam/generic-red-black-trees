@@ -52,5 +52,12 @@ int main(void)
 	tree->rotate_left(r);
 	cout <<"\n";
 	cout << *tree;
+	
+	cout << "---- cloning -------\n";
+
+	RBTree<int> *tree1 = new RBTree<int>();
+	clone(tree,tree1); // clone function modified
+	cout << *tree1;
+
 	return 0;
 }

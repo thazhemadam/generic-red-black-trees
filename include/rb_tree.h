@@ -385,29 +385,6 @@ bool RBTree<T>::delete_node(const T& value) {
 }
 #endif
 
-// Free Functions
-template<typename T>
-RBNode<T> * successor(const RBNode<T> * pivot)
-{
-	 RBNode<T> *cur_node = pivot->right_;
-
-	while (cur_node->left_ != nullptr)
-		cur_node = cur_node->left_;
-
-	return cur_node;
-}
-
-template<typename T>
-RBNode<T> * predecessor(const RBNode<T> *& pivot)
-{
-	 RBNode<T> *cur_node = pivot->left_;
-
-	while (cur_node->right_ != nullptr)
-		cur_node = cur_node->right_;
-
-	return cur_node;
-}
-
 //Utitlity Functions
 template<typename T>
 Color RBTree<T>::getColor(RBNode<T> *&node) {
