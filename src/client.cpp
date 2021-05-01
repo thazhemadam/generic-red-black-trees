@@ -3,53 +3,21 @@
 
 using namespace std;
 
+struct temp {
+	int x;
+	int y;
+	bool operator()(const temp& lhs, const temp& rhs) { return lhs.y < rhs.y; }
+	friend std::ostream& operator<<(std::ostream& os, const temp& temp) {
+		os << temp.y;
+		return os;
+	}
+};
+
 int main(void)
 {
-	RBTree<int> *tree = new RBTree<int>();
+	RBTree<struct temp, struct temp> *tree = new RBTree<struct temp, struct temp>();
 
-	#if 0
-		RBNode<int> *lll = new RBNode<int>(2);
-		RBNode<int> *lr = new RBNode<int>(6);
-		RBNode<int> *rl = new RBNode<int>(9);
-		RBNode<int> *rrll = new RBNode<int>(12);
-		RBNode<int> *rrlr = new RBNode<int>(17);
-		RBNode<int> *rrrrl = new RBNode<int>(20);
-
-		RBNode<int> *rrrr = new RBNode<int>(22, nullptr, rrrrl);
-
-
-		RBNode<int> *rrl = new RBNode<int>(14, nullptr, rrll, rrlr);
-		RBNode<int> *rrr = new RBNode<int>(19, nullptr, nullptr, rrrr);
-
-		RBNode<int> *ll = new RBNode<int>(3, nullptr, lll, nullptr);
-		RBNode<int> *rr = new RBNode<int>(18, nullptr, rrl, rrr);
-
-		RBNode<int> *l = new RBNode<int>(4, nullptr, ll, lr);
-		RBNode<int> *r = new RBNode<int>(11, nullptr, rl, rr);
-
-		RBNode<int> *rootnode = new RBNode<int>(7, nullptr, l, r);
-
-		l->parent_ = rootnode;
-		r->parent_ = rootnode;
-
-		ll->parent_ = l;
-		rr->parent_ = r;
-
-		rrl->parent_ = rr;
-		rrr->parent_ = rr;
-
-		rrrr->parent_ = rrr;
-		lll->parent_ = ll;
-		lr->parent_ = l;
-		rl->parent_ = r;
-		rrll->parent_ = rrl;
-		rrlr->parent_ = rrl;
-		rrrrl->parent_ = rrrr;
-
-		tree->root_ = rootnode;
-	#endif
-
-	#if 1 // Create a tree using Insert
+	#if 0 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
 		#if 0
 		RBNode<int> *roots = new RBNode<int>(11);
@@ -73,23 +41,24 @@ int main(void)
 		// RBTree<int>::Iterator it_lrr = tree->insert(lrr);
 		// RBTree<int>::Iterator it_new = tree->insert(newNode);
 		#endif
-		tree->insert(11);
-		tree->insert(3);
-		tree->insert(2);
-		tree->insert(14);
-		tree->insert(1);
-		tree->insert(15);
-		tree->insert(7);
-		tree->insert(5);
-		tree->insert(8);
-		tree->insert(4);
+		tree->insert(2);  	// 8	- 1	2
+		tree->insert(7); 	// 3	- 2	
+		tree->insert(8); 	// 2	- 3
+		tree->insert(1); 	// 9	- 4
+		tree->insert(9); 	// 1	- 5
+		tree->insert(0); 	// 10	- 6
+		tree->insert(4); 	// 6	- 7
+		tree->insert(5); 	// 5	- 8
+		tree->insert(3); 	// 7	- 9
+		tree->insert(6); 	// 4	- 10
 
 		
-		RBTree<int>::Iterator it_1 = tree->begin();
-		cout << *tree << tree << endl;
-
-		RBTree<int> newtree = RBTree<int>(*tree);
-		cout << newtree << &newtree<< endl;
+		// RBTree<int>::Iterator it_1 = tree->begin();
+		// cout << *tree << tree << endl;
+		// tree->display();
+		cout << *tree;
+		// RBTree<int> newtree = RBTree<int>(*tree);
+		// cout << newtree << &newtree<< endl;
 		#if 0 // Test for level-order successors
 
 
@@ -173,5 +142,56 @@ int main(void)
 		#endif
 	#endif
 
+
+	#if 1
+	struct temp y1 = {5, 13};
+	struct temp y2 = {6, 12};
+	struct temp y3 = {7, 11};
+	struct temp y4 = {8, 10};
+	struct temp y5 = {9, 9};
+	struct temp y6 = {10, 8};
+	struct temp y7 = {11, 7};
+	struct temp y8 = {12, 6};
+	struct temp y9 = {13, 5};
+
+	RBNode<struct temp> * ny1 =  new RBNode<struct temp>(y1);
+	RBNode<struct temp> * ny2 =  new RBNode<struct temp>(y2);
+	RBNode<struct temp> * ny3 =  new RBNode<struct temp>(y3);
+	RBNode<struct temp> * ny4 =  new RBNode<struct temp>(y4);
+	RBNode<struct temp> * ny5 =  new RBNode<struct temp>(y5);
+	RBNode<struct temp> * ny6 =  new RBNode<struct temp>(y6);
+	RBNode<struct temp> * ny7 =  new RBNode<struct temp>(y7);
+	RBNode<struct temp> * ny8 =  new RBNode<struct temp>(y8);
+	RBNode<struct temp> * ny9 =  new RBNode<struct temp>(y9);
+	
+	tree->insert(ny1);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny2);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny3);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny4);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny5);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny6);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny7);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny8);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny9);
+	cout << *tree;
+	cout << "\n----------------\n";
+	
+	#endif
 	return 0;
 }
