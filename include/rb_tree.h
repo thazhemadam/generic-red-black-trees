@@ -52,6 +52,7 @@ public:
 	void setColor(RBNode<T> *&node, Color color);
 
 // display functions
+	void display(ostream& os = std::cout) const;
 	void print_inorder();
 	void print_preorder();
 	void print_postorder();
@@ -318,14 +319,7 @@ void RBTree<T>::rotate_right(RBNode<T> *pivot)
 template<typename O>
 ostream& operator<<(ostream& os, const RBTree<O>& tree)
 {
-	if(tree.root_ == nullptr) {
-		os << "\nTree does not exist.\n";
-		return os;
-	}
-
-	os << "_\n";
-	print_tree(os, "", tree.root_, false);
-	os << "\n";
+	tree.display(os);
 	return os;
 }
 
@@ -513,6 +507,20 @@ void RBTree<T>::setColor(RBNode<T> *&node, Color color) {
 		return;
 
 	node->color_ = color;
+}
+
+template<typename T>
+void RBTree<T>::display(ostream& os) const
+{
+	if(root_ == nullptr) {
+		os << "\nTree does not exist.\n";
+		return;
+	}
+
+	os << "_\n";
+	print_tree(os, "", root_, false);
+	os << "\n";
+
 }
 
 template<typename T>
