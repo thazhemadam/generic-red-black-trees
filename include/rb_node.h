@@ -3,7 +3,7 @@
 
 enum Color { BLACK, RED };
 
-template <typename T>
+template <typename T = int>
 class RBNode
 {
 public:
@@ -31,8 +31,7 @@ public:
 	}
 
 	Color getColor();
-	void setColor(Color color);
-		
+	void setColor(Color color);		
 };
 
 template<typename T>

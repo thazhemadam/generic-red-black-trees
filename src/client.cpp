@@ -3,51 +3,17 @@
 
 using namespace std;
 
+template<typename T>
+class MyLess
+{
+public:
+bool operator()(const T& lhs, const T& rhs) { return lhs > rhs; }
+};
+
+
 int main(void)
 {
-	RBTree<int> *tree = new RBTree<int>();
-
-	#if 0
-		RBNode<int> *lll = new RBNode<int>(2);
-		RBNode<int> *lr = new RBNode<int>(6);
-		RBNode<int> *rl = new RBNode<int>(9);
-		RBNode<int> *rrll = new RBNode<int>(12);
-		RBNode<int> *rrlr = new RBNode<int>(17);
-		RBNode<int> *rrrrl = new RBNode<int>(20);
-
-		RBNode<int> *rrrr = new RBNode<int>(22, nullptr, rrrrl);
-
-
-		RBNode<int> *rrl = new RBNode<int>(14, nullptr, rrll, rrlr);
-		RBNode<int> *rrr = new RBNode<int>(19, nullptr, nullptr, rrrr);
-
-		RBNode<int> *ll = new RBNode<int>(3, nullptr, lll, nullptr);
-		RBNode<int> *rr = new RBNode<int>(18, nullptr, rrl, rrr);
-
-		RBNode<int> *l = new RBNode<int>(4, nullptr, ll, lr);
-		RBNode<int> *r = new RBNode<int>(11, nullptr, rl, rr);
-
-		RBNode<int> *rootnode = new RBNode<int>(7, nullptr, l, r);
-
-		l->parent_ = rootnode;
-		r->parent_ = rootnode;
-
-		ll->parent_ = l;
-		rr->parent_ = r;
-
-		rrl->parent_ = rr;
-		rrr->parent_ = rr;
-
-		rrrr->parent_ = rrr;
-		lll->parent_ = ll;
-		lr->parent_ = l;
-		rl->parent_ = r;
-		rrll->parent_ = rrl;
-		rrlr->parent_ = rrl;
-		rrrrl->parent_ = rrrr;
-
-		tree->root_ = rootnode;
-	#endif
+	RBTree<int, MyLess<int>> *tree = new RBTree<int, MyLess<int>>();
 
 	#if 1 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
@@ -73,23 +39,24 @@ int main(void)
 		// RBTree<int>::Iterator it_lrr = tree->insert(lrr);
 		// RBTree<int>::Iterator it_new = tree->insert(newNode);
 		#endif
-		tree->insert(11);
-		tree->insert(3);
-		tree->insert(2);
-		tree->insert(14);
-		tree->insert(1);
-		tree->insert(15);
-		tree->insert(7);
-		tree->insert(5);
-		tree->insert(8);
-		tree->insert(4);
+		tree->insert(2);  	// 8	- 1	2
+		tree->insert(7); 	// 3	- 2	
+		tree->insert(8); 	// 2	- 3
+		tree->insert(1); 	// 9	- 4
+		tree->insert(9); 	// 1	- 5
+		tree->insert(0); 	// 10	- 6
+		tree->insert(4); 	// 6	- 7
+		tree->insert(5); 	// 5	- 8
+		tree->insert(3); 	// 7	- 9
+		tree->insert(6); 	// 4	- 10
 
 		
-		RBTree<int>::Iterator it_1 = tree->begin();
-		cout << *tree << tree << endl;
-
-		RBTree<int> newtree = RBTree<int>(*tree);
-		cout << newtree << &newtree<< endl;
+		// RBTree<int>::Iterator it_1 = tree->begin();
+		// cout << *tree << tree << endl;
+		// tree->display();
+		cout << *tree;
+		// RBTree<int> newtree = RBTree<int>(*tree);
+		// cout << newtree << &newtree<< endl;
 		#if 0 // Test for level-order successors
 
 
@@ -173,5 +140,10 @@ int main(void)
 		#endif
 	#endif
 
+
+	#if 1
+	// tree->insert(54);
+
+	#endif
 	return 0;
 }
