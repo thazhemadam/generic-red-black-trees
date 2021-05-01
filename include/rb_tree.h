@@ -82,7 +82,9 @@ RBTree<T>::RBTree()
 template<typename T>
 RBTree<T>::RBTree(RBNode<T> node)
 : root_(new RBNode<T>(node)), tree_size_(1)
-{}
+{
+	root_->color_ = BLACK;
+}
 
 // copy ctor
 template<typename T>
