@@ -203,56 +203,48 @@ typename RBTree<T>::Iterator RBTree<T>::insert(RBNode<T> *node)
 template<typename T>
 void RBTree<T>::insert_fixup(RBNode<T> *node)
 {
-	RBNode<T> *parent = node->parent_;
-	while(parent && parent->color_ == RED) {
-		parent = node->parent_;
-		RBNode<T> *grandparent = parent->parent_;
-
-		if(parent == grandparent->left_) {
-			RBNode<T> *uncle = grandparent->right_;
-
-			if(uncle->color_ == RED) {
-				parent->color_ = BLACK;
-				uncle->color_ = BLACK;
-				grandparent->color_ = RED;
-				node = grandparent;
+	while(node->parent_->color_ == RED) {
+		if(node->parent_ == node->parent_->parent_->left_) {
+			RBNode<T> *y = node->parent_->parent_->right_;
+			if(y->color_ == RED) {
+				node->parent_->color_ = BLACK;
+				y->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				node = node->parent_->parent_;
 			}
 			else {
-				if(node == parent ->right_) {
-					node = parent;
+				if(node == node->parent_->right_) {
+					node = node->parent_;
 					rotate_left(node);
 				}
-
-				parent->color_ = BLACK;
-				grandparent->color_ = RED;
-				rotate_right(grandparent);
-				
+				node->parent_->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				rotate_right(node->parent_->parent_);
 			}
 		}
 		else {
-			RBNode<T> *uncle = grandparent->left_;
-
-			if(uncle->color_ == RED) {
-				parent->color_ = BLACK;
-				uncle->color_ = BLACK;
-				grandparent->color_ = RED;
-				node = grandparent;
+			RBNode<T> *y = node->parent_->parent_->left_;
+			if(y->color_ == RED) {
+				node->parent_->color_ = BLACK;
+				y->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				node = node->parent_->parent_;
 			}
 			else {
-				if(node == parent->left_) {
-					node= parent;
+				if(node == node->parent_->left_) {
+					node = node->parent_;
 					rotate_right(node);
 				}
-
-				parent->color_ = BLACK;
-				grandparent->color_ = RED;
-				rotate_left(grandparent);
-				
+				node->parent_->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				rotate_left(node->parent_->parent_);
 			}
+
 		}
 	}
 	root_->color_ = BLACK;
 }
+
 
 #endif
 

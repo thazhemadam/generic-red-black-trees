@@ -86,10 +86,10 @@ int main(void)
 
 		
 		RBTree<int>::Iterator it_1 = tree->begin();
-		cout << *tree << tree;
+		cout << *tree << tree << endl;
 
 		RBTree<int> newtree = RBTree<int>(*tree);
-		cout << newtree << &newtree;
+		cout << newtree << &newtree<< endl;
 		#if 0 // Test for level-order successors
 
 
