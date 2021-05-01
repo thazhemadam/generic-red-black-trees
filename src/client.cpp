@@ -3,19 +3,21 @@
 
 using namespace std;
 
-template<typename T>
-class MyLess
-{
-public:
-bool operator()(const T& lhs, const T& rhs) { return lhs > rhs; }
+struct temp {
+	int x;
+	int y;
+	bool operator()(const temp& lhs, const temp& rhs) { return lhs.y < rhs.y; }
+	friend std::ostream& operator<<(std::ostream& os, const temp& temp) {
+		os << temp.y;
+		return os;
+	}
 };
-
 
 int main(void)
 {
-	RBTree<int, MyLess<int>> *tree = new RBTree<int, MyLess<int>>();
+	RBTree<struct temp, struct temp> *tree = new RBTree<struct temp, struct temp>();
 
-	#if 1 // Create a tree using Insert
+	#if 0 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
 		#if 0
 		RBNode<int> *roots = new RBNode<int>(11);
@@ -142,8 +144,54 @@ int main(void)
 
 
 	#if 1
-	// tree->insert(54);
+	struct temp y1 = {5, 13};
+	struct temp y2 = {6, 12};
+	struct temp y3 = {7, 11};
+	struct temp y4 = {8, 10};
+	struct temp y5 = {9, 9};
+	struct temp y6 = {10, 8};
+	struct temp y7 = {11, 7};
+	struct temp y8 = {12, 6};
+	struct temp y9 = {13, 5};
 
+	RBNode<struct temp> * ny1 =  new RBNode<struct temp>(y1);
+	RBNode<struct temp> * ny2 =  new RBNode<struct temp>(y2);
+	RBNode<struct temp> * ny3 =  new RBNode<struct temp>(y3);
+	RBNode<struct temp> * ny4 =  new RBNode<struct temp>(y4);
+	RBNode<struct temp> * ny5 =  new RBNode<struct temp>(y5);
+	RBNode<struct temp> * ny6 =  new RBNode<struct temp>(y6);
+	RBNode<struct temp> * ny7 =  new RBNode<struct temp>(y7);
+	RBNode<struct temp> * ny8 =  new RBNode<struct temp>(y8);
+	RBNode<struct temp> * ny9 =  new RBNode<struct temp>(y9);
+	
+	tree->insert(ny1);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny2);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny3);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny4);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny5);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny6);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny7);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny8);
+	cout << *tree;
+	cout << "\n----------------\n";
+	tree->insert(ny9);
+	cout << *tree;
+	cout << "\n----------------\n";
+	
 	#endif
 	return 0;
 }
