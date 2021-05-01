@@ -41,7 +41,6 @@ public:
 #else
 	Iterator insert(const T& value);
 	Iterator insert(RBNode<T> *node);
-	void insert_fixup(RBNode<T> *node);
 #endif
 
 	bool delete_node(const T& value);
@@ -53,6 +52,7 @@ public:
 	void setColor(RBNode<T> *&node, Color color);
 
 // display functions
+	void display(ostream& os = std::cout) const;
 	void print_inorder();
 	void print_preorder();
 	void print_postorder();
@@ -62,14 +62,16 @@ private:
 
 	void rotate_left (RBNode<T> *pivot);
 	void rotate_right (RBNode<T> *pivot);
-	void tree_insert(RBNode<T> *node);
 	RBNode<T> *copy_tree(RBNode<T> *t);
+	void insert_fixup(RBNode<T> *node);
+
 
 };
 
 // constructors
 template <typename T>
 RBNode<T> *RBTree<T>::NIL = new RBNode<T>();
+
 
 // constructors
 template<typename T>
@@ -79,13 +81,14 @@ RBTree<T>::RBTree()
 	tree_size_ = 0;
 }
 
-// TODO - TEST THIS. Can be done only after copy constructor is created for RBNode.
+
 template<typename T>
 RBTree<T>::RBTree(RBNode<T> node)
 : root_(new RBNode<T>(node)), tree_size_(1)
 {
 	root_->color_ = BLACK;
 }
+
 
 // copy ctor
 template<typename T>
@@ -99,6 +102,7 @@ RBTree<T>::RBTree(const RBTree<T> &rhs)
 
 	root_ = copy_tree(rhs.root_);
 }
+
 
 template<typename T>
 RBNode<T>* RBTree<T>::copy_tree(RBNode<T> *root)
@@ -124,8 +128,8 @@ RBNode<T>* RBTree<T>::copy_tree(RBNode<T> *root)
 	return new_node;
 }
 
-// operations on trees
 
+// operations on trees
 #ifdef RBT_UNIQUE
 template<typename T>
 pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(T& value)
@@ -151,64 +155,10 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(RBTNode<T> *node)
 template<typename T>
 typename RBTree<T>::Iterator RBTree<T>::insert(const T& value)
 {
-	// TODO: is this actually required? need to test things more first.
+	RBNode<T> *node = new RBNode<T>(value);
+	RBTree<T>::Iterator it = insert(node);
+	return it;
 }
-
-
-template<typename T>
-void RBTree<T>::insert_fixup(RBNode<T> *node)
-{
-	RBNode<T> *parent = node->parent_;
-	while(parent && parent->color_ == RED) {
-		parent = node->parent_;
-		RBNode<T> *grandparent = parent->parent_;
-
-		if(parent == grandparent->left_) {
-			RBNode<T> *uncle = grandparent->right_;
-
-			if(uncle->color_ == RED) {
-				parent->color_ = BLACK;
-				uncle->color_ = BLACK;
-				grandparent->color_ = RED;
-				node = grandparent;
-			}
-			else {
-				if(node == parent ->right_) {
-					node = parent;
-					rotate_left(node);
-				}
-
-				parent->color_ = BLACK;
-				grandparent->color_ = RED;
-				rotate_right(grandparent);
-				
-			}
-		}
-		else {
-			RBNode<T> *uncle = grandparent->left_;
-
-			if(uncle->color_ == RED) {
-				parent->color_ = BLACK;
-				uncle->color_ = BLACK;
-				grandparent->color_ = RED;
-				node = grandparent;
-			}
-			else {
-				if(node == parent->left_) {
-					node= parent;
-					rotate_right(node);
-				}
-
-				parent->color_ = BLACK;
-				grandparent->color_ = RED;
-				rotate_left(grandparent);
-				
-			}
-		}
-	}
-	root_->color_ = BLACK;
-}
-
 
 
 template<typename T>
@@ -248,6 +198,53 @@ typename RBTree<T>::Iterator RBTree<T>::insert(RBNode<T> *node)
 	insert_fixup(node);
 	return it;
 }
+
+
+template<typename T>
+void RBTree<T>::insert_fixup(RBNode<T> *node)
+{
+	while(node->parent_->color_ == RED) {
+		if(node->parent_ == node->parent_->parent_->left_) {
+			RBNode<T> *y = node->parent_->parent_->right_;
+			if(y->color_ == RED) {
+				node->parent_->color_ = BLACK;
+				y->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				node = node->parent_->parent_;
+			}
+			else {
+				if(node == node->parent_->right_) {
+					node = node->parent_;
+					rotate_left(node);
+				}
+				node->parent_->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				rotate_right(node->parent_->parent_);
+			}
+		}
+		else {
+			RBNode<T> *y = node->parent_->parent_->left_;
+			if(y->color_ == RED) {
+				node->parent_->color_ = BLACK;
+				y->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				node = node->parent_->parent_;
+			}
+			else {
+				if(node == node->parent_->left_) {
+					node = node->parent_;
+					rotate_right(node);
+				}
+				node->parent_->color_ = BLACK;
+				node->parent_->parent_->color_ = RED;
+				rotate_left(node->parent_->parent_);
+			}
+
+		}
+	}
+	root_->color_ = BLACK;
+}
+
 
 #endif
 
@@ -314,14 +311,7 @@ void RBTree<T>::rotate_right(RBNode<T> *pivot)
 template<typename O>
 ostream& operator<<(ostream& os, const RBTree<O>& tree)
 {
-	if(tree.root_ == nullptr) {
-		os << "\nTree does not exist.\n";
-		return os;
-	}
-
-	os << "_\n";
-	print_tree(os, "", tree.root_, false);
-	os << "\n";
+	tree.display(os);
 	return os;
 }
 
@@ -509,6 +499,20 @@ void RBTree<T>::setColor(RBNode<T> *&node, Color color) {
 		return;
 
 	node->color_ = color;
+}
+
+template<typename T>
+void RBTree<T>::display(ostream& os) const
+{
+	if(root_ == nullptr) {
+		os << "\nTree does not exist.\n";
+		return;
+	}
+
+	os << "_\n";
+	print_tree(os, "", root_, false);
+	os << "\n";
+
 }
 
 template<typename T>
