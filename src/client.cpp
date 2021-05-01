@@ -52,12 +52,12 @@ int main(void)
 	#if 1 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
 		RBNode<int> *roots = new RBNode<int>(11);
-		RBNode<int> *l = new RBNode<int>(2);
+		RBNode<int> *l = new RBNode<int>(3);
 		RBNode<int> *ll = new RBNode<int>(1);
 		RBNode<int> *lr = new RBNode<int>(7);
 		RBNode<int> *lrl = new RBNode<int>(5);
 		RBNode<int> *lrr = new RBNode<int>(8);
-		RBNode<int> *r = new RBNode<int>(14);
+		RBNode<int> *r = new RBNode<int>(1);
 		RBNode<int> *rr = new RBNode<int>(15);
 		RBNode<int> *newNode = new RBNode<int>(4);
 
@@ -72,9 +72,12 @@ int main(void)
 		RBTree<int>::Iterator it_lrr = tree->insert(lrr);
 		RBTree<int>::Iterator it_new = tree->insert(newNode);
 		RBTree<int>::Iterator it_1 = tree->begin();
-
+		cout << *tree << tree;
+		RBTree<int> newtree = RBTree<int>(*tree);
+		cout << newtree << &newtree;
 		#if 0 // Test for level-order successors
-		
+
+
 		cout << *tree;
 		cout << "Levelorder successors!\n";
 		cout << it_lr;
@@ -127,7 +130,7 @@ int main(void)
 
 		#endif
 
-		#if 1 // Test for post-order successors
+		#if 0 // Test for post-order successors
 		tree->print_postorder();
 		cout << "Post-order successors!\n";
 		cout << it_lr;
