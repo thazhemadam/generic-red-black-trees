@@ -51,6 +51,7 @@ int main(void)
 
 	#if 1 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
+		#if 0
 		RBNode<int> *roots = new RBNode<int>(11);
 		RBNode<int> *l = new RBNode<int>(3);
 		RBNode<int> *ll = new RBNode<int>(1);
@@ -62,17 +63,31 @@ int main(void)
 		RBNode<int> *newNode = new RBNode<int>(4);
 
 
-		RBTree<int>::Iterator it_roots = tree->insert(roots);
-		RBTree<int>::Iterator it_l = tree->insert(l);
-		RBTree<int>::Iterator it_r = tree->insert(r);
-		RBTree<int>::Iterator it_ll = tree->insert(ll);
-		RBTree<int>::Iterator it_lr = tree->insert(lr);
-		RBTree<int>::Iterator it_rr = tree->insert(rr);
-		RBTree<int>::Iterator it_lrl = tree->insert(lrl);
-		RBTree<int>::Iterator it_lrr = tree->insert(lrr);
-		RBTree<int>::Iterator it_new = tree->insert(newNode);
+		// RBTree<int>::Iterator it_roots = tree->insert(roots);
+		// RBTree<int>::Iterator it_l = tree->insert(l);
+		// RBTree<int>::Iterator it_r = tree->insert(r);
+		// RBTree<int>::Iterator it_ll = tree->insert(ll);
+		// RBTree<int>::Iterator it_lr = tree->insert(lr);
+		// RBTree<int>::Iterator it_rr = tree->insert(rr);
+		// RBTree<int>::Iterator it_lrl = tree->insert(lrl);
+		// RBTree<int>::Iterator it_lrr = tree->insert(lrr);
+		// RBTree<int>::Iterator it_new = tree->insert(newNode);
+		#endif
+		tree->insert(11);
+		tree->insert(3);
+		tree->insert(2);
+		tree->insert(14);
+		tree->insert(1);
+		tree->insert(15);
+		tree->insert(7);
+		tree->insert(5);
+		tree->insert(8);
+		tree->insert(4);
+
+		
 		RBTree<int>::Iterator it_1 = tree->begin();
 		cout << *tree << tree;
+
 		RBTree<int> newtree = RBTree<int>(*tree);
 		cout << newtree << &newtree;
 		#if 0 // Test for level-order successors

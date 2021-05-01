@@ -41,7 +41,6 @@ public:
 #else
 	Iterator insert(const T& value);
 	Iterator insert(RBNode<T> *node);
-	void insert_fixup(RBNode<T> *node);
 #endif
 
 	bool delete_node(const T& value);
@@ -62,14 +61,16 @@ private:
 
 	void rotate_left (RBNode<T> *pivot);
 	void rotate_right (RBNode<T> *pivot);
-	void tree_insert(RBNode<T> *node);
 	RBNode<T> *copy_tree(RBNode<T> *t);
+	void insert_fixup(RBNode<T> *node);
+
 
 };
 
 // constructors
 template <typename T>
 RBNode<T> *RBTree<T>::NIL = new RBNode<T>();
+
 
 // constructors
 template<typename T>
@@ -79,13 +80,14 @@ RBTree<T>::RBTree()
 	tree_size_ = 0;
 }
 
-// TODO - TEST THIS. Can be done only after copy constructor is created for RBNode.
+
 template<typename T>
 RBTree<T>::RBTree(RBNode<T> node)
 : root_(new RBNode<T>(node)), tree_size_(1)
 {
 	root_->color_ = BLACK;
 }
+
 
 // copy ctor
 template<typename T>
@@ -99,6 +101,7 @@ RBTree<T>::RBTree(const RBTree<T> &rhs)
 
 	root_ = copy_tree(rhs.root_);
 }
+
 
 template<typename T>
 RBNode<T>* RBTree<T>::copy_tree(RBNode<T> *root)
@@ -124,8 +127,8 @@ RBNode<T>* RBTree<T>::copy_tree(RBNode<T> *root)
 	return new_node;
 }
 
-// operations on trees
 
+// operations on trees
 #ifdef RBT_UNIQUE
 template<typename T>
 pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(T& value)
@@ -151,7 +154,48 @@ pair<typename RBTree<T>::Iterator, bool> RBTree<T>::insert(RBTNode<T> *node)
 template<typename T>
 typename RBTree<T>::Iterator RBTree<T>::insert(const T& value)
 {
-	// TODO: is this actually required? need to test things more first.
+	RBNode<T> *node = new RBNode<T>(value);
+	RBTree<T>::Iterator it = insert(node);
+	return it;
+}
+
+
+template<typename T>
+typename RBTree<T>::Iterator RBTree<T>::insert(RBNode<T> *node)
+{
+	RBTree<T>::Iterator it = Iterator(node);
+	RBNode<T> *parent = NIL;
+	RBNode<T> *temp = root_;
+
+	while(temp != NIL) {
+		parent = temp;
+
+		if(node->value_ < temp->value_)
+			temp = temp->left_;
+
+		else
+			temp = temp->right_;
+
+	}
+
+	node->parent_ = parent;
+
+	if(parent == NIL)
+		root_ = node;
+
+	else if(node->value_ < parent->value_)
+		parent->left_ = node;
+
+	else
+		parent->right_ = node;
+
+	node->left_ = NIL;
+	node->right_ = NIL;
+	node-> color_ = RED;
+	++tree_size_;
+
+	insert_fixup(node);
+	return it;
 }
 
 
@@ -207,46 +251,6 @@ void RBTree<T>::insert_fixup(RBNode<T> *node)
 		}
 	}
 	root_->color_ = BLACK;
-}
-
-
-
-template<typename T>
-typename RBTree<T>::Iterator RBTree<T>::insert(RBNode<T> *node)
-{
-	RBTree<T>::Iterator it = Iterator(node);
-	RBNode<T> *parent = NIL;
-	RBNode<T> *temp = root_;
-
-	while(temp != NIL) {
-		parent = temp;
-
-		if(node->value_ < temp->value_)
-			temp = temp->left_;
-
-		else
-			temp = temp->right_;
-
-	}
-
-	node->parent_ = parent;
-
-	if(parent == NIL)
-		root_ = node;
-
-	else if(node->value_ < parent->value_)
-		parent->left_ = node;
-
-	else
-		parent->right_ = node;
-
-	node->left_ = NIL;
-	node->right_ = NIL;
-	node-> color_ = RED;
-	++tree_size_;
-
-	insert_fixup(node);
-	return it;
 }
 
 #endif
