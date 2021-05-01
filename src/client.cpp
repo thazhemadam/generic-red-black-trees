@@ -49,7 +49,7 @@ int main(void)
 		tree->root_ = rootnode;
 	#endif
 
-	#if 1
+	
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
 		RBNode<int> *roots = new RBNode<int>(11);
 		RBNode<int> *l = new RBNode<int>(2);
@@ -73,7 +73,13 @@ int main(void)
 		RBTree<int>::Iterator it_new = tree->insert(newNode);
 		RBTree<int>::Iterator it1 = tree->root_;
 		RBTree<int>::Iterator it2 = tree->root_;
-
+		
+		cout << *tree;
+		
+		tree->post_successor();
+		cout << *tree;
+		
+	#if 0
 		// cout << *tree;
 		// cout << "Levelorder successors!\n";
 		// cout << *it_lr;

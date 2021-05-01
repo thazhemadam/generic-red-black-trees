@@ -58,6 +58,10 @@ public:
 	void print_postorder();
 	void tree_insert(RBNode<T> *node);	// to be made private
 	void deleteNode(RBNode<T>* &node);
+
+	void postorder_successor(RBTree<T>::Iterator node);
+	void post_successor();
+
 private:
 	int tree_size_;
 	
@@ -694,4 +698,35 @@ void RBTree<T>::print_postorder()
 	postorder(root_);
 }
 
+template<typename T>
+void RBTree<T>::post_successor()
+{
+	cout << "Post order successor :" << endl;
+	postorder_successor(this->begin());
+}
+
+template<typename T>
+void RBTree<T>::postorder_successor(RBTree<T>::Iterator y)
+{
+	if(y==nullptr)
+	{
+		return;
+						// Logic not right!	
+	}	
+	postorder_successor(++y);
+	//postorder_successor(y++);
+	
+	#if 1
+	if(y!= nullptr)
+	{
+		cout << y ;
+		
+		//delete(&(*y));
+		//delete (*y).left_;
+		//delete (*y).right_;
+				
+	}
+	#endif
+	//cout << y << endl;
+}
 #endif
