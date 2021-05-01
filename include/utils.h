@@ -9,7 +9,7 @@
 template<typename T>
 void print_tree(std::ostream& os, const std::string& prefix, const RBNode<T> *node, bool is_left)
 {
-	if(node == nullptr)
+	if(node -> left_ == nullptr && node->right_ == nullptr)
 		return;
 
 	os << prefix;
