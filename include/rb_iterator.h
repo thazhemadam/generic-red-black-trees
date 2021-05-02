@@ -4,8 +4,8 @@
 #include "rb_tree.h"
 #include "rb_node.h"
 
-template<typename T>
-class RBTree<T>::Iterator
+template<typename T, typename Compare>
+class RBTree<T, Compare>::Iterator
 {
 private:
 	RBNode<T> *p_it_;
@@ -34,35 +34,35 @@ public:
 };
 
 
-template<typename T>
-typename RBTree<T>::Iterator& RBTree<T>::Iterator::operator++() // pre-increment
+template<typename T, typename Compare>
+typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator++() // pre-increment
 {
 	p_it_ = preorder_successor(p_it_);
 	return *this;
 }
 
-template<typename T>
-typename RBTree<T>::Iterator RBTree<T>::Iterator::operator++(int) // post-increment
+template<typename T, typename Compare>
+typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator++(int) // post-increment
 {
 	Iterator temp(*this);
 	p_it_ = preorder_successor(temp.p_it_);
 	return temp;
 }
 
-template<typename T>
-RBNode<T> RBTree<T>::Iterator::operator*()
+template<typename T, typename Compare>
+RBNode<T> RBTree<T, Compare>::Iterator::operator*()
 {
 	return *p_it_;
 }
 
-template<typename T>
-bool RBTree<T>::Iterator::operator==(const Iterator& rhs) const
+template<typename T, typename Compare>
+bool RBTree<T, Compare>::Iterator::operator==(const Iterator& rhs) const
 {
 	return p_it_ == rhs.p_it_;
 }
 
-template<typename T>
-bool RBTree<T>::Iterator::operator!=(const Iterator& rhs) const
+template<typename T, typename Compare>
+bool RBTree<T, Compare>::Iterator::operator!=(const Iterator& rhs) const
 {
 	return !(*this == rhs);
 }

@@ -3,7 +3,7 @@
 
 enum Color { BLACK, RED };
 
-template <typename T>
+template <typename T = int>
 class RBNode
 {
 public:
@@ -13,9 +13,9 @@ public:
 	RBNode *right_;
 	Color color_;
 
-	// RBNode() = default;
+	RBNode() = default;
 
-	RBNode(const T& value = 0, RBNode<T> *parent = nullptr, RBNode<T> *left= nullptr, RBNode<T> *right= nullptr, Color color = RED)
+	RBNode(const T& value, RBNode<T> *parent = nullptr, RBNode<T> *left= nullptr, RBNode<T> *right= nullptr, Color color = RED)
 	: value_(value), left_(left), right_(right), parent_(parent), color_(color)
 	{}
 
@@ -31,8 +31,7 @@ public:
 	}
 
 	Color getColor();
-	void setColor(Color color);
-		
+	void setColor(Color color);		
 };
 
 template<typename T>

@@ -9,7 +9,7 @@
 template<typename T>
 void print_tree(std::ostream& os, const std::string& prefix, const RBNode<T> *node, bool is_left)
 {
-	if(node == nullptr)
+	if(node -> left_ == nullptr && node->right_ == nullptr)
 		return;
 
 	os << prefix;
@@ -87,10 +87,11 @@ RBNode<T>* levelorder_successor(RBNode<T> *root, RBNode<T> *node)
 			break;
 	}
 	return q.front();
-		
 }
+
+
 template<typename T>
-RBNode<T>* preorder_successor(RBNode<T> *node)
+RBNode<T>* preorder_successor(const RBNode<T> *node)
 {
 	if(node == nullptr)
 		return nullptr;
@@ -117,6 +118,42 @@ RBNode<T>* preorder_successor(RBNode<T> *node)
 	// undefined case.
 	return nullptr;
 }
+
+
+template<typename T>
+RBNode<T> *postorder_successor(const RBNode<T> * node)
+{
+	if(node == nullptr)
+		return nullptr;
+
+	if(node -> parent_ == nullptr)	// node is root. undefined case.
+		return nullptr;
+
+	RBNode<T> *parent = node->parent_;
+
+	// is the right child, or is a left child with no siblings
+	if(node == parent->right_ || parent->right_ == nullptr)
+		return parent;
+
+	// is the left child, with a right sibling
+	RBNode<T> *temp = parent->right_;
+	// until it is the next a leaf node. left-most leafnodes are given priority.
+	while(temp->left_ != nullptr || temp->right_ != nullptr) {
+		if(temp->left_ != nullptr){
+			temp = temp->left_;
+			continue;
+		}
+
+		else if(temp->right_ != nullptr){
+			temp = temp->right_;
+			continue;
+		}
+		
+	}
+
+	return temp;
+}
+
 
 template<typename T>
 RBNode<T> * inorder_succ(const RBNode<T> * pivot)
