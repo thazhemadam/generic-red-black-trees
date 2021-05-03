@@ -207,19 +207,20 @@ int main(void)
 	cout << "\n----------------\n";
 	cout << "---------DELETE----------\n";
 
-	tree->deleteNode(ny9);
-	tree->deleteNode(ny8);
+	
+	//tree->deleteNode(ny9);
+	//tree->deleteNode(ny8);
 	tree->deleteNode(ny7);
-	//tree->deleteNode(ny6);
-	//tree->deleteNode(ny5);
+	tree->deleteNode(ny6);
+	tree->deleteNode(ny5);
 	tree->deleteNode(ny4); // 10
 	//tree->deleteNode(ny3); //11 cut
 	//tree->deleteNode(ny3);
-	//tree->deleteNode(ny1);
-	//tree->deleteNode(ny2);
+	
+	tree->deleteNode(ny2);
 	//tree->deleteNode(ny3); //11 cut
-	//tree->deleteNode(ny);
-
+	//tree->deleteNode(ny3);
+	//tree->deleteNode(ny1);
 	//tree->search(12);
 	cout << *tree;
 	

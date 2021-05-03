@@ -43,13 +43,10 @@ public:
 	Iterator insert(RBNode<T> *node);
 #endif
 
-	
 
 // utility functions
 	inline bool is_empty() const { return tree_size_ == 0; }
-	//bool adjust_RBdelete(RBNode<T> *&node);
 	
-	//void delete_node(int value_);
 // display functions
 	void display(std::ostream& os = std::cout) const;
 	void print_inorder();
@@ -57,12 +54,9 @@ public:
 	void print_postorder();
 
 // delete functions
-	void adjust_delete(RBNode<T> * node , RBNode<T> * parent);
-	void BSTreplace(RBNode<T> * u, RBNode<T> * v);
-	RBNode<T>* find_node(int val);
-	void deleteNode(RBNode<T>* &node);
-	RBNode<T>* find_min(RBNode<T>* node);
-	void delete_node(int value_);
+	
+	RBNode<T> * deleteNode(RBNode<T>* node);
+	void deleteVal(int value_);
 
 //search functions
 	RBNode<T>* search(T value);
@@ -75,6 +69,10 @@ private:
 	RBNode<T> *copy_tree(RBNode<T> *t);
 	void insert_fixup(RBNode<T> *node);
 
+	RBNode<T>* successor(RBNode<T>* node);
+	void deleteFix(RBNode<T> * node);
+	RBNode<T>* find_node(int val);
+	void transplant(RBNode<T> * u,RBNode<T> * v);
 
 };
 
@@ -352,221 +350,83 @@ RBNode<T>* RBTree<T,Compare>::search(T value)
 		
 }	
 
-#if 1
-
-//deletion functions
-template<typename T , typename Compare>
-void RBTree<T,Compare>::adjust_delete(RBNode<T> * node , RBNode<T> * parent) {
-
-    RBNode<T> * temp;
-
-    while (node != root_ && node->getColor() == BLACK) {
-	cout << "check 1\n";
-	cout << node << endl;
-	
-	// when node has parent
-	if(node != NIL)
-	{
-	    	if (node == node->parent_->left_) {
-			temp = node->parent_->right_;
-			cout << "check 2\n";
-			if (temp->getColor() == RED) {
-				  temp->setColor(BLACK);
-				  node->parent_->setColor(RED);
-				  cout << "check 3\n";
-				  rotate_left(node->parent_);
-				  cout << "check 4\n";
-				  temp = node->parent_->right_;
-			}
-
-			if (temp->left_->getColor() == BLACK && temp->right_->getColor() == BLACK) {
-				  temp->setColor(RED);
-				  node = node->parent_;
-			} 
-			else {
-
-				  if (temp->right_->getColor() == BLACK) {
-					    temp->left_->setColor(BLACK);
-					    temp->setColor(RED);
-					    rotate_right(temp);
-					    temp = node->parent_->right_;
-				  }
-
-				  temp->setColor(node->parent_->color_);
-				  node->parent_->setColor(BLACK);
-				  temp->right_->setColor(BLACK);
-				  rotate_left(node->parent_);
-				  node = root_;
-			}
-	      } else {
-
-			temp = node->parent_->left_;
-
-			if (temp->getColor() == RED) {
-				  temp->setColor(BLACK);
-				  node->parent_->setColor(RED);
-				  rotate_right(node->parent_);
-				  temp = node->parent_->left_;
-			}
-
-			if (temp->right_->getColor() == BLACK && temp->right_->getColor() == BLACK) {
-				  temp->setColor(RED);
-				  node = node->parent_;
-			} else {
-
-				  if (temp->left_->getColor() == BLACK) {
-					    temp->right_->setColor(BLACK);
-					    temp->setColor(RED);
-					    rotate_left(temp);
-					    temp = node->parent_->left_;
-				  }
-
-				  temp->setColor(node->parent_->color_);
-				  node->parent_->setColor(BLACK);
-				  temp->left_->setColor(BLACK);
-				  rotate_right(node->parent_);
-				  node = root_;
-			}
-		  }
-          }
-          
-          //when node doesn't have any node attributes
-          
-	if(node==NIL && parent == NIL)
-	{
-		cout << "Breaking" <<endl;
-		cout <<  "Is node the root? :" << (node==root_) << endl;
-	}	  
-	else
-          {
-          	cout << "NIL nodes which has no parent value and color\n But are BLACK in color\n";
-          	//cout << parent << endl;
-          	//cout << node << endl;
-          	
-          	// if NIL is a left child
-          	if (node == parent->left_) {
-			temp = parent->right_;
-			cout << "CHeck nil 2\n";
-			
-			//check sibiling
-			if (temp->getColor() == RED) {
-				  temp->setColor(BLACK);
-				  parent->setColor(RED);
-				  cout << "Check nil 3\n";
-				  rotate_left(parent);
-				  cout << "Check nil 4\n";
-				  temp = parent->right_;
-			}
-			// both the siblings children are black
-			cout << "Check nil 5\n";
-			if (temp->left_->getColor() == BLACK && temp->right_->getColor() == BLACK) {
-				  temp->setColor(RED);
-				  node = parent;
-			}
-			
-			else {
-				cout << "Check nil 6\n"; 
-				// if any of the siblings children are red
-				  if (temp->right_->getColor() == BLACK) {
-					  //cout << "Check nil 6\n";
-					    temp->left_->setColor(BLACK);
-					    temp->setColor(RED);
-					    rotate_right(temp);
-					    temp = parent->right_;
-				  }
-				  cout << "Check nil 5\n";
-				  temp->setColor(parent->color_);
-				  parent->setColor(BLACK);
-				  temp->right_->setColor(BLACK);
-				  rotate_left(parent);
-				  node = root_;
-			}
-	      } 
-	      // if NIL is a right child
-	      else if(node==parent->right_)
-		  {
-
-			temp = parent->left_;
-			cout << "CHeck r nil 2\n";
-			if (temp->getColor() == RED) {
-				  temp->setColor(BLACK);
-				  parent->setColor(RED);
-				  rotate_right(parent);
-				  temp = parent->left_;
-			}
-			cout << "CHeck r nil 3\n";
-			cout << node->value_ << endl;
-			cout << temp << endl;
-			if (temp->right_->getColor() == BLACK && temp->right_->getColor() == BLACK) {
-				  temp->setColor(RED);
-				  node = parent;
-				  cout << "CHeck r nil 4\n";
-			} else {
-					cout << "CHeck r nil 5\n";
-				  if (temp->left_->getColor() == BLACK) {
-					    temp->right_->setColor(BLACK);
-					    temp->setColor(RED);
-					    rotate_left(temp);
-					    temp = parent->left_;
-				  }
-
-				  temp->setColor(parent->color_);
-				  parent->setColor(BLACK);
-				  temp->left_->setColor(BLACK);
-				  rotate_right(parent);
-				  node = root_;
-			}
-			cout << "CHeck r nil 6\n";
-		  }
-          	break;
-          }
-		  cout << "CHeck r nil 7\n";
-    }
-
-    node->setColor(BLACK);
-	cout << "CHeck nil 8\n";
-}
-
-
 template<typename T,typename Compare>
-void RBTree<T,Compare>::BSTreplace(RBNode<T> * u, RBNode<T> * v) {
-  
-    cout <<"BST Check\n"<< v <<"\n";
-    
-    if (u->parent_ == nullptr) {
-	      root_ = v;
-	} 
-    else if (u == u->parent_->left_) {
-	    
-	      u->parent_->left_ = v;
-	} 
-    else {
-    
-    	  u->parent_->right_ = v;
-    }
-    
-    
-    if(v==NIL)
-    {
-    	u->parent_=NIL;
-    }
-    else
-    {
-    	v->parent_ = u->parent_;
-    }
-    
-    //cout << u->parent_ <<"\n";
-    //cout << "Replace check 5\n";
+void RBTree<T, Compare>::deleteFix(RBNode<T> * x) {
+    RBNode<T> * w;
+	while(x!=root_ && x->getColor()==BLACK)
+	{
+		// right child
+		if(x=x->parent_->left_)
+		{
+			w = x->parent_->right_;
+			if(w->getColor()==RED)
+			{
+				w->setColor(BLACK);
+				x->parent_->setColor(RED);
+				rotate_left(x->parent_);
+				w=x->parent_->right_;
+			}
+			if(w->left_->getColor()==BLACK && w->right_->getColor()==BLACK)
+			{
+				w->setColor(RED);
+				x=x->parent_;
+			}
+			else{
+				if(w->right_->getColor()==BLACK)
+				{
+					w->left_->setColor(BLACK);
+					w->setColor(RED);
+					rotate_right(w);
+					w=x->parent_->right_;
+				}
+				w->setColor(x->parent_->color_);
+				x->parent_->setColor(BLACK);
+				w->right_->setColor(BLACK);
+				rotate_left(x->parent_);
+				x=root_;
+			}
+		}
+		else{
+			// a left child
+			w = x->parent_->left_;
+			if(w->getColor()==RED)
+			{
+				w->setColor(BLACK);
+				x->parent_->setColor(RED);
+				rotate_right(x->parent_);
+				w=x->parent_->left_;
+			}
+			if(w->left_->getColor()==BLACK && w->right_->getColor()==BLACK)
+			{
+				w->setColor(RED);
+				x=x->parent_;
+			}
+			else{
+				if(w->left_->getColor()==BLACK)
+				{
+					w->right_->setColor(BLACK);
+					w->setColor(RED);
+					rotate_left(w);
+					w=x->parent_->left_;
+				}
+				w->setColor(x->parent_->color_);
+				x->parent_->setColor(BLACK);
+				w->left_->setColor(BLACK);
+				rotate_left(x->parent_);
+				x=root_;
+			}
+		}
+	}
+	
+	x->setColor(BLACK);
 }
-  
-template<typename T ,typename Compare>
-RBNode<T>* RBTree<T,Compare>::find_node(int val) 
-{
-	RBNode<T>*  temp = root_;
-	//cout << "find " << n <<" in " << temp->value_ << "\n";
+template<typename T,typename Compare>
+RBNode<T> * RBTree<T, Compare>::find_node(int n) {
+	RBNode<T> * temp = root_;
 	while (temp != NIL) 
 	{
-		if (temp->value_> val ) 
+		//cout << "Here is find node" << endl;
+		if (temp->value_> n ) 
 		{
 			if (temp->left_!=NIL)
 			{
@@ -577,162 +437,180 @@ RBNode<T>* RBTree<T,Compare>::find_node(int val)
 			}
 			
 		} 
-		else if (val == temp->value_) 
+		else if (n == temp->value_) 
 		{
-			
 			return temp;
-			//cout << "find " << temp->value_ << "\n";
-	
 		} 
 		else {
 			if (temp->right_!=NIL)
 			{
 				temp = temp->right_;
 			}
-			else
-			{
+			else{
 				break;
 			}
 		}
 	
 	}
-	//cout << "find " << temp->value_ << "\n";
+	//cout << "Not found" << endl;
 	return NIL;
 
 }
+
 template<typename T,typename Compare>
-void RBTree<T,Compare>::deleteNode(RBNode<T>* &node) 
+void RBTree<T, Compare>::transplant(RBNode<T> * u,RBNode<T> * v)
 {
-    if(node == NIL)
-    {
-    	return;
-    }
-    
-    cout << "Deleting node with value --------" << node->value_ << endl;
-    RBNode<T>* temp = node ;
-
-    RBNode<T>* helper = NIL;
-    
-    RBNode<T>* parent = NIL;
-    
-    //bool isRight = false;
-    Color old_temp_color = temp->color_;
-
-    //cout << node->left_ << "\n";
-    //cout << NIL << " NIl\n"; 
-    
-    if (node->left_ == NIL) 
-    {
-    		
-	      helper = node->right_;
-	      parent = node->parent_;
-	      //cout << "Helperis right when left is NIL " << helper << endl;
-	      //cout << "Parent when left is NIL " << parent << endl;
-	      BSTreplace(node, node->right_);
-    } 
-    else if (node->right_ == NIL) 
-    {
-	      helper = node->left_;
-	      parent = node->parent_;
-	      //cout << "Helperis right when right is NIL " << helper << endl;
-	      //cout << "Parent when right is NIL " << parent << endl;
-	      BSTreplace(node, node->left_);
-	      //isRight = true;
-	      
-    } 
-    else 
-    {
-	      temp = find_min(node->right_);
-	      //cout << "temp " << temp->value_ << endl;
-	      //cout << "MINIMUM temp " << temp->value_ << "\n"; 
-    		//cout << "node "<< node->right_->left_->left_ << endl;
-	      old_temp_color = temp->color_;
-	      helper = temp->right_;
-	      parent = temp;
-	      //cout << "MINIMUM temp " << temp->right_<< "\n"; 
-	      
-	      if (temp->parent_ == node) {
-		      //helper->parent_ = temp;
-			if(helper==NIL)
-			{
-				temp->right_=NIL;
-			}
-			else
-			{
-				helper->parent_ = temp;
-			}
-			cout << "helper" << "\n";
-			//temp->right_=NIL;
-		} 
-	      else {
-	      		BSTreplace(temp, temp->right_);
-	      		cout << "helper" << "\n";
-			//cout << "temp right " << temp->right_ << endl;
-			//cout << "node right " << node->right_ << endl;
-			if(temp->right_ == NIL)
-			{
-				temp->right_ = node->right_;
-				//node->right_ = NIL;
-			}
-			else{
-				temp->right_ = node->right_;
-				temp->right_->parent_ = temp;
-				}
-	      }
-
-	      BSTreplace(node, temp);
-	      if(temp->left_ != NIL){
-		      temp->left_ = node->left_;
-		      temp->left_->parent_ = temp;
-		      temp->color_ = node->color_;
-	      }
-	      else
-	      {
-	      	       temp->left_ = node->left_;
-	              //node->left_ = NIL;
-	      }
-    }
-    delete node;
-     
-    if (old_temp_color == BLACK) 
-    {
-    	      
-	      adjust_delete(helper,parent);
-		  cout << "No bt";
-    }
-    //cout << "Test 2\n";
-}
-  
+	if(u->parent_ ==NIL)
+	{
+		root_ = v;
+	}
+	else if(u=u->parent_->left_)
+	{
+		u->parent_->left_=v;
+	}
+	else{
+		u->parent_->right_ = v;
+	}
+	
+	if(v!=NIL)
+	{
+		v->parent_=u->parent_;
+	}
+} 
 template<typename T,typename Compare>
-RBNode<T>* RBTree<T,Compare>::find_min(RBNode<T>* node) {
+  RBNode<T> * RBTree<T, Compare>::deleteNode(RBNode<T> * z) {
+	#if 0
+	cout << "deleting : " << z->value_;
+	RBNode<T> * y =z;
+	Color real_color_y = y->color_;
+	RBNode<T> * x; 
+	if(z->left_==NIL)
+	{
+		x=z->right_;
+		transplant(z,z->right_);
+	}
+	else if(z->right_ == NIL)
+	{
+		x=z->left_;
+		transplant(z,z->left_);
+	}
+	else{
+		y=successor(z->right_);
+		real_color_y = y->color_;
+		x=y->right_;
+		if(y->parent_==z){
+			x->parent_=y;
+		}
+		else{
+			transplant(y,y->right_);
+			y->right_=z->right_;
+			y->right_->parent_=y;
+		}
+		transplant(z,y);
+		y->left_=z->left_;
+		y->left_->parent_=y;
+		y->color_=z->color_;
+	}
+	if(z==root_->parent_->left_)
+	{
+		root_->parent_->left_=z->parent_;
+	}
+
+	if(z==root_->parent_->right_)
+	{
+		root_->parent_->right_=z->parent_;
+	}
+
+	delete z;
+	if(real_color_y ==BLACK)
+	{
+		deleteFix(x);
+	}
+	return NIL;
+	#endif
+	
+	#if 1
+	RBNode<T> * x; 
+	RBNode<T> * y;
+	if(z->left_ == NIL || z->right_ == NIL)
+	{
+		y = z;
+	}
+	else
+	{
+		y = successor(z->right_); // iorder
+	}
+	if(y->left_!=NIL)
+	{
+		x=y->left_;
+	}
+	else{
+
+		x=y->right_;
+	}
+	x->parent_ = y->parent_;
+
+	if(y->parent_ == NIL)
+	{
+		root_=x;
+	}
+	else 
+	{
+		if(y == y->parent_->left_)
+		{
+			y->parent_->left_=x;
+		}
+		else
+		{
+			y->parent_->right_=x;
+		}
+	}
+
+	if(y!=z)
+	{
+		z->value_=y->value_;
+		z->parent_=y->parent_;
+		z->left_=y->left_;
+		z->right_=y->right_;
+		//z->color_=y->color_;
+	
+	}
+	
+	if(y->getColor()==BLACK)
+	{
+		deleteFix(x);
+	}
+
+	//delete y;
+	return y;
+	#endif
+
+  }
+template<typename T,typename Compare>
+RBNode<T>* RBTree<T,Compare>::successor(RBNode<T>* node) {
     
     while (node->left_ != NIL) 
     {
+		cout << "Here is find min" << endl;
       	  node = node->left_;
     }
     //cout << "Mini func " << node->value_ << "\n";
     return node;
 }
 
-/*
 template<typename T,typename Compare>
-void RBTree<T,Compare>::delete_node(int value_) {
+void RBTree<T, Compare>::deleteVal(int data) {
 	
-	RBNode<T> * node = find_node(value_);
-	//cout << node->value_ <<"\n";
-	if(node!=NIL)
-	{
-		cout << " del " << node->value_ << "\n";
-    		deleteNode(node);
+	RBNode<T> * node;
+	node = find_node(data);
+	if(node!=NIL){
+    	deleteNode(node);
     	}
     	else
     	{
-    		cout << value_ << "  Not found !\n";
+    		cout << data << "Not found!";
     	}
 }
-*/
-#endif
-
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::display(std::ostream& os) const
