@@ -416,7 +416,7 @@ template<typename T,typename Compare>
 void RBTree<T, Compare>::delete_fixup(RBNode<T> *x)
 {
 	RBNode<T>* w;
-	while(x != root_ && x->color_ == BLACK) {
+	while(x != root_ && x->color_ == BLACK && x != NIL) {
 		if(x = x->parent_->left_) {
 			w = x->parent_->right_;
 			if(w->color_ == RED) {
