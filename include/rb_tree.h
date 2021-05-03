@@ -9,6 +9,7 @@ template <typename T = int, typename Compare = std::less<T>>
 class RBTree
 {
 private:
+private:
 	RBNode<T> *root_;
 	Compare compare;
 
@@ -70,8 +71,7 @@ public:
 
 //search functions
 	RBNode<T>* search(T value);
-	RBNode<T>* search(RBNode<T>*node);
-
+	RBNode<T>* search(RBNode<T> *node);
 };
 
 // constructors
@@ -302,19 +302,30 @@ std::ostream& operator<<(std::ostream& os, const RBTree<T, Compare>& tree)
 template<typename T,typename Compare>
 RBNode<T>* RBTree<T,Compare>::search(T value)
 {
+	RBNode<T>* node = new RBNode<T>(value);
+	cout << node->value_ << endl;
+	return search(node);
+}
+
+template<typename T,typename Compare>
+RBNode<T>* RBTree<T,Compare>::search(RBNode<T> *pivot)
+{
+		
 		RBNode<T> *temp = root_;
+
 		while(temp != NIL) {
-			if(temp->value_ == value)
+			if(temp->value_ == pivot->value_)
 				return temp;
 
-			if(compare(temp->value_, value))
-				temp = temp->right_;
+			if(temp->value_ < pivot->value_)
+				temp=temp->right_;
 
 			else
-				temp = temp->left;
+				temp=temp->left_;
 		}
-		
-}	
+
+		return nullptr;
+}
 
 
 template<typename T,typename Compare>
