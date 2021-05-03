@@ -66,18 +66,15 @@ private:
 	Compare compare;
 	void rotate_left (RBNode<T> *pivot);
 	void rotate_right (RBNode<T> *pivot);
+
 	RBNode<T> *copy_tree(RBNode<T> *t);
 	void insert_fixup(RBNode<T> *node);
 
-	RBNode<T>* successor(RBNode<T>* node);
-	void deleteFix(RBNode<T> * node);
 	RBNode<T>* find_node(int val);
 
 	void rb_transplant(RBNode<T> * u,RBNode<T> * v);
 	RBNode<T>* tree_minimum(RBNode<T> *root);
 	void delete_fixup(RBNode<T> *x);
-	void delete_fixup(RBNode<T> *parent, bool isleft);
-
 };
 
 // constructors
@@ -349,77 +346,6 @@ RBNode<T>* RBTree<T,Compare>::search(T value)
 		
 }	
 
-template<typename T,typename Compare>
-void RBTree<T, Compare>::deleteFix(RBNode<T> * x) {
-    RBNode<T> * w;
-	while(x!=root_ && x->getColor()==BLACK)
-	{
-		// right child
-		if(x=x->parent_->left_)
-		{
-			w = x->parent_->right_;
-			if(w->getColor()==RED)
-			{
-				w->setColor(BLACK);
-				x->parent_->setColor(RED);
-				rotate_left(x->parent_);
-				w=x->parent_->right_;
-			}
-			if(w->left_->getColor()==BLACK && w->right_->getColor()==BLACK)
-			{
-				w->setColor(RED);
-				x=x->parent_;
-			}
-			else{
-				if(w->right_->getColor()==BLACK)
-				{
-					w->left_->setColor(BLACK);
-					w->setColor(RED);
-					rotate_right(w);
-					w=x->parent_->right_;
-				}
-				w->setColor(x->parent_->color_);
-				x->parent_->setColor(BLACK);
-				w->right_->setColor(BLACK);
-				rotate_left(x->parent_);
-				x=root_;
-			}
-		}
-		else{
-			// a left child
-			w = x->parent_->left_;
-			if(w->getColor()==RED)
-			{
-				w->setColor(BLACK);
-				x->parent_->setColor(RED);
-				rotate_right(x->parent_);
-				w=x->parent_->left_;
-			}
-			if(w->left_->getColor()==BLACK && w->right_->getColor()==BLACK)
-			{
-				w->setColor(RED);
-				x=x->parent_;
-			}
-			else{
-				if(w->left_->getColor()==BLACK)
-				{
-					w->right_->setColor(BLACK);
-					w->setColor(RED);
-					rotate_left(w);
-					w=x->parent_->left_;
-				}
-				w->setColor(x->parent_->color_);
-				x->parent_->setColor(BLACK);
-				w->left_->setColor(BLACK);
-				rotate_left(x->parent_);
-				x=root_;
-			}
-		}
-	}
-	
-	x->setColor(BLACK);
-}
-
 
 template<typename T,typename Compare>
 RBNode<T> * RBTree<T, Compare>::find_node(int n) {
@@ -554,87 +480,8 @@ void RBTree<T, Compare>::delete_fixup(RBNode<T> *x)
 
 
 template<typename T,typename Compare>
-void RBTree<T, Compare>::delete_fixup(RBNode<T> *parent, bool isleft)
-{
-	// cout << "in fix up 2.0" << endl;
-	RBNode<T>* w;
-	RBNode<T> *x;
-	x->parent_ = parent;
-	if(isleft)
-		parent -> left_ == x;
-	else
-		parent->right_ == x;
-
-	while(x != root_ && x->color_ == BLACK) {
-		if(x = x->parent_->left_) {
-			w = x->parent_->right_;
-			if(w->color_ == RED) {
-				w->color_ = BLACK;
-				x->parent_->color_ = RED;
-				rotate_left(x->parent_);
-				w = x->parent_->right_;
-			}
-
-			if(w->left_->color_ == BLACK && w->right_->color_ == BLACK) {
-				w->color_ = RED;
-				x = x->parent_;
-			}
-
-			else {
-				if(w->right_->color_ == BLACK) {
-					w->left_->color_ = BLACK;
-					w->color_ = RED;
-					rotate_right(w);
-					w = x->parent_->right_;
-				}
-				w->color_ = x->parent_->color_;
-				x->parent_->color_ = BLACK;
-				w->right_->color_ = BLACK;
-				rotate_left(x->parent_);
-				x = root_;
-			}
-		}
-
-		else {
-			w = x->parent_->left_;
-			if(w->color_ == RED) {
-				w->color_ = BLACK;
-				x->parent_->color_ = RED;
-				rotate_right(x->parent_);
-				w = x->parent_->left_;
-			}
-
-			if(w->right_->color_ == BLACK && w->left_->color_ == BLACK) {
-				w->color_ = RED;
-				x = x->parent_;
-			}
-
-			else {
-				if(w->left_->color_ == BLACK) {
-					w->right_->color_ = BLACK;
-					w->color_ = RED;
-					rotate_left(w);
-					w = x->parent_->left_;
-				}
-				w->color_ = x->parent_->color_;
-				x->parent_->color_ = BLACK;
-				w->left_->color_ = BLACK;
-				rotate_right(x->parent_);
-				x = root_;
-			}
-		}
-	}
-	x->color_ = BLACK;
-}
-
-
-
-// TO DO Here: rb_transplant & tre_minimum, delete_fixup
-template<typename T,typename Compare>
 void RBTree<T, Compare>::delete_node(RBNode<T> *z)
 {
-	// cout << "\n in delete node! "<< endl;
-
 	RBNode<T> *x;
 	RBNode<T> *y = z;
 	Color y_original_color = y->color_;
@@ -667,38 +514,10 @@ void RBTree<T, Compare>::delete_node(RBNode<T> *z)
 		y->color_ = z->color_;
 	}
 
-	if(y_original_color == BLACK) {
+	if(y_original_color == BLACK)
 		delete_fixup(x);
-	}
-
 }
 
-
-template<typename T,typename Compare>
-RBNode<T>* RBTree<T,Compare>::successor(RBNode<T>* node) {
-    
-    while (node->left_ != NIL) 
-    {
-		cout << "Here is find min" << endl;
-      	  node = node->left_;
-    }
-    //cout << "Mini func " << node->value_ << "\n";
-    return node;
-}
-
-template<typename T,typename Compare>
-void RBTree<T, Compare>::deleteVal(int data) {
-	
-	RBNode<T> * node;
-	node = find_node(data);
-	if(node!=NIL){
-    	deleteNode(node);
-    	}
-    	else
-    	{
-    		cout << data << "Not found!";
-    	}
-}
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::display(std::ostream& os) const
@@ -714,11 +533,13 @@ void RBTree<T, Compare>::display(std::ostream& os) const
 
 }
 
+
 template<typename T, typename Compare>
 void RBTree<T, Compare>::print_inorder()
 {
 	inorder(root_);
 }
+
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::print_preorder()
@@ -726,13 +547,14 @@ void RBTree<T, Compare>::print_preorder()
 	preorder(root_);
 }
 
+
 template<typename T, typename Compare>
 void RBTree<T, Compare>::print_postorder()
 {
 	postorder(root_);
 }
 
-#if 0
+#if 0 // TO BE REMOVED.
 template<typename T>
 void RBTree<T>::post_successor()
 {
