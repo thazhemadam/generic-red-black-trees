@@ -59,6 +59,37 @@ void postorder(RBNode<T> *root)
 }
 
 template<typename T>
+RBNode<T>* levelorder_predecessor(RBNode<T> *root, RBNode<T> *node)
+{
+    if(root == nullptr)
+        return nullptr;
+
+    if(root == node)
+    {
+        return nullptr;
+    }
+    std::queue<RBNode<T>*> q;
+    q.push(root);
+    RBNode<T>* prev= nullptr;
+    while(!q.empty()) {
+        RBNode<T> *temp = q.front();
+        q.pop();
+        if(temp==node){
+            break;
+        }
+        else
+        {
+            prev=temp;
+        }
+        if(temp -> left_ != nullptr)
+            q.push(temp->left_);
+
+        if(temp -> right_ != nullptr)
+            q.push(temp->right_);
+    }
+    return prev;
+}
+template<typename T>
 RBNode<T>* levelorder_successor(RBNode<T> *root, RBNode<T> *node)
 {
 	if(root == nullptr)
@@ -89,6 +120,25 @@ RBNode<T>* levelorder_successor(RBNode<T> *root, RBNode<T> *node)
 	return q.front();
 }
 
+template<typename T>
+RBNode<T>* preorder_predecessor(RBNode<T> *root_,const RBNode<T> *node)
+{
+    RBNode<T>* parent = node->parent_;
+    if (node == root_)
+            return nullptr;
+        if (parent->left_ == NULL || parent->left_ == node)
+        {
+            return parent;
+        }
+    
+        RBNode<T>* current = parent->left_;
+        while (current->right_ != NULL)
+        {
+            current = current->right_;
+        }
+      
+        return current;
+}
 
 template<typename T>
 RBNode<T>* preorder_successor(const RBNode<T> *node)
@@ -119,6 +169,32 @@ RBNode<T>* preorder_successor(const RBNode<T> *node)
 	return nullptr;
 }
 
+template<typename T>
+RBNode<T>* postorder_predecessor( RBNode<T>* root, RBNode<T> *node)
+{
+   // RBNode<T>* parent = node->parent_;
+    RBNode<T>* temp = node->right_;
+    RBNode<T> *current = node;
+    RBNode<T> *parent = node->parent_;
+    if (temp!=nullptr)
+            return temp;
+     
+        // If right child does not exist, then
+        // travel up (using parent pointers)
+        // until we reach a node which is right
+        // child of its parent
+        while (parent != NULL && parent->left_ == current) {
+            current = current->parent_;
+            parent = parent->parent_;
+        }
+     
+        // If we reached root, then the given
+        // node has no postorder predecessor
+        if (parent == NULL)
+            return NULL;
+     
+        return parent->left_;
+}
 
 template<typename T>
 RBNode<T> *postorder_successor(const RBNode<T> * node)
