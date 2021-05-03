@@ -60,7 +60,7 @@ public:
 
 //search functions
 	RBNode<T>* search(T value);
-	RBNode<T>* search(RBNode<T>*node);
+	RBNode<T>* search(RBNode<T> *node);
 private:
 	int tree_size_;
 	Compare compare;
@@ -328,23 +328,33 @@ std::ostream& operator<<(std::ostream& os, const RBTree<T, Compare>& tree)
 }
 
 
-//not complete
 template<typename T,typename Compare>
 RBNode<T>* RBTree<T,Compare>::search(T value)
 {
+	RBNode<T>* node = new RBNode<T>(value);
+	cout << node->value_ << endl;
+	return search(node);
+}
+
+template<typename T,typename Compare>
+RBNode<T>* RBTree<T,Compare>::search(RBNode<T> *pivot)
+{
+		
 		RBNode<T> *temp = root_;
-		while(temp!=NIL) {
-			if(temp->value_==value)
+
+		while(temp != NIL) {
+			if(temp->value_ == pivot->value_)
 				return temp;
 
-			if(temp->value_ < value)
+			if(temp->value_ < pivot->value_)
 				temp=temp->right_;
 
 			else
-				temp=temp->left;
+				temp=temp->left_;
 		}
-		
-}	
+
+		return nullptr;
+}
 
 
 template<typename T,typename Compare>
@@ -420,7 +430,8 @@ void RBTree<T, Compare>::delete_fixup(RBNode<T> *x)
 	while(x != root_ && x->color_ == BLACK) {
 
 		if(x == x->parent_->left_) {
-			w = x->parent_->right_;
+
+      w = x->parent_->right_;
 
 			if(w->color_ == RED) {
 				w->color_ = BLACK;
