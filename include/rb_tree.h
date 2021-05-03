@@ -426,15 +426,22 @@ template<typename T,typename Compare>
 void RBTree<T, Compare>::delete_fixup(RBNode<T> *x)
 {
 	RBNode<T>* w;
-	while(x != root_ && x->color_ == BLACK && x != NIL) {
-		if(x = x->parent_->left_) {
-			w = x->parent_->right_;
+
+	while(x != root_ && x->color_ == BLACK) {
+
+		if(x == x->parent_->left_) {
+
+      w = x->parent_->right_;
+
 			if(w->color_ == RED) {
 				w->color_ = BLACK;
 				x->parent_->color_ = RED;
 				rotate_left(x->parent_);
 				w = x->parent_->right_;
 			}
+
+			if(!w->left_ && !w->right_) 	// w is a NIL node
+				break;
 
 			if(w->left_->color_ == BLACK && w->right_->color_ == BLACK) {
 				w->color_ = RED;
@@ -464,6 +471,9 @@ void RBTree<T, Compare>::delete_fixup(RBNode<T> *x)
 				rotate_right(x->parent_);
 				w = x->parent_->left_;
 			}
+
+			if(!w->left_ && !w->right_)	// w is a NIL node
+				break;
 
 			if(w->right_->color_ == BLACK && w->left_->color_ == BLACK) {
 				w->color_ = RED;
