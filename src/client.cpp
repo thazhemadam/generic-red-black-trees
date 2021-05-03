@@ -15,8 +15,9 @@ struct temp {
 
 int main(void)
 {
+	
 	RBTree<struct temp, struct temp> *tree = new RBTree<struct temp, struct temp>();
-
+	// temp,temp
 	#if 0 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
 		#if 0
@@ -143,8 +144,8 @@ int main(void)
 	#endif
 
 
-	#if 1
-	struct temp y1 = {5, 13};
+	//#if 1
+	struct temp y1 = {5, 13}; // 5 < 13 T/F
 	struct temp y2 = {6, 12};
 	struct temp y3 = {7, 11};
 	struct temp y4 = {8, 10};
@@ -153,7 +154,7 @@ int main(void)
 	struct temp y7 = {11, 7};
 	struct temp y8 = {12, 6};
 	struct temp y9 = {13, 5};
-
+	#if 1
 	RBNode<struct temp> * ny1 =  new RBNode<struct temp>(y1);
 	RBNode<struct temp> * ny2 =  new RBNode<struct temp>(y2);
 	RBNode<struct temp> * ny3 =  new RBNode<struct temp>(y3);
@@ -163,35 +164,64 @@ int main(void)
 	RBNode<struct temp> * ny7 =  new RBNode<struct temp>(y7);
 	RBNode<struct temp> * ny8 =  new RBNode<struct temp>(y8);
 	RBNode<struct temp> * ny9 =  new RBNode<struct temp>(y9);
+	#endif
+	#if 0
+	RBNode<int> *ny1 = new RBNode<int>(11);
+	RBNode<int> *ny2 = new RBNode<int>(3);
+	RBNode<int> *ny3 = new RBNode<int>(1);
+	RBNode<int> *ny4 = new RBNode<int>(7);
+	RBNode<int> *ny5 = new RBNode<int>(5);
+	RBNode<int> *ny6 = new RBNode<int>(8);
+	RBNode<int> *ny7 = new RBNode<int>(1);
+	RBNode<int> *ny8 = new RBNode<int>(15);
+	RBNode<int> *ny9 = new RBNode<int>(4);
+	#endif
+
 	
 	tree->insert(ny1);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny2);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny3);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny4);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny5);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny6);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny7);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny8);
-	cout << *tree;
-	cout << "\n----------------\n";
+	//cout << *tree;
+	//cout << "\n----------------\n";
 	tree->insert(ny9);
 	cout << *tree;
 	cout << "\n----------------\n";
+	cout << "---------DELETE----------\n";
+
+	tree->deleteNode(ny9);
+	tree->deleteNode(ny8);
+	tree->deleteNode(ny7);
+	//tree->deleteNode(ny6);
+	//tree->deleteNode(ny5);
+	tree->deleteNode(ny4); // 10
+	//tree->deleteNode(ny3); //11 cut
+	//tree->deleteNode(ny3);
+	//tree->deleteNode(ny1);
+	//tree->deleteNode(ny2);
+	//tree->deleteNode(ny3); //11 cut
+	//tree->deleteNode(ny);
+
+	//tree->search(12);
+	cout << *tree;
 	
-	#endif
 	return 0;
 }
