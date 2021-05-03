@@ -59,8 +59,8 @@ public:
 
 
 //search functions
-	RBNode<T>* searchVal(T value);
-	RBNode<T>* search(RBNode<T>*node);
+	RBNode<T>* search(T value);
+	RBNode<T>* search(RBNode<T> *node);
 private:
 	int tree_size_;
 	Compare compare;
@@ -329,7 +329,7 @@ std::ostream& operator<<(std::ostream& os, const RBTree<T, Compare>& tree)
 
 
 template<typename T,typename Compare>
-RBNode<T>* RBTree<T,Compare>::searchVal(T value)
+RBNode<T>* RBTree<T,Compare>::search(T value)
 {
 	RBNode<T>* node = new RBNode<T>(value);
 	cout << node->value_ << endl;
@@ -337,33 +337,24 @@ RBNode<T>* RBTree<T,Compare>::searchVal(T value)
 }
 
 template<typename T,typename Compare>
-RBNode<T>* RBTree<T,Compare>::search(RBNode<T> * pivot)
+RBNode<T>* RBTree<T,Compare>::search(RBNode<T> *pivot)
 {
 		
 		RBNode<T> *temp = root_;
-		cout << "Check loop" << endl;
-		while(temp!=NIL) {
+
+		while(temp != NIL) {
 			if(temp->value_ == pivot->value_)
-			{
-				cout << "Node found" << endl;
 				return temp;
-			}
-				
 
 			if(temp->value_ < pivot->value_)
-			{
 				temp=temp->right_;
-			}
 
 			else
 				temp=temp->left_;
 		}
-		
-		
-		cout << "Search" << endl;
-		return NIL;
-		
-}	
+
+		return nullptr;
+}
 
 
 template<typename T,typename Compare>

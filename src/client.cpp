@@ -188,13 +188,29 @@ int main(void)
 	tree->insert(ny9);	
 	cout << *tree;
 	// #endif
-	tree->delete_node(ny1);
-	cout << *tree;
-	tree->delete_node(ny6);
-	cout << *tree;
-
-	tree->delete_node(ny9);
-	cout << *tree;
+	//tree->delete_node(ny1);
+	//tree->delete_node(ny2);
+	//tree->delete_node(ny3); // check color
+	//tree->delete_node(ny4);
+	//tree->delete_node(ny5);
+	//tree->delete_node(ny6);
+	//tree->delete_node(ny7);
+	//tree->delete_node(ny8);
+	//tree->delete_node(ny9);
 	
+	cout << *tree;
+	//tree->delete_node(ny6);
+	//cout << *tree;
+
+	//tree->delete_node(ny9);
+	//cout << *tree;
+	
+	//tree->search(ny7);
+	tree->search(12);
+	tree->search(8);
+	tree->search(7);
+	tree->search(16);
+	tree->search(15);
+
 	return 0;
 }
