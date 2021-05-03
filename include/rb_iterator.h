@@ -20,14 +20,11 @@ public:
 	RBNode<T> operator*();		// dereference
 	bool operator==(const Iterator& rhs) const;	// equality
 	bool operator!=(const Iterator& rhs) const;	// inequality
+	void display(std::ostream& os = std::cout) const;
 
 	friend ostream& operator<<(ostream& os, const Iterator& iterator)
 	{
-		if(iterator.p_it_ == nullptr) {
-			os << "nullptr\n";
-			return os;
-		}
-		os << iterator.p_it_->value_ << "\t" << (iterator.p_it_->color_ == 0 ? "black" : "red")  << "\n";
+		iterator.display(os);
 		return os;
 	}
 
@@ -65,6 +62,16 @@ template<typename T, typename Compare>
 bool RBTree<T, Compare>::Iterator::operator!=(const Iterator& rhs) const
 {
 	return !(*this == rhs);
+}
+
+template<typename T, typename Compare>
+void RBTree<T, Compare>::Iterator::display(std::ostream& os) const
+{
+	if(p_it_ == nullptr) {
+		os << "nullptr\n";
+		return;
+	}
+	os << p_it_->value_ << "\t" << (p_it_->color_ == 0 ? "black" : "red")  << "\n";
 }
 
 #endif

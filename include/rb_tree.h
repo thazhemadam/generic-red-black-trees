@@ -9,7 +9,6 @@ template <typename T = int, typename Compare = std::less<T>>
 class RBTree
 {
 private:
-private:
 	RBNode<T> *root_;
 	Compare compare;
 

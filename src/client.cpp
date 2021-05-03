@@ -184,7 +184,8 @@ int main(void)
 	tree->insert(ny5);
 	tree->insert(ny6);
 	tree->insert(ny7);
-	tree->insert(ny8);
+	RBTree<int>::Iterator it_new = tree->insert(ny8);
+	cout << it_new;
 	tree->insert(ny9);	
 	cout << *tree;
 	// #endif
