@@ -189,12 +189,12 @@ void RBTree<T, Compare>::rotate_right(RBNode<T> *pivot)
 
 	pivot->left_= pivot_left->right_;
 
-	if(pivot_left->right_ != RBTree<T, Compare>::NIL)
+	if(pivot_left->right_ != NIL)
 		pivot_left->right_->parent_ = pivot;
 
 	pivot_left->parent_ = pivot->parent_;
 
-	if(pivot->parent_ == RBTree<T, Compare>::NIL)
+	if(pivot->parent_ == NIL)
 		root_ = pivot_left;
 
 	else if(pivot == pivot->parent_->right_)
