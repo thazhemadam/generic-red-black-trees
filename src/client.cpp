@@ -181,6 +181,6 @@ int main(void)
 
 	cout << *tree;
 
-	delete tree;
+	tree->delete_tree();
 	return 0;
 }

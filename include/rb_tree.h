@@ -63,6 +63,9 @@ public:
 	void remove(Iterator it);
 	void remove(Iterator start, Iterator end);
 
+	// delete tree
+	void delete_tree();
+
 // utility functions
 	inline bool is_empty() const { return tree_size_ == 0; }
 	
@@ -506,6 +509,13 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 		remove_fixup(x);
 	delete node;
 	--tree_size_;
+}
+
+
+template<typename T, typename Compare>
+void RBTree<T, Compare>::delete_tree()
+{
+	delete this;
 }
 
 
