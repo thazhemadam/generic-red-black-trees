@@ -35,6 +35,8 @@ public:
 	RBTree(RBNode<T> node);			// tree with a root node
 	RBTree(const RBTree<T, Compare> &rhs);	// copy constructor
 
+	~RBTree();				// destructor
+
 	// operator function
 	template<typename O, typename CO>
 	friend std::ostream& operator<<(std::ostream& os, const RBTree<O, CO>& tree);
@@ -97,6 +99,14 @@ RBTree<T, Compare>::RBTree(RBNode<T> node)
 	root_->color_ = BLACK;
 }
 
+
+template<typename T, typename Compare>
+RBTree<T, Compare>::~RBTree()
+{
+	Iterator it;
+	while(tree_size_)
+		remove(begin());
+}
 
 // copy ctor
 template<typename T, typename Compare>
