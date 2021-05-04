@@ -41,13 +41,13 @@ public:
 
 // Iterator class
 	class Iterator;
-	Iterator begin()
+	Iterator root()
 	{
 		return Iterator(root_);
 	}
-	Iterator end()
+	Iterator begin()
 	{
-		return NIL;
+		return Iterator(tree_minimum(root_));
 	}
 
 // operations on tree
