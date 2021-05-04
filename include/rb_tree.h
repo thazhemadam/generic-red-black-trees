@@ -316,7 +316,7 @@ RBNode<T>* RBTree<T,Compare>::search(RBNode<T> *pivot)
 			if(temp->value_ == pivot->value_)
 				return temp;
 
-			if(temp->value_ < pivot->value_)
+			if(compare(temp->value_ , pivot->value_))
 				temp=temp->right_;
 
 			else
