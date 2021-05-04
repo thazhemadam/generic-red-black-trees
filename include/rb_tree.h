@@ -43,10 +43,12 @@ public:
 	Iterator insert(RBNode<T> *node);
 #endif
 
-// delete functions
+// delete node
 	void delete_node(RBNode<T>* node);
 	void deleteVal(int value_);
-
+// delete the tree
+	void delete_Tree(RBNode<T>*node);
+	void deleteTree();
 
 // utility functions
 	inline bool is_empty() const { return tree_size_ == 0; }
@@ -59,8 +61,10 @@ public:
 
 
 //search functions
-	RBNode<T>* search(T value);
+	RBNode<T>* searchVal(T value);
 	RBNode<T>* search(RBNode<T>*node);
+
+
 private:
 	int tree_size_;
 	Compare compare;
@@ -328,21 +332,40 @@ std::ostream& operator<<(std::ostream& os, const RBTree<T, Compare>& tree)
 }
 
 
-//not complete
 template<typename T,typename Compare>
-RBNode<T>* RBTree<T,Compare>::search(T value)
+RBNode<T>* RBTree<T,Compare>::searchVal(T value)
 {
-		RBNode<T> *temp = root_;
-		while(temp!=NIL) {
-			if(temp->value_==value)
-				return temp;
+	RBNode<T>* node = new RBNode<T>(value);
+	cout << node->value_ << endl;
+	return search(node);
+}
 
-			if(temp->value_ < value)
+template<typename T,typename Compare>
+RBNode<T>* RBTree<T,Compare>::search(RBNode<T> * pivot)
+{
+		
+		RBNode<T> *temp = root_;
+		cout << "Check loop" << endl;
+		while(temp!=NIL) {
+			if(temp->value_ == pivot->value_)
+			{
+				cout << "Node found" << endl;
+				return temp;
+			}
+				
+
+			if(temp->value_ < pivot->value_)
+			{
 				temp=temp->right_;
+			}
 
 			else
-				temp=temp->left;
+				temp=temp->left_;
 		}
+		
+		
+		cout << "Search" << endl;
+		return NIL;
 		
 }	
 
@@ -416,21 +439,15 @@ template<typename T,typename Compare>
 void RBTree<T, Compare>::delete_fixup(RBNode<T> *x)
 {
 	RBNode<T>* w;
-
-	while(x != root_ && x->color_ == BLACK) {
-
-		if(x == x->parent_->left_) {
+	while(x != root_ && x->color_ == BLACK && x != NIL) {
+		if(x = x->parent_->left_) {
 			w = x->parent_->right_;
-
 			if(w->color_ == RED) {
 				w->color_ = BLACK;
 				x->parent_->color_ = RED;
 				rotate_left(x->parent_);
 				w = x->parent_->right_;
 			}
-
-			if(!w->left_ && !w->right_) 	// w is a NIL node
-				break;
 
 			if(w->left_->color_ == BLACK && w->right_->color_ == BLACK) {
 				w->color_ = RED;
@@ -460,9 +477,6 @@ void RBTree<T, Compare>::delete_fixup(RBNode<T> *x)
 				rotate_right(x->parent_);
 				w = x->parent_->left_;
 			}
-
-			if(!w->left_ && !w->right_)	// w is a NIL node
-				break;
 
 			if(w->right_->color_ == BLACK && w->left_->color_ == BLACK) {
 				w->color_ = RED;
@@ -522,16 +536,28 @@ void RBTree<T, Compare>::delete_node(RBNode<T> *z)
 		y->left_->parent_ = y;
 		y->color_ = z->color_;
 	}
-
+	delete z;
 	if(y_original_color == BLACK)
 		delete_fixup(x);
 }
 
+template<typename T, typename Compare>
+void RBTree<T, Compare>::deleteVal(int value_)
+{
+	RBNode<T> *node = find_node(value_);
+	if(node!=NIL)
+	{
+		delete_node(node);
+	}
+	else{
+		cout << value_ << " Not Found !" << endl;
+	}
+}
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::display(std::ostream& os) const
 {
-	if(root_ == nullptr) {
+	if(root_ == nullptr || root_ == NIL) {
 		os << "\nTree does not exist.\n";
 		return;
 	}
@@ -563,37 +589,30 @@ void RBTree<T, Compare>::print_postorder()
 	postorder(root_);
 }
 
-#if 0 // TO BE REMOVED.
-template<typename T>
-void RBTree<T>::post_successor()
+
+template<typename T,typename Compare>
+void RBTree<T,Compare>::deleteTree()
 {
-	cout << "Post order successor :" << endl;
-	postorder_successor(this->begin());
+	delete_Tree(this->root_);
 }
 
-template<typename T>
-void RBTree<T>::postorder_successor(RBTree<T>::Iterator y)
+template<typename T,typename Compare>
+void RBTree<T,Compare>::delete_Tree(RBNode<T> * node)
 {
-	if(y==nullptr)
-	{
-		return;
-						// Logic not right!	
-	}	
-	postorder_successor(++y);
-	//postorder_successor(y++);
-	
-	#if 1
-	if(y!= nullptr)
-	{
-		cout << y ;
-		
-		//delete(&(*y));
-		//delete (*y).left_;
-		//delete (*y).right_;
-				
-	}
-	#endif
-	//cout << y << endl;
+    if(node != NIL)
+    {
+        delete_Tree(node->left_);
+        delete_Tree(node->right_);
+
+        delete(node);
+        if(node->left_!=NIL)
+            node->left_=NIL;
+        if(node->right_!=NIL)
+            node->right_=NIL;
+        node=NIL;
+    }
+
+	this->root_ = nullptr;
+	//cout << "DOne";
 }
-#endif 
 #endif
