@@ -467,6 +467,8 @@ void RBTree<T, Compare>::delete_node(RBNode<T> *node)
 
 	if(y_original_color == BLACK)
 		delete_fixup(x);
+	delete node;
+	--tree_size_;
 }
 
 
