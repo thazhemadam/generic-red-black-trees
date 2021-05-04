@@ -23,7 +23,7 @@ private:
 	RBNode<T>* tree_minimum(RBNode<T> *root);
 	// helpers for deletion
 	void rb_transplant(RBNode<T> * u,RBNode<T> * v);
-	void delete_fixup(RBNode<T> *x);
+	void remove_fixup(RBNode<T> *x);
 
 public:
 	static RBNode<T> *NIL;
@@ -35,28 +35,36 @@ public:
 	RBTree(RBNode<T> node);			// tree with a root node
 	RBTree(const RBTree<T, Compare> &rhs);	// copy constructor
 
+	~RBTree();				// destructor
+
 	// operator function
 	template<typename O, typename CO>
 	friend std::ostream& operator<<(std::ostream& os, const RBTree<O, CO>& tree);
 
 // Iterator class
 	class Iterator;
-	Iterator begin()
+	Iterator root()
 	{
 		return Iterator(root_);
 	}
-	Iterator end()
+	Iterator begin()
 	{
-		return NIL;
+		return Iterator(tree_minimum(root_));
 	}
 
 // operations on tree
-	// insert
+	// insert a node
 	Iterator insert(const T& value);
 	Iterator insert(RBNode<T> *node);
 
-	// delete
-	void delete_node(RBNode<T>* node);
+	// remove a node
+	void remove(const T value);
+	void remove(RBNode<T> *node);
+	void remove(Iterator it);
+	void remove(Iterator start, Iterator end);
+
+	// delete tree
+	void delete_tree();
 
 // utility functions
 	inline bool is_empty() const { return tree_size_ == 0; }
@@ -94,6 +102,14 @@ RBTree<T, Compare>::RBTree(RBNode<T> node)
 	root_->color_ = BLACK;
 }
 
+
+template<typename T, typename Compare>
+RBTree<T, Compare>::~RBTree()
+{
+	Iterator it;
+	while(tree_size_)
+		remove(begin());
+}
 
 // copy ctor
 template<typename T, typename Compare>
@@ -173,12 +189,12 @@ void RBTree<T, Compare>::rotate_right(RBNode<T> *pivot)
 
 	pivot->left_= pivot_left->right_;
 
-	if(pivot_left->right_ != RBTree<T, Compare>::NIL)
+	if(pivot_left->right_ != NIL)
 		pivot_left->right_->parent_ = pivot;
 
 	pivot_left->parent_ = pivot->parent_;
 
-	if(pivot->parent_ == RBTree<T, Compare>::NIL)
+	if(pivot->parent_ == NIL)
 		root_ = pivot_left;
 
 	else if(pivot == pivot->parent_->right_)
@@ -212,7 +228,6 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::insert(RBNode<T> *node
 	while(temp != NIL) {
 		parent = temp;
 
-		// if(RBNode<T>::compare(node->value_, temp->value_))
 		if(compare(node->value_ , temp->value_))
 			temp = temp->left_;
 
@@ -226,7 +241,6 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::insert(RBNode<T> *node
 	if(parent == NIL)
 		root_ = node;
 
-	// if(RBNode<T>::compare(node->value_, temp->value_))
 	else if(compare(node->value_ , parent->value_))
 		parent->left_ = node;
 
@@ -238,7 +252,6 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::insert(RBNode<T> *node
 	node-> color_ = RED;
 
 	++tree_size_;
-	// display();
 	insert_fixup(node);
 	return it;
 }
@@ -302,28 +315,27 @@ template<typename T,typename Compare>
 RBNode<T>* RBTree<T,Compare>::search(T value)
 {
 	RBNode<T>* node = new RBNode<T>(value);
-	cout << node->value_ << endl;
 	return search(node);
 }
 
 template<typename T,typename Compare>
 RBNode<T>* RBTree<T,Compare>::search(RBNode<T> *pivot)
 {
-		
-		RBNode<T> *temp = root_;
 
-		while(temp != NIL) {
-			if(temp->value_ == pivot->value_)
-				return temp;
+	RBNode<T> *temp = root_;
 
-			if(compare(temp->value_ , pivot->value_))
-				temp=temp->right_;
+	while(temp != NIL) {
+		if(temp->value_ == pivot->value_)
+			return temp;
 
-			else
-				temp=temp->left_;
-		}
+		if(compare(temp->value_, pivot->value_))
+			temp=temp->right_;
 
-		return nullptr;
+		else
+			temp=temp->left_;
+	}
+
+	return nullptr;
 }
 
 
@@ -344,6 +356,34 @@ void RBTree<T, Compare>::rb_transplant(RBNode<T> *u,RBNode<T> *v)
 
 
 template<typename T,typename Compare>
+void RBTree<T, Compare>::remove(const T value)
+{
+	RBNode<T>* it = search(value);
+	// TODO: RETURN VALUE OF SEARCH TO BE MODIFIED to be an iterator!!!
+	if(it == nullptr) {
+		cout << "\nNode with value : " << value << "does not exist.";
+		return;
+	}
+
+	remove(it);
+}
+
+
+template<typename T,typename Compare>
+void RBTree<T, Compare>::remove(Iterator it)
+{
+	remove(&(*it));
+}
+
+template<typename T,typename Compare>
+void RBTree<T, Compare>::remove(Iterator start, Iterator end)
+{
+	for(Iterator it = start; it != end; ++it)
+		remove(&(*it));
+}
+
+
+template<typename T,typename Compare>
 RBNode<T>* RBTree<T, Compare>::tree_minimum(RBNode<T> *root)
 {
 	RBNode<T> *temp = root;
@@ -355,7 +395,7 @@ RBNode<T>* RBTree<T, Compare>::tree_minimum(RBNode<T> *root)
 
 
 template<typename T,typename Compare>
-void RBTree<T, Compare>::delete_fixup(RBNode<T> *node)
+void RBTree<T, Compare>::remove_fixup(RBNode<T> *node)
 {
 	RBNode<T>* sibling;
 
@@ -431,7 +471,7 @@ void RBTree<T, Compare>::delete_fixup(RBNode<T> *node)
 
 
 template<typename T,typename Compare>
-void RBTree<T, Compare>::delete_node(RBNode<T> *node)
+void RBTree<T, Compare>::remove(RBNode<T> *node)
 {
 	RBNode<T> *x;
 	RBNode<T> *y = node;
@@ -466,9 +506,16 @@ void RBTree<T, Compare>::delete_node(RBNode<T> *node)
 	}
 
 	if(y_original_color == BLACK)
-		delete_fixup(x);
+		remove_fixup(x);
 	delete node;
 	--tree_size_;
+}
+
+
+template<typename T, typename Compare>
+void RBTree<T, Compare>::delete_tree()
+{
+	delete this;
 }
 
 
