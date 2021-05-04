@@ -11,13 +11,14 @@ private:
 	RBNode<T> *p_it_;
 
 public:
+
 	Iterator() = default;
 	Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
 
 	// Note: incrementing follows standard pre-order traversal
 	Iterator& operator++();		// pre-increment
 	Iterator operator++(int);	// post-increment
-	RBNode<T> operator*();		// dereference
+	RBNode<T>& operator*();		// dereference
 	bool operator==(const Iterator& rhs) const;	// equality
 	bool operator!=(const Iterator& rhs) const;	// inequality
 	void display(std::ostream& os = std::cout) const;
@@ -47,10 +48,11 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator++(i
 }
 
 template<typename T, typename Compare>
-RBNode<T> RBTree<T, Compare>::Iterator::operator*()
+RBNode<T>& RBTree<T, Compare>::Iterator::operator*()
 {
 	return *p_it_;
 }
+
 
 template<typename T, typename Compare>
 bool RBTree<T, Compare>::Iterator::operator==(const Iterator& rhs) const

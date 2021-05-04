@@ -168,33 +168,34 @@ int main(void)
 	// RBNode<struct temp> * ny9 =  new RBNode<struct temp>(y9);
 	// #endif
 	// #if 1
-	RBNode<int> *ny1 = new RBNode<int>(11);
-	RBNode<int> *ny2 = new RBNode<int>(3);
-	RBNode<int> *ny3 = new RBNode<int>(1);
-	RBNode<int> *ny4 = new RBNode<int>(7);
+	RBNode<int> *ny11 = new RBNode<int>(11);
+	RBNode<int> *ny3 = new RBNode<int>(3);
+	RBNode<int> *ny1 = new RBNode<int>(1);
+	RBNode<int> *ny7 = new RBNode<int>(7);
 	RBNode<int> *ny5 = new RBNode<int>(5);
-	RBNode<int> *ny6 = new RBNode<int>(8);
-	RBNode<int> *ny7 = new RBNode<int>(12);
-	RBNode<int> *ny8 = new RBNode<int>(15);
-	RBNode<int> *ny9 = new RBNode<int>(4);
-	tree->insert(ny1);
-	tree->insert(ny2);
-	tree->insert(ny3);
-	tree->insert(ny4);
-	tree->insert(ny5);
-	tree->insert(ny6);
-	tree->insert(ny7);
-	RBTree<int>::Iterator it_new = tree->insert(ny8);
-	cout << it_new;
-	tree->insert(ny9);	
+	RBNode<int> *ny8 = new RBNode<int>(8);
+	RBNode<int> *ny12 = new RBNode<int>(12);
+	RBNode<int> *ny15 = new RBNode<int>(15);
+	RBNode<int> *ny4 = new RBNode<int>(4);
+	RBTree<int>::Iterator it_11 = tree->insert(ny11);
+	RBTree<int>::Iterator it_3 = tree->insert(ny3);
+	RBTree<int>::Iterator it_1 = tree->insert(ny1);
+	RBTree<int>::Iterator it_7 = tree->insert(ny7);
+	RBTree<int>::Iterator it_5 = tree->insert(ny5);
+	RBTree<int>::Iterator it_8 = tree->insert(ny8);
+	RBTree<int>::Iterator it_12 = tree->insert(ny12);
+	RBTree<int>::Iterator it_15 = tree->insert(ny15);
+	RBTree<int>::Iterator it_4 = tree->insert(ny4);
+
 	cout << *tree;
 	// #endif
-	tree->delete_node(ny1);
+	tree->remove(ny11);
 	cout << *tree;
-	tree->delete_node(ny6);
+	tree->remove(ny8);
 	cout << *tree;
 
-	tree->delete_node(ny9);
+	tree->remove(it_4);
+	tree->remove(12);
 	cout << *tree;
 	
 	return 0;
