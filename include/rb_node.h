@@ -24,6 +24,7 @@ public:
 	{}
 
 	RBNode(const RBNode<T> &rhs);
+
 // friends
 	template <typename O, typename Compare>
 	friend class RBTree;
@@ -41,9 +42,6 @@ public:
 	}
 
 	template<typename O>
-	friend RBNode<O>* preorder_successor(const RBNode<O> *node);
-
-	template<typename O>
 	friend void print_tree(std::ostream& os, const std::string& prefix, const RBNode<O> *node, bool is_left);
 
 	template<typename O>
@@ -54,22 +52,6 @@ public:
 
 	template<typename O>
 	friend void postorder(RBNode<O> *root);
-
-	template<typename O>
-	friend RBNode<O>* levelorder_successor(RBNode<O> *root, RBNode<O> *node);
-
-	template<typename O>
-	friend RBNode<O>* preorder_successor(const RBNode<O> *node);
-
-	template<typename O>
-	friend RBNode<O> *postorder_successor(const RBNode<O> * node);
-
-	template<typename O>
-	friend RBNode<O> * inorder_pred(const RBNode<O> *& pivot);
-
-
-	template<typename O>
-	friend RBNode<O> * inorder_succ(const RBNode<O> * pivot);
 
 	Color get_color();
 };
