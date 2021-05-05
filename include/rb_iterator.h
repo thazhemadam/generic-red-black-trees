@@ -345,7 +345,7 @@ RBNode<T>* RBTree<T, Compare>::Iterator::inorder_predecessor()
 		return temp;
 	}
 
-	// finding the ancestor who's right decendent is node
+	// finding the ancestor whose right descendant is node
 	RBNode<T>* parent = node->parent_;
 
 	while (parent != NIL && parent->right_ != node) {
