@@ -3,6 +3,7 @@
 
 #include "rb_node.h"
 #include "utils.h"
+#include <memory>
 using namespace std;
 
 template <typename T = int, typename Compare = std::less<T>>
@@ -26,7 +27,7 @@ private:
 	void remove_fixup(RBNode<T> *x);
 
 public:
-	static RBNode<T> *NIL;
+	static unique_ptr<RBNode<T>> NIL;
 	int tree_size_;
 
 // special functions
@@ -84,14 +85,14 @@ public:
 
 // constructors
 template <typename T, typename Compare>
-RBNode<T> *RBTree<T, Compare>::NIL = new RBNode<T>();
+unique_ptr<RBNode<T>> RBTree<T, Compare>::NIL = unique_ptr<RBNode<T>>(new RBNode<T>());
 
 
 // constructors
 template<typename T, typename Compare>
 RBTree<T, Compare>::RBTree()
 {
-	root_ = NIL;
+	root_ = NIL.get();
 	tree_size_ = 0;
 }
 
@@ -117,8 +118,8 @@ template<typename T, typename Compare>
 RBTree<T, Compare>::RBTree(const RBTree<T, Compare> &rhs)
 : tree_size_(rhs.tree_size_)
 {
-	if(rhs.root_ == NIL) {
-		root_ = NIL;
+	if(rhs.root_ == NIL.get()) {
+		root_ = NIL.get();
 		return;
 	}
 
@@ -130,8 +131,8 @@ template<typename T, typename Compare>
 RBNode<T>* RBTree<T, Compare>::copy_tree(RBNode<T> *root)
 {
 	RBNode<T> *new_left, *new_right, *new_node;
-	if(root == NIL)
-		return NIL;
+	if(root == NIL.get())
+		return NIL.get();
 
 	new_left = copy_tree(root->left_);
 	new_right = copy_tree(root->right_);
@@ -156,17 +157,17 @@ void RBTree<T, Compare>::rotate_left(RBNode<T> *pivot)
 {
 	RBNode<T>* pivot_right = pivot->right_;
 
-	if(pivot_right == NIL)
+	if(pivot_right == NIL.get())
 		return;
 
 	pivot->right_= pivot_right->left_;
 
-	if(pivot_right->left_ != NIL)
+	if(pivot_right->left_ != NIL.get())
 		pivot_right->left_->parent_ = pivot;
 
 	pivot_right->parent_ = pivot->parent_;
 
-	if(pivot->parent_ == NIL)
+	if(pivot->parent_ == NIL.get())
 		root_ = pivot_right;
 
 	else if(pivot == pivot->parent_->left_)
@@ -185,17 +186,17 @@ void RBTree<T, Compare>::rotate_right(RBNode<T> *pivot)
 {
 	RBNode<T>* pivot_left = pivot->left_;
 
-	if(pivot_left == NIL)
+	if(pivot_left == NIL.get())
 		return;
 
 	pivot->left_= pivot_left->right_;
 
-	if(pivot_left->right_ != NIL)
+	if(pivot_left->right_ != NIL.get())
 		pivot_left->right_->parent_ = pivot;
 
 	pivot_left->parent_ = pivot->parent_;
 
-	if(pivot->parent_ == NIL)
+	if(pivot->parent_ == NIL.get())
 		root_ = pivot_left;
 
 	else if(pivot == pivot->parent_->right_)
@@ -223,10 +224,10 @@ template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::insert(RBNode<T> *node)
 {
 	RBTree<T, Compare>::Iterator it = Iterator(node);
-	RBNode<T> *parent = NIL;
+	RBNode<T> *parent = NIL.get();
 	RBNode<T> *temp = root_;
 
-	while(temp != NIL) {
+	while(temp != NIL.get()) {
 		parent = temp;
 
 		if(compare(node->value_ , temp->value_))
@@ -239,7 +240,7 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::insert(RBNode<T> *node
 
 	node->parent_ = parent;
 
-	if(parent == NIL)
+	if(parent == NIL.get())
 		root_ = node;
 
 	else if(compare(node->value_ , parent->value_))
@@ -248,8 +249,8 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::insert(RBNode<T> *node
 	else
 		parent->right_ = node;
 
-	node->left_ = NIL;
-	node->right_ = NIL;
+	node->left_ = NIL.get();
+	node->right_ = NIL.get();
 	node-> color_ = RED;
 
 	++tree_size_;
@@ -335,7 +336,7 @@ typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(RBNode<T> *node) 
 
 	RBNode<T> *temp = root_;
 
-	while(temp != NIL) {
+	while(temp != NIL.get()) {
 		if(temp->value_ == node->value_)
 			return Iterator(temp);
 
@@ -353,7 +354,7 @@ typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(RBNode<T> *node) 
 template<typename T,typename Compare>
 void RBTree<T, Compare>::rb_transplant(RBNode<T> *u,RBNode<T> *v)
 {
-	if(u->parent_ == NIL)
+	if(u->parent_ == NIL.get())
 		root_ = v;
 
 	else if(u == u->parent_->left_)
@@ -398,7 +399,7 @@ template<typename T,typename Compare>
 RBNode<T>* RBTree<T, Compare>::tree_minimum(RBNode<T> *root)
 {
 	RBNode<T> *temp = root;
-	while(temp -> left_ != NIL) {
+	while(temp -> left_ != NIL.get()) {
 		temp = temp->left_;
 	}
 	return temp;
@@ -487,12 +488,12 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 	RBNode<T> *x;
 	RBNode<T> *y = node;
 	Color y_original_color = y->color_;
-	if(node->left_ == NIL) {
+	if(node->left_ == NIL.get()) {
 		x = node->right_;
 		rb_transplant(node, node->right_);
 	}
 
-	else if(node->right_ == NIL) {
+	else if(node->right_ == NIL.get()) {
 		x = node->left_;
 		rb_transplant(node, node->left_);
 	}

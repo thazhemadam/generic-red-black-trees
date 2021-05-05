@@ -155,14 +155,14 @@ RBNode<T>* RBTree<T, Compare>::Iterator::levelorder_successor(const RBTree<T, Co
 {
 	RBNode<T> *root = tree->root_;
 	RBNode<T> *node = p_it_;
-	if(root == NIL)
+	if(root == NIL.get())
 		return nullptr;
 
 	if(root == node) {
-		if(root->left_ != NIL)
+		if(root->left_ != NIL.get())
 			return root->left_;
 
-		else if(root->right_ != NIL)
+		else if(root->right_ != NIL.get())
 			return root->left_;
 
 		else
@@ -176,10 +176,10 @@ RBNode<T>* RBTree<T, Compare>::Iterator::levelorder_successor(const RBTree<T, Co
 		RBNode<T> *temp = q.front();
 		q.pop();
 
-		if(temp -> left_ != NIL)
+		if(temp -> left_ != NIL.get())
 			q.push(temp->left_);
 
-		if(temp -> right_ != NIL)
+		if(temp -> right_ != NIL.get())
 			q.push(temp->right_);
 
 		if(temp == node)
@@ -211,23 +211,23 @@ template<typename T, typename Compare>
 RBNode<T>* RBTree<T, Compare>::Iterator::preorder_successor()
 {
 	RBNode<T> *node = p_it_;
-	if(node == NIL)
+	if(node == NIL.get())
 		return nullptr;
 
 	if(node->parent_ == nullptr)	// has no children, and is root.
 		return nullptr;
 
-	if (node->left_ && node->left_ !=  NIL)	// has left child.
+	if (node->left_ && node->left_ !=  NIL.get())	// has left child.
 		return node->left_;
 
-	else if (node->right_ && node->right_ != NIL)	// has right child.
+	else if (node->right_ && node->right_ != NIL.get())	// has right child.
 		return node->right_;
 
 	RBNode<T> *parent = node->parent_;
 
 	// leaf node. has an ancestor/is a node which is a left child + has a sibling.
 	while(parent != nullptr) {
-		if(parent->left_ == node && parent->right_ != NIL)
+		if(parent->left_ == node && parent->right_ != NIL.get())
 			return parent->right_;
 
 		node = parent;
@@ -270,28 +270,28 @@ template<typename T, typename Compare>
 RBNode<T>* RBTree<T, Compare>::Iterator::postorder_successor()
 {
 	RBNode<T> *node = p_it_;
-	if(node == NIL)
+	if(node == NIL.get())
 		return nullptr;
 
-	if(node->parent_ == NIL)	// node is root. undefined case.
+	if(node->parent_ == NIL.get())	// node is root. undefined case.
 		return nullptr;
 
 	RBNode<T> *parent = node->parent_;
 
 	// is the right child, or is a left child with no siblings
-	if(node == parent->right_ || parent->right_ == NIL)
+	if(node == parent->right_ || parent->right_ == NIL.get())
 		return parent;
 
 	// is the left child, with a right sibling
 	RBNode<T> *temp = parent->right_;
 	// until it is the next a leaf node. left-most leafnodes are given priority.
-	while(temp->left_ != NIL || temp->right_ != NIL) {
-		if(temp->left_ != NIL){
+	while(temp->left_ != NIL.get() || temp->right_ != NIL.get()) {
+		if(temp->left_ != NIL.get()){
 			temp = temp->left_;
 			continue;
 		}
 
-		else if(temp->right_ != NIL){
+		else if(temp->right_ != NIL.get()){
 			temp = temp->right_;
 			continue;
 		}
@@ -307,12 +307,12 @@ RBNode<T>* RBTree<T, Compare>::Iterator::inorder_successor()
 {
 	RBNode<T>* node = p_it_;
 
-	if(node == NIL)
+	if(node == NIL.get())
 		return nullptr;
 
-	if(node->right_ != NIL) {	// has a right child.
+	if(node->right_ != NIL.get()) {	// has a right child.
 		RBNode<T> *temp = node->right_;
-		while(temp->left_ != NIL)
+		while(temp->left_ != NIL.get())
 			temp = temp->left_;
 		
 		return temp;
@@ -321,12 +321,12 @@ RBNode<T>* RBTree<T, Compare>::Iterator::inorder_successor()
 	RBNode<T>* parent = node->parent_;
 
 	// no right child. successor is the node whose left child
-	while (parent != NIL && parent->left_ != node) {
+	while (parent != NIL.get() && parent->left_ != node) {
 		node = node->parent_;
 		parent = node->parent_;
 	}
 
-	return parent == NIL ? nullptr : parent;
+	return parent == NIL.get() ? nullptr : parent;
 }
 
 template<typename T, typename Compare>
