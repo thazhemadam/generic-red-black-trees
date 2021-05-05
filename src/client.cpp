@@ -179,8 +179,12 @@ int main(void)
 	RBTree<int>::Iterator it_15 = tree->insert(ny15);
 	RBTree<int>::Iterator it_4 = tree->insert(ny4);
 
+	cout <<  it_11;
+	cout << --it_12;
+	cout << it_12--;
+	cout << it_12++;
 	cout << *tree;
 
-	tree->delete_tree();
+	//tree->delete_tree();
 	return 0;
 }
