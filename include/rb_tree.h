@@ -35,6 +35,12 @@ public:
 	RBTree();				// empty tree
 	RBTree(RBNode<T> node);			// tree with a root node
 	RBTree(const RBTree<T, Compare> &rhs);	// copy constructor
+//moves
+	RBTree(RBTree<T, Compare> &&rhs); // move constructor
+	RBTree<T,Compare>& operator=(const RBTree<T, Compare> &rhs);// copy assignment
+    RBTree<T,Compare>& operator=( RBTree<T, Compare> &&rhs);//move assignmen
+
+
 
 	~RBTree();				// destructor
 
@@ -81,6 +87,9 @@ public:
 	Iterator search(T value) const;
 	Iterator search(Iterator it) const;
 	Iterator search(RBNode<T> *node) const;
+
+
+
 };
 
 // constructors
@@ -151,6 +160,37 @@ RBNode<T>* RBTree<T, Compare>::copy_tree(RBNode<T> *root)
 	return new_node;
 }
 
+template<typename T, typename Compare>
+RBTree<T, Compare>& RBTree<T,Compare>::operator=(const RBTree<T, Compare> &rhs)
+{
+    cout<<"Copy called";
+    if(this->root_!=&rhs)
+    {
+        delete_tree(this->root_);
+        this->root_= copy_tree(rhs.root_);
+    }
+   return *this;
+}
+//move ctor
+template<typename T, typename Compare>
+RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
+: tree_size_(rhs.tree_size_)
+{
+    root_=rhs.root_;
+    rhs.root_=NIL;
+}
+//move assignment
+template<typename T, typename Compare>
+RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
+{
+    if(this!=&rhs)
+    {
+        delete_tree(this->root_);
+        this->root_= rhs.root_;
+        rhs.root_=nullptr;
+    }
+    return *this;
+}
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::rotate_left(RBNode<T> *pivot)

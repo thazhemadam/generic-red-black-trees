@@ -38,14 +38,19 @@ public:
 		return os;
 	}
 
-	RBNode<T>* levelorder_predecessor(RBNode<T> *root, RBNode<T> *node);
+	RBNode<T>* levelorder_predecessor(const RBTree<T,Compare> *tree);
 	RBNode<T>* levelorder_successor(const RBTree<T, Compare> *tree);
-	RBNode<T>* preorder_predecessor(RBNode<T> *root_,const RBNode<T> *node);
+	RBNode<T>* preorder_predecessor(const RBTree<T,Compare> *tree);
 	RBNode<T>* preorder_successor();
-	RBNode<T>* postorder_predecessor( RBNode<T>* root, RBNode<T> *node);
+	RBNode<T>* postorder_predecessor(const RBTree<T,Compare> *tree);
 	RBNode<T>* postorder_successor();
 	RBNode<T>* inorder_successor();
 	RBNode<T> * inorder_predecessor();
+    //mew
+    Iterator next();
+    Iterator prev();
+    bool hasnext();
+    bool hasprev();
 };
 
 
@@ -81,7 +86,42 @@ void RBTree<T, Compare>::Iterator::display(std::ostream& os) const
 }
 
 
+template<typename T, typename Compare>
+typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::next() // next
+{
+    Iterator temp(*this);
+    return temp.inorder_successor();
+   
+}
 
+template<typename T, typename Compare>
+bool RBTree<T, Compare>::Iterator::hasnext() 
+{
+    Iterator temp(*this);
+    if(temp.inorder_successor()==nullptr)
+    {
+            return false;
+    }
+    return true;
+}
+
+template<typename T, typename Compare>
+typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::prev() // prev
+{
+    Iterator temp(*this);
+    return temp.inorder_predecessor();
+}
+
+template<typename T, typename Compare>
+bool RBTree<T, Compare>::Iterator::hasprev() 
+{
+    Iterator temp(*this);
+    if(temp.inorder_predecessor()==nullptr)
+    {
+        return false;
+    }
+    return true;
+}
 
 template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator++() // pre-increment
@@ -116,38 +156,39 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator--(i
 	return temp;
 }
 
-
 template<typename T, typename Compare>
-RBNode<T>* RBTree<T, Compare>::Iterator::levelorder_predecessor(RBNode<T> *root, RBNode<T> *node)
+RBNode<T>* RBTree<T, Compare>::Iterator::levelorder_predecessor(const RBTree<T,Compare> *tree)
 {
-	if(root == nullptr)
-		return nullptr;
+    RBNode<T> *root=tree->root_;
+    RBNode<T>* node= p_it_;
+    if(root == nullptr)
+        return nullptr;
 
-	if(root == node)
-		return nullptr;
+    if(root == node)
+        return nullptr;
 
-	std::queue<RBNode<T>*> q;
-	q.push(root);
-	RBNode<T>* prev= nullptr;
+    std::queue<RBNode<T>*> q;
+    q.push(root);
+    RBNode<T>* prev= nullptr;
 
-	while(!q.empty()) {
-		RBNode<T> *temp = q.front();
-		q.pop();
+    while(!q.empty()) {
+        RBNode<T> *temp = q.front();
+        q.pop();
 
-		if(temp == node)
-			break;
+        if(temp == node)
+            break;
 
-		else
-			prev = temp;
+        else
+            prev = temp;
 
-		if(temp -> left_ != nullptr)
-			q.push(temp->left_);
+        if(temp -> left_ != nullptr)
+            q.push(temp->left_);
 
-		if(temp -> right_ != nullptr)
-			q.push(temp->right_);
-	}
+        if(temp -> right_ != nullptr)
+            q.push(temp->right_);
+    }
 
-	return prev;
+    return prev;
 }
 
 template<typename T, typename Compare>
@@ -191,20 +232,22 @@ RBNode<T>* RBTree<T, Compare>::Iterator::levelorder_successor(const RBTree<T, Co
 
 
 template<typename T, typename Compare>
-RBNode<T>* RBTree<T, Compare>::Iterator::preorder_predecessor(RBNode<T> *root_,const RBNode<T> *node)
+RBNode<T>* RBTree<T, Compare>::Iterator::preorder_predecessor(const RBTree<T,Compare> *tree)
 {
-	RBNode<T>* parent = node->parent_;
-	if (node == root_)
-		return nullptr;
+    RBNode<T>* root=tree->root_;
+    RBNode<T>* node= p_it_;
+    RBNode<T>* parent = node->parent_;
+    if (node == root)
+        return nullptr;
 
-	if (parent->left_ == NULL || parent->left_ == node)
-		return parent;
+    if (parent->left_ == nullptr || parent->left_ == node)
+        return parent;
 
-	RBNode<T>* current = parent->left_;
-	while (current->right_ != NULL)
-		current = current->right_;
+    RBNode<T>* current = parent->left_;
+    while (current->right_ != nullptr)
+        current = current->right_;
 
-	return current;
+    return current;
 }
 
 template<typename T, typename Compare>
@@ -240,30 +283,32 @@ RBNode<T>* RBTree<T, Compare>::Iterator::preorder_successor()
 
 
 template<typename T, typename Compare>
-RBNode<T>* RBTree<T, Compare>::Iterator::postorder_predecessor( RBNode<T>* root, RBNode<T> *node)
+RBNode<T>* RBTree<T, Compare>::Iterator::postorder_predecessor(const RBTree<T,Compare> *tree)
 {
    // RBNode<T>* parent = node->parent_;
-	RBNode<T>* temp = node->right_;
-	RBNode<T> *current = node;
-	RBNode<T> *parent = node->parent_;
-	if (temp!=nullptr)
-			return temp;
-	 
-		// If right child does not exist, then
-		// travel up (using parent pointers)
-		// until we reach a node which is right
-		// child of its parent
-		while (parent != NULL && parent->left_ == current) {
-			current = current->parent_;
-			parent = parent->parent_;
-		}
-	 
-		// If we reached root, then the given
-		// node has no postorder predecessor
-		if (parent == NULL)
-			return NULL;
-	 
-		return parent->left_;
+    RBNode<T>* root=tree->root_;
+    RBNode<T>* node= p_it_;
+    RBNode<T>* temp = node->right_;
+    RBNode<T> *current = node;
+    RBNode<T> *parent = node->parent_;
+    if (temp!=nullptr)
+            return temp;
+     
+        // If right child does not exist, then
+        // travel up (using parent pointers)
+        // until we reach a node which is right
+        // child of its parent
+        while (parent != nullptr && parent->left_ == current) {
+            current = current->parent_;
+            parent = parent->parent_;
+        }
+     
+        // If we reached root, then the given
+        // node has no postorder predecessor
+        if (parent == nullptr)
+            return nullptr;
+     
+        return parent->left_;
 }
 
 template<typename T, typename Compare>
