@@ -77,8 +77,9 @@ public:
 
 
 //search functions
-	RBNode<T>* search(T value);
-	RBNode<T>* search(RBNode<T> *node);
+	Iterator search(T value) const;
+	Iterator search(Iterator it) const;
+	Iterator search(RBNode<T> *node) const;
 };
 
 // constructors
@@ -312,23 +313,32 @@ std::ostream& operator<<(std::ostream& os, const RBTree<T, Compare>& tree)
 
 
 template<typename T,typename Compare>
-RBNode<T>* RBTree<T,Compare>::search(T value)
+typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(T value) const
 {
 	RBNode<T>* node = new RBNode<T>(value);
 	return search(node);
 }
 
+
 template<typename T,typename Compare>
-RBNode<T>* RBTree<T,Compare>::search(RBNode<T> *pivot)
+typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(RBTree<T,Compare>::Iterator it) const
+{
+	RBNode<T> *temp = &(*it);
+	return search(temp);
+}
+
+
+template<typename T,typename Compare>
+typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(RBNode<T> *node) const
 {
 
 	RBNode<T> *temp = root_;
 
 	while(temp != NIL) {
-		if(temp->value_ == pivot->value_)
-			return temp;
+		if(temp->value_ == node->value_)
+			return Iterator(temp);
 
-		if(compare(temp->value_, pivot->value_))
+		if(compare(temp->value_, node->value_))
 			temp=temp->right_;
 
 		else
@@ -358,10 +368,10 @@ void RBTree<T, Compare>::rb_transplant(RBNode<T> *u,RBNode<T> *v)
 template<typename T,typename Compare>
 void RBTree<T, Compare>::remove(const T value)
 {
-	RBNode<T>* it = search(value);
-	// TODO: RETURN VALUE OF SEARCH TO BE MODIFIED to be an iterator!!!
+	Iterator it = search(value);
+
 	if(it == nullptr) {
-		cout << "\nNode with value : " << value << "does not exist.";
+		cout << "\nNode with value : " << value << " does not exist in the RBTree.";
 		return;
 	}
 
