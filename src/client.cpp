@@ -185,6 +185,14 @@ int main(void)
 	cout << it_12++;
 	cout << *tree;
 
-	//tree->delete_tree();
+	cout << tree->search(it_3);
+	tree->remove(4);
+	tree->remove(3);
+	cout << tree->search(it_3);
+
+	cout << *tree;
+	tree->remove(42);
+	tree->delete_tree();
+
 	return 0;
 }
