@@ -24,6 +24,7 @@ public:
 	{}
 
 	RBNode(const RBNode<T> &rhs);
+	RBNode<T>& operator=(const RBNode<T> &rhs);
 
 // friends
 	template <typename O, typename Compare>
@@ -65,6 +66,21 @@ RBNode<T>::RBNode(const RBNode<T> &rhs)
 	value_ = rhs.value_;
 	color_ = rhs.color_;
 }
+
+template<typename T>
+RBNode<T>& RBNode<T>::operator=(const RBNode<T> &rhs)
+{
+	if(this != &rhs) {
+		parent_ = nullptr;
+		left_ = nullptr;
+		right_ = nullptr;
+		value_ = rhs.value_;
+		color_ = rhs.color_;
+	}
+	return *this;
+
+}
+
 
 template<typename T>
 Color RBNode<T>::get_color() {

@@ -57,9 +57,9 @@ public:
 template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator=(const Iterator &rhs)
 {
-	if(this != &rhs) {
+	if(this != &rhs)
 		this->p_it_ = rhs.p_it_;
-	}
+
 	return *this;
 }
 
