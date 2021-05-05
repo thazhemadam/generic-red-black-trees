@@ -315,8 +315,9 @@ std::ostream& operator<<(std::ostream& os, const RBTree<T, Compare>& tree)
 template<typename T,typename Compare>
 typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(T value) const
 {
-	RBNode<T>* node = new RBNode<T>(value);
-	return search(node);
+	RBNode<T> node = RBNode<T>(value);
+	return search(&node);
+
 }
 
 
