@@ -334,12 +334,12 @@ RBNode<T>* RBTree<T, Compare>::Iterator::inorder_predecessor()
 {
 	RBNode<T>* node = p_it_;
 
-	if(node == NIL)
+	if(node == NIL.get())
 		return nullptr;
 
-	if(node->left_ != NIL) {	// if it has a left child
+	if(node->left_ != NIL.get()) {	// if it has a left child
 		RBNode<T> *temp = node->left_;
-		while(temp->right_ != NIL)
+		while(temp->right_ != NIL.get())
 			temp = temp->right_;
 		
 		return temp;
@@ -348,12 +348,12 @@ RBNode<T>* RBTree<T, Compare>::Iterator::inorder_predecessor()
 	// finding the ancestor whose right descendant is node
 	RBNode<T>* parent = node->parent_;
 
-	while (parent != NIL && parent->right_ != node) {
+	while (parent != NIL.get() && parent->right_ != node) {
 		node = node->parent_;
 		parent = node->parent_;
 	}
 
-	return parent == NIL ? nullptr : parent;
+	return parent == NIL.get() ? nullptr : parent;
 }
 
 
