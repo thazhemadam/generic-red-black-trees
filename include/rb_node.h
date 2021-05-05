@@ -3,16 +3,20 @@
 
 enum Color { BLACK, RED };
 
+template <typename O, typename Compare>
+class RBTree;
+
 template <typename T = int>
 class RBNode
 {
-public:
+private:
 	T value_;
 	RBNode *parent_;
 	RBNode *left_;
 	RBNode *right_;
 	Color color_;
 
+public:
 	RBNode() = default;
 
 	RBNode(const T& value, RBNode<T> *parent = nullptr, RBNode<T> *left= nullptr, RBNode<T> *right= nullptr, Color color = RED)
@@ -20,6 +24,13 @@ public:
 	{}
 
 	RBNode(const RBNode<T> &rhs);
+
+// friends
+	template <typename O, typename Compare>
+	friend class RBTree;
+
+
+	// friend functions
 	friend std::ostream& operator<<(std::ostream& os, const RBNode& node)
 	{
 		os << node.value_ << "\t";
@@ -30,8 +41,19 @@ public:
 		return os;
 	}
 
-	Color getColor();
-	void setColor(Color color);		
+	template<typename O>
+	friend void print_tree(std::ostream& os, const std::string& prefix, const RBNode<O> *node, bool is_left);
+
+	template<typename O>
+	friend void inorder(RBNode<O> *root);
+
+	template<typename O>
+	friend void preorder(RBNode<O> *root);
+
+	template<typename O>
+	friend void postorder(RBNode<O> *root);
+
+	Color get_color();
 };
 
 template<typename T>
@@ -45,19 +67,11 @@ RBNode<T>::RBNode(const RBNode<T> &rhs)
 }
 
 template<typename T>
-Color RBNode<T>::getColor() {
+Color RBNode<T>::get_color() {
 	if (this == nullptr)
 		return BLACK;
 
 	return this->color_;
-}
-
-template<typename T>
-void RBNode<T>::setColor( Color color) {
-	if (this == nullptr)
-		return;
-
-	this->color_ = color;
 }
 
 #endif
