@@ -45,7 +45,7 @@ public:
 	RBNode<T>* postorder_predecessor( RBNode<T>* root, RBNode<T> *node);
 	RBNode<T>* postorder_successor();
 	RBNode<T>* inorder_successor();
-	RBNode<T> * inorder_predecessor(const RBNode<T> *& pivot);
+	RBNode<T> * inorder_predecessor();
 };
 
 
@@ -95,7 +95,7 @@ template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator++(int) // post-increment
 {
 	Iterator temp(*this);
-	p_it_ = temp.p_it_->inorder_successor();
+	p_it_ = temp.inorder_successor();
 	return temp;
 }
 
@@ -112,7 +112,7 @@ template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator--(int) // post-increment
 {
 	Iterator temp(*this);
-	p_it_ = temp.p_it_->inorder_predecessor();
+	p_it_ = temp.inorder_predecessor();
 	return temp;
 }
 
@@ -330,14 +330,30 @@ RBNode<T>* RBTree<T, Compare>::Iterator::inorder_successor()
 }
 
 template<typename T, typename Compare>
-RBNode<T>* RBTree<T, Compare>::Iterator::inorder_predecessor(const RBNode<T> *& pivot)
+RBNode<T>* RBTree<T, Compare>::Iterator::inorder_predecessor()
 {
-	RBNode<T> *cur_node = pivot->left_;
+	RBNode<T>* node = p_it_;
 
-	while (cur_node->right_ != nullptr)
-		cur_node = cur_node->right_;
+	if(node == NIL)
+		return nullptr;
 
-	return cur_node;
+	if(node->left_ != NIL) {	// if it has a left child
+		RBNode<T> *temp = node->left_;
+		while(temp->right_ != NIL)
+			temp = temp->right_;
+		
+		return temp;
+	}
+
+	// finding the ancestor whose right descendant is node
+	RBNode<T>* parent = node->parent_;
+
+	while (parent != NIL && parent->right_ != node) {
+		node = node->parent_;
+		parent = node->parent_;
+	}
+
+	return parent == NIL ? nullptr : parent;
 }
 
 
