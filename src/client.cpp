@@ -1,5 +1,6 @@
 #include <iostream>
 #include "rb.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -102,22 +103,28 @@ int main(void)
 	#if 1
 	RBTree<int> *lb_tree = new RBTree<int>();
 	lb_tree->insert(5);
-	lb_tree->insert(5);	lb_tree->insert(1);
-	// lb_tree->insert(2);
-	// lb_tree->insert(3);
 	lb_tree->insert(5);
-	lb_tree->insert(6);
+	lb_tree->insert(5);
+	lb_tree->insert(7);
+	RBNode<int> temp = RBNode<int>(4);
 	RBTree<int>::Iterator it = lb_tree->insert(7);
-	RBTree<int>::Iterator it1 = lb_tree->insert(7);
+	RBTree<int>::Iterator it1 = lb_tree->insert(&temp);
 
 	RBTree<int>::Iterator it_start = lb_tree->begin();
 	RBTree<int>::Iterator it_end = lb_tree->end();
+
+
+	cout << "\n Tree: \n";
 	cout << *lb_tree;
-	// cout << lb_tree->lower_bound(5);
-	// cout << *lb_tree->lower_bound(5);
+	cout << "\n Lower-Bound: \n";
+	cout << *lb_tree->lower_bound(5);
+	cout << "\n Upper-Bound: \n";
 	cout << *lb_tree->upper_bound(7);
 
-	// RBTree<int>::Iterator low1 = std::lower_bound(lb_tree->begin(), it, 5);
+	// using generic find
+	cout << "\n\nUsing generic find. \n";
+	RBTree<int>::Iterator find_it = std::find(it_start, it_end, 7);
+	cout << find_it; 
 
 	#endif
 

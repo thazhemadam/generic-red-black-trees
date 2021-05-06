@@ -3,9 +3,10 @@
 
 #include "rb_tree.h"
 #include "rb_node.h"
+#include <iterator>
 
 template<typename T, typename Compare>
-class RBTree<T, Compare>::Iterator
+class RBTree<T, Compare>::Iterator : public iterator<bidirectional_iterator_tag, RBNode<T>>
 {
 private:
 	RBNode<T> *p_it_;
