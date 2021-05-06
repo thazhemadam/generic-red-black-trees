@@ -176,9 +176,11 @@ template<typename T, typename Compare>
 RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
 : tree_size_(rhs.tree_size_)
 {
-    root_=rhs.root_;
-    rhs.root_=NIL;
+	root_ = rhs.root_;
+	rhs.root_ = NIL.get();
+	rhs.tree_size_ = 0;
 }
+
 //move assignment
 template<typename T, typename Compare>
 RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
