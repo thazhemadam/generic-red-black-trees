@@ -18,7 +18,7 @@ int main(void)
 	
 	RBTree<int> *tree = new RBTree<int>();
 
-	RBTree<int> *tree1 = new RBTree<int>();
+	RBTree<int> tree1;
 
 	RBTree<struct temp, struct temp> *tree_user = new RBTree<struct temp, struct temp>();
 
@@ -198,15 +198,15 @@ int main(void)
 	RBNode<int> *ny9_ = new RBNode<int>(9);
 	RBNode<int> *ny8_ = new RBNode<int>(8);
 	RBNode<int> *ny6_ = new RBNode<int>(6);
-	RBTree<int>::Iterator it_10_ = tree1->insert(ny10_);
-	RBTree<int>::Iterator it_2_ = tree1->insert(ny2_);
-	RBTree<int>::Iterator it_1_ = tree1->insert(ny1_);
-	RBTree<int>::Iterator it_3_ = tree1->insert(ny3_);
-	RBTree<int>::Iterator it_13_ = tree1->insert(ny13_);
-	RBTree<int>::Iterator it_4_ = tree1->insert(ny4_);
-	RBTree<int>::Iterator it_9_ = tree1->insert(ny9_);
-	RBTree<int>::Iterator it_8_ = tree1->insert(ny8_);
-	RBTree<int>::Iterator it_6_ = tree1->insert(ny6_);
+	RBTree<int>::Iterator it_10_ = tree1.insert(ny10_);
+	RBTree<int>::Iterator it_2_ = tree1.insert(ny2_);
+	RBTree<int>::Iterator it_1_ = tree1.insert(ny1_);
+	RBTree<int>::Iterator it_3_ = tree1.insert(ny3_);
+	RBTree<int>::Iterator it_13_ = tree1.insert(ny13_);
+	RBTree<int>::Iterator it_4_ = tree1.insert(ny4_);
+	RBTree<int>::Iterator it_9_ = tree1.insert(ny9_);
+	RBTree<int>::Iterator it_8_ = tree1.insert(ny8_);
+	RBTree<int>::Iterator it_6_ = tree1.insert(ny6_);
 	#endif
 
 	#if 0 // pre post inc/dec
@@ -236,10 +236,10 @@ int main(void)
 	//RBTree<int> *tree2 (tree); //copy ctr
 	//tree = tree1; //copy assignment
 	//tree = move(tree1); //move assignment
-	RBTree<int> *tree2 (move(tree)); //move ctr  // tree 2 dummy
+	RBTree<int> tree2 = std::move(tree1); //move ctr  // tree 2 dummy
 
-	cout << *tree;
-	cout << *tree2;
+	cout << tree1;
+	cout << tree2;
 
 	#if 0  // iterators
 	cout <<  it_11.prev().prev();
