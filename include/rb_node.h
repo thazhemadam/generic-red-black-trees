@@ -28,6 +28,8 @@ public:
 	RBNode(RBNode<T> &&rhs) = default; 			// move constructor
 	RBNode<T>& operator=(RBNode<T> &&rhs) = default;	//move assignment
 
+	bool operator==(const RBNode<T> &rhs) const;	// equality
+	bool operator!=(const RBNode<T> &rhs) const;	// inequality
 
 
 // friends
@@ -58,7 +60,6 @@ public:
 	template<typename O>
 	friend void postorder(RBNode<O> *root);
 
-	Color get_color();
 };
 
 template<typename T>
@@ -87,11 +88,16 @@ RBNode<T>& RBNode<T>::operator=(const RBNode<T> &rhs)
 
 
 template<typename T>
-Color RBNode<T>::get_color() {
-	if (this == nullptr)
-		return BLACK;
+bool RBNode<T>::operator==(const RBNode<T> &rhs) const
+{
+	return (value_ == rhs.value_);
+}
 
-	return this->color_;
+
+template<typename T>
+bool RBNode<T>::operator!=(const RBNode<T> &rhs) const
+{
+	return (value_ != rhs.value_);
 }
 
 #endif
