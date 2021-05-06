@@ -132,7 +132,14 @@ bool RBTree<T, Compare>::Iterator::hasprev()
 template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator++() // pre-increment
 {
+	if(p_it_ == NIL.get())
+		return *this;
+
 	p_it_ = inorder_successor();
+
+	if(p_it_ == nullptr)
+		p_it_ = NIL.get();
+ 
 	return *this;
 }
 
@@ -140,26 +147,50 @@ typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator++(
 template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator++(int) // post-increment
 {
+	if(p_it_ == NIL.get())
+		return *this;
+
 	Iterator temp(*this);
+
 	p_it_ = temp.inorder_successor();
+
+	if(p_it_ == nullptr)
+		p_it_ = NIL.get();
+
 	return temp;
 }
 
 
 template<typename T, typename Compare>
-typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator--() // pre-increment
+typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator--() // pre-decrement
 {
+	if(p_it_ == NIL.get())
+		return *this;
+
 	p_it_ = inorder_predecessor();
+
+	if(p_it_ == nullptr)
+		p_it_ = NIL.get();
+ 
 	return *this;
 }
 
 
 template<typename T, typename Compare>
-typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator--(int) // post-increment
+typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::operator--(int) // post-decrement
 {
+	if(p_it_ == NIL.get())
+		return *this;
+
 	Iterator temp(*this);
+
 	p_it_ = temp.inorder_predecessor();
+
+	if(p_it_ == nullptr)
+		p_it_ = NIL.get();
+
 	return temp;
+
 }
 
 template<typename T, typename Compare>
