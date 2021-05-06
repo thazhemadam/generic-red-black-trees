@@ -49,15 +49,19 @@ public:
 
 // Iterator class
 	class Iterator;
-	Iterator root()
+	Iterator root() const
 	{
 		return Iterator(root_);
 	}
-	Iterator begin()
+	Iterator begin() const
 	{
 		return Iterator(tree_minimum(root_));
 	}
 
+	Iterator end() const
+	{
+		return Iterator(NIL.get());
+	}
 // operations on tree
 	// insert a node
 	Iterator insert(const T& value);
