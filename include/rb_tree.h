@@ -163,14 +163,15 @@ RBNode<T>* RBTree<T, Compare>::copy_tree(RBNode<T> *root)
 template<typename T, typename Compare>
 RBTree<T, Compare>& RBTree<T,Compare>::operator=(const RBTree<T, Compare> &rhs)
 {
-    cout<<"Copy called";
-    if(this->root_!=&rhs)
-    {
-        delete_tree(this->root_);
-        this->root_= copy_tree(rhs.root_);
-    }
-   return *this;
+	if(this != &rhs) {
+		delete_tree();
+		root_ = copy_tree(rhs.root_);
+	}
+
+	return *this;
 }
+
+
 //move ctor
 template<typename T, typename Compare>
 RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
@@ -567,7 +568,12 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 template<typename T, typename Compare>
 void RBTree<T, Compare>::delete_tree()
 {
-	delete this;
+	while(tree_size_ >= 1){
+		remove(begin());
+	}
+
+	root_ = NIL.get();
+	tree_size_ = 0;
 }
 
 
