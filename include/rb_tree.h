@@ -21,7 +21,7 @@ private:
 	RBNode<T> *copy_tree(RBNode<T> *t);	// helper for copy constructor & assignment operators
 	void insert_fixup(RBNode<T> *node);	// helper for insert()
 
-	RBNode<T>* tree_minimum(RBNode<T> *root);
+	RBNode<T>* tree_minimum(RBNode<T> *root) const;
 	// helpers for deletion
 	void rb_transplant(RBNode<T> * u,RBNode<T> * v);
 	void remove_fixup(RBNode<T> *x);
@@ -76,6 +76,13 @@ public:
 	// delete tree
 	void delete_tree();
 
+//search functions
+	Iterator search(T value) const;
+	Iterator search(Iterator it) const;
+	Iterator search(RBNode<T> *node) const;
+
+	Iterator lower_bound(T value) const;
+
 // utility functions
 	inline bool is_empty() const { return tree_size_ == 0; }
 	
@@ -84,15 +91,6 @@ public:
 	void print_inorder() const;
 	void print_preorder() const;
 	void print_postorder() const;
-
-
-//search functions
-	Iterator search(T value) const;
-	Iterator search(Iterator it) const;
-	Iterator search(RBNode<T> *node) const;
-
-
-
 };
 
 // constructors
@@ -358,13 +356,25 @@ std::ostream& operator<<(std::ostream& os, const RBTree<T, Compare>& tree)
 	return os;
 }
 
+template<typename T,typename Compare>
+typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::lower_bound(T value) const
+{
+	Iterator it = search(value);
+
+	if(it != end()) {
+		while(*it.prev() == *it)
+			--it;
+	}
+
+	return it;
+}
+
 
 template<typename T,typename Compare>
 typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(T value) const
 {
 	RBNode<T> node = RBNode<T>(value);
 	return search(&node);
-
 }
 
 
@@ -393,7 +403,7 @@ typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::search(RBNode<T> *node) 
 			temp=temp->left_;
 	}
 
-	return nullptr;
+	return end();
 }
 
 
@@ -442,7 +452,7 @@ void RBTree<T, Compare>::remove(Iterator start, Iterator end)
 
 
 template<typename T,typename Compare>
-RBNode<T>* RBTree<T, Compare>::tree_minimum(RBNode<T> *root)
+RBNode<T>* RBTree<T, Compare>::tree_minimum(RBNode<T> *root) const
 {
 	RBNode<T> *temp = root;
 	while(temp -> left_ != NIL.get()) {
