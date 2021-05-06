@@ -82,6 +82,7 @@ public:
 	Iterator search(RBNode<T> *node) const;
 
 	Iterator lower_bound(T value) const;
+	Iterator upper_bound(T value) const;
 
 // utility functions
 	inline bool is_empty() const { return tree_size_ == 0; }
@@ -362,8 +363,22 @@ typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::lower_bound(T value) con
 	Iterator it = search(value);
 
 	if(it != end()) {
-		while(*it.prev() == *it)
+		while(it.prev() != end() && *it.prev() == *it)
 			--it;
+	}
+
+	return it;
+}
+
+
+template<typename T,typename Compare>
+typename RBTree<T,Compare>::Iterator RBTree<T,Compare>::upper_bound(T value) const
+{
+	Iterator it = search(value);
+
+	if(it != end()) {
+		while(it.next() != end() && *it.next() == *it)
+			++it;
 	}
 
 	return it;
