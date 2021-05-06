@@ -618,12 +618,15 @@ void RBTree<T, Compare>::remove_fixup(RBNode<T> *node)
 			}
 
 			if(!sibling->left_ && !sibling->right_)	// sibling is a NIL node
+			{
 				#ifdef DEBUG
 		
 						cout << "\tEncountered a right side sibling for node "<< node->value_ <<" which is NIL! Breaking out of while loop\n";
 						
 				#endif
 				break;
+			}
+				
 
 			if(sibling->right_->color_ == BLACK && sibling->left_->color_ == BLACK) {
 				sibling->color_ = RED;
@@ -705,12 +708,14 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 	}
 
 	if(y_original_color == BLACK)
+	{	
 		#ifdef DEBUG
 		
 			cout << "\nNode "<< node->value_ <<" color before deletion was BLACK hence remove_fix called \n";
 						
 		#endif
 		remove_fixup(x);
+	}
 	delete node;
 	--tree_size_;
 }
