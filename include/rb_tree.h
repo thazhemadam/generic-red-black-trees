@@ -117,9 +117,7 @@ RBTree<T, Compare>::RBTree(RBNode<T> node)
 template<typename T, typename Compare>
 RBTree<T, Compare>::~RBTree()
 {
-	Iterator it;
-	while(tree_size_)
-		remove(begin());
+	delete_tree();
 }
 
 // copy ctor
@@ -133,6 +131,7 @@ RBTree<T, Compare>::RBTree(const RBTree<T, Compare> &rhs)
 	}
 
 	root_ = copy_tree(rhs.root_);
+	root_->parent_ = NIL.get();
 }
 
 
@@ -568,9 +567,8 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 template<typename T, typename Compare>
 void RBTree<T, Compare>::delete_tree()
 {
-	while(tree_size_ >= 1){
+	while(tree_size_ >= 1)
 		remove(begin());
-	}
 
 	root_ = NIL.get();
 	tree_size_ = 0;
