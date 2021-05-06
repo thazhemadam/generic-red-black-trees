@@ -22,6 +22,7 @@ private:
 	void insert_fixup(RBNode<T> *node);	// helper for insert()
 
 	RBNode<T>* tree_minimum(RBNode<T> *root) const;
+	RBNode<T>* tree_maximum(RBNode<T> *root) const;
 	// helpers for deletion
 	void rb_transplant(RBNode<T> * u,RBNode<T> * v);
 	void remove_fixup(RBNode<T> *x);
@@ -62,6 +63,7 @@ public:
 	{
 		return Iterator(NIL.get());
 	}
+
 // operations on tree
 	// insert a node
 	Iterator insert(const T& value);
@@ -470,11 +472,21 @@ template<typename T,typename Compare>
 RBNode<T>* RBTree<T, Compare>::tree_minimum(RBNode<T> *root) const
 {
 	RBNode<T> *temp = root;
-	while(temp -> left_ != NIL.get()) {
+	while(temp -> left_ != NIL.get())
 		temp = temp->left_;
-	}
+
 	return temp;
 } 
+
+template<typename T,typename Compare>
+RBNode<T>* RBTree<T, Compare>::tree_maximum(RBNode<T> *root) const
+{
+    RBNode<T> *temp = root;
+    while(temp -> right_ != NIL.get())
+        temp = temp->right_;
+
+    return temp;
+}
 
 
 template<typename T,typename Compare>
