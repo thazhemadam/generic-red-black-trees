@@ -42,9 +42,11 @@ public:
 
 
 
-	~RBTree();				// destructor
+	~RBTree();	// destructor
 
-	// operator function
+	// operator functions
+	bool operator==(const RBTree<T, Compare> &rhs) const;	// equality
+	bool operator!=(const RBTree<T, Compare> &rhs) const;	// inequality
 	template<typename O, typename CO>
 	friend std::ostream& operator<<(std::ostream& os, const RBTree<O, CO>& tree);
 
@@ -194,6 +196,7 @@ RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
 	rhs.tree_size_ = 0;
 }
 
+
 //move assignment
 template<typename T, typename Compare>
 RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
@@ -210,6 +213,47 @@ RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
 
 	return *this;
 }
+
+
+template<typename T, typename Compare>
+bool RBTree<T, Compare>::operator==(const RBTree<T, Compare> &rhs) const
+{
+	if(tree_size_ != rhs.tree_size_)
+		return false;
+
+	Iterator it_lhs = begin();
+	Iterator it_rhs = rhs.begin();
+
+	while(it_lhs != end()) {
+		if (*it_lhs != *it_rhs)
+			return false;
+		++it_lhs;
+		++it_rhs;
+	}
+	return true;
+}
+
+
+
+template<typename T, typename Compare>
+bool RBTree<T, Compare>::operator!=(const RBTree<T, Compare> &rhs) const
+{
+	if(tree_size_ != rhs.tree_size_)
+		return true;
+
+	Iterator it_lhs = begin();
+	Iterator it_rhs = rhs.begin();
+
+	while(it_lhs != end()) {
+		if (*it_lhs != *it_rhs)
+			return true;
+		++it_lhs;
+		++it_rhs;
+	}
+	return false;
+}
+
+
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::rotate_left(RBNode<T> *pivot)

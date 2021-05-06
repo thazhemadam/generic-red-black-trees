@@ -167,7 +167,7 @@ int main(void)
 	// using generic find
 	cout << "\n\nUsing generic find. \n";
 	RBTree<int>::Iterator find_it = std::find(it_start, it_end, 7);
-	cout << find_it; 
+	cout << find_it;
 	#endif
 
 	return 0;
