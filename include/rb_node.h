@@ -65,6 +65,9 @@ public:
 template<typename T>
 RBNode<T>::RBNode(const RBNode<T> &rhs)
 {
+	#ifdef DEBUG
+		std::cout << "Copy constructor was called for node";
+	#endif
 	parent_ = nullptr;
 	left_ = nullptr;
 	right_ = nullptr;
@@ -75,6 +78,9 @@ RBNode<T>::RBNode(const RBNode<T> &rhs)
 template<typename T>
 RBNode<T>& RBNode<T>::operator=(const RBNode<T> &rhs)
 {
+	#ifdef DEBUG
+		std::cout << "Copy assignment was called for node";
+	#endif
 	if(this != &rhs) {
 		parent_ = nullptr;
 		left_ = nullptr;
