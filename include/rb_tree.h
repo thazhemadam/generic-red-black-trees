@@ -35,10 +35,9 @@ public:
 	RBTree();				// empty tree
 	RBTree(RBNode<T> node);			// tree with a root node
 	RBTree(const RBTree<T, Compare> &rhs);	// copy constructor
-//moves
-	RBTree(RBTree<T, Compare> &&rhs); // move constructor
-	RBTree<T,Compare>& operator=(const RBTree<T, Compare> &rhs);// copy assignment
-	RBTree<T,Compare>& operator=(RBTree<T, Compare> &&rhs);//move assignmen
+	RBTree(RBTree<T, Compare> &&rhs); 	// move constructor
+	RBTree<T,Compare>& operator=(const RBTree<T, Compare> &rhs);	// copy assignment
+	RBTree<T,Compare>& operator=(RBTree<T, Compare> &&rhs);		//move assignment
 
 
 

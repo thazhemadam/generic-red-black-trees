@@ -23,8 +23,12 @@ public:
 	: value_(value), left_(left), right_(right), parent_(parent), color_(color)
 	{}
 
-	RBNode(const RBNode<T> &rhs);
-	RBNode<T>& operator=(const RBNode<T> &rhs);
+	RBNode(const RBNode<T> &rhs);				// copy ctor
+	RBNode<T>& operator=(const RBNode<T> &rhs);		// copy assignment
+	RBNode(RBNode<T> &&rhs) = default; 			// move constructor
+	RBNode<T>& operator=(RBNode<T> &&rhs) = default;	//move assignment
+
+
 
 // friends
 	template <typename O, typename Compare>
