@@ -14,7 +14,7 @@ public:
 
 	Iterator() = default;
 	Iterator(RBNode<T> *p_it) : p_it_(p_it) { }
-
+	Iterator& operator=(const Iterator &rhs);	// assignment operator
 	RBNode<T>& operator*();		// dereference
 
 	// increment and decrement
@@ -52,6 +52,16 @@ public:
     bool hasnext();
     bool hasprev();
 };
+
+template<typename T, typename Compare>
+typename RBTree<T, Compare>::Iterator& RBTree<T, Compare>::Iterator::operator=(const Iterator &rhs)
+{
+	if(this != &rhs) {
+		this->p_it_ = rhs.p_it_;
+	}
+	return *this;
+}
+
 
 
 template<typename T, typename Compare>
