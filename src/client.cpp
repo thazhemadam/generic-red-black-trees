@@ -18,7 +18,10 @@ int main(void)
 	
 	RBTree<int> *tree = new RBTree<int>();
 
-	// RBTree<struct temp, struct temp> *tree = new RBTree<struct temp, struct temp>();
+	RBTree<int> tree1;
+
+	RBTree<struct temp, struct temp> *tree_user = new RBTree<struct temp, struct temp>();
+
 	// temp,temp
 	#if 0 // Create a tree using Insert
 		// 11, 2, 14, 1, 15, 7, 5, 8, 4
@@ -160,6 +163,9 @@ int main(void)
 	// RBNode<struct temp> * ny9 =  new RBNode<struct temp>(y9);
 	// #endif
 	// #if 1
+
+	
+	#if 1 // tree creation
 	RBNode<int> *ny11 = new RBNode<int>(11);
 	RBNode<int> *ny3 = new RBNode<int>(3);
 	RBNode<int> *ny1 = new RBNode<int>(1);
@@ -178,21 +184,76 @@ int main(void)
 	RBTree<int>::Iterator it_12 = tree->insert(ny12);
 	RBTree<int>::Iterator it_15 = tree->insert(ny15);
 	RBTree<int>::Iterator it_4 = tree->insert(ny4);
+	#endif
+	
 
+	
+	#if 1 // tree 1 creation
+	RBNode<int> *ny10_ = new RBNode<int>(10);
+	RBNode<int> *ny2_ = new RBNode<int>(2);
+	RBNode<int> *ny1_ = new RBNode<int>(1);
+	RBNode<int> *ny3_ = new RBNode<int>(3);
+	RBNode<int> *ny13_ = new RBNode<int>(13);
+	RBNode<int> *ny4_ = new RBNode<int>(4);
+	RBNode<int> *ny9_ = new RBNode<int>(9);
+	RBNode<int> *ny8_ = new RBNode<int>(8);
+	RBNode<int> *ny6_ = new RBNode<int>(6);
+	RBTree<int>::Iterator it_10_ = tree1.insert(ny10_);
+	RBTree<int>::Iterator it_2_ = tree1.insert(ny2_);
+	RBTree<int>::Iterator it_1_ = tree1.insert(ny1_);
+	RBTree<int>::Iterator it_3_ = tree1.insert(ny3_);
+	RBTree<int>::Iterator it_13_ = tree1.insert(ny13_);
+	RBTree<int>::Iterator it_4_ = tree1.insert(ny4_);
+	RBTree<int>::Iterator it_9_ = tree1.insert(ny9_);
+	RBTree<int>::Iterator it_8_ = tree1.insert(ny8_);
+	RBTree<int>::Iterator it_6_ = tree1.insert(ny6_);
+	#endif
+
+	#if 0 // pre post inc/dec
 	cout <<  it_11;
 	cout << --it_12;
 	cout << it_12--;
 	cout << it_12++;
 	cout << *tree;
+	#endif
 
-	// cout << tree->search(it_3);
-	// tree->remove(4);
-	// tree->remove(3);
-	// cout << tree->search(it_3);
+	#if 0 // search n delete
+	cout << tree->search(it_3);
+	tree->remove(4);
+	tree->remove(3);
+	cout << tree->search(it_3);
 
 	tree->remove(42);
 	tree->delete_tree();
 
 	cout << *tree;
+	#endif
+
+
+	//cout << *tree1;
+	//cout << *tree;
+	
+	//RBTree<int> *tree2 (tree); //copy ctr
+	//tree = tree1; //copy assignment
+	//tree = move(tree1); //move assignment
+	RBTree<int> tree2 = std::move(tree1); //move ctr  // tree 2 dummy
+
+	cout << tree1;
+	cout << tree2;
+
+	#if 0  // iterators
+	cout <<  it_11.prev().prev();
+	cout << it_11.hasprev(); 
+	cout << it_11;
+	
+	cout <<  it_11.next();
+	cout << it_11.hasnext();
+	#endif
+
+	#if 0 //BT is came! Not working
+	cout << it_11.preorder_successor();
+	cout << it_11.postorder_predecessor(tree);
+	cout << it_11.preorder_predecessor(tree);
+	#endif
 	return 0;
 }

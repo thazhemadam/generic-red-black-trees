@@ -35,6 +35,11 @@ public:
 	RBTree();				// empty tree
 	RBTree(RBNode<T> node);			// tree with a root node
 	RBTree(const RBTree<T, Compare> &rhs);	// copy constructor
+	RBTree(RBTree<T, Compare> &&rhs); 	// move constructor
+	RBTree<T,Compare>& operator=(const RBTree<T, Compare> &rhs);	// copy assignment
+	RBTree<T,Compare>& operator=(RBTree<T, Compare> &&rhs);		//move assignment
+
+
 
 	~RBTree();				// destructor
 
@@ -81,6 +86,9 @@ public:
 	Iterator search(T value) const;
 	Iterator search(Iterator it) const;
 	Iterator search(RBNode<T> *node) const;
+
+
+
 };
 
 // constructors
@@ -108,9 +116,7 @@ RBTree<T, Compare>::RBTree(RBNode<T> node)
 template<typename T, typename Compare>
 RBTree<T, Compare>::~RBTree()
 {
-	Iterator it;
-	while(tree_size_)
-		remove(begin());
+	delete_tree();
 }
 
 // copy ctor
@@ -124,6 +130,7 @@ RBTree<T, Compare>::RBTree(const RBTree<T, Compare> &rhs)
 	}
 
 	root_ = copy_tree(rhs.root_);
+	root_->parent_ = NIL.get();
 }
 
 
@@ -151,6 +158,41 @@ RBNode<T>* RBTree<T, Compare>::copy_tree(RBNode<T> *root)
 	return new_node;
 }
 
+template<typename T, typename Compare>
+RBTree<T, Compare>& RBTree<T,Compare>::operator=(const RBTree<T, Compare> &rhs)
+{
+	if(this != &rhs) {
+		delete_tree();
+		root_ = copy_tree(rhs.root_);
+	}
+
+	return *this;
+}
+
+
+//move ctor
+template<typename T, typename Compare>
+RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
+: tree_size_(rhs.tree_size_)
+{
+	root_ = rhs.root_;
+	rhs.root_ = NIL.get();
+	rhs.tree_size_ = 0;
+}
+
+//move assignment
+template<typename T, typename Compare>
+RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
+{
+	if(this != &rhs) {
+		delete_tree();
+		root_= rhs.root_;
+		rhs.root_ = NIL.get();
+		rhs.tree_size_ = 0;
+	}
+
+	return *this;
+}
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::rotate_left(RBNode<T> *pivot)
@@ -527,7 +569,11 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 template<typename T, typename Compare>
 void RBTree<T, Compare>::delete_tree()
 {
-	delete this;
+	while(tree_size_ >= 1)
+		remove(begin());
+
+	root_ = NIL.get();
+	tree_size_ = 0;
 }
 
 
