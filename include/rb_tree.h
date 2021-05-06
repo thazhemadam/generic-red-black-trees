@@ -38,7 +38,7 @@ public:
 //moves
 	RBTree(RBTree<T, Compare> &&rhs); // move constructor
 	RBTree<T,Compare>& operator=(const RBTree<T, Compare> &rhs);// copy assignment
-    RBTree<T,Compare>& operator=( RBTree<T, Compare> &&rhs);//move assignmen
+	RBTree<T,Compare>& operator=(RBTree<T, Compare> &&rhs);//move assignmen
 
 
 
@@ -183,13 +183,14 @@ RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
 template<typename T, typename Compare>
 RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
 {
-    if(this!=&rhs)
-    {
-        delete_tree(this->root_);
-        this->root_= rhs.root_;
-        rhs.root_=nullptr;
-    }
-    return *this;
+	if(this != &rhs) {
+		delete_tree();
+		root_= rhs.root_;
+		rhs.root_ = NIL.get();
+		rhs.tree_size_ = 0;
+	}
+
+	return *this;
 }
 
 template<typename T, typename Compare>
