@@ -99,9 +99,8 @@ void RBTree<T, Compare>::Iterator::display(std::ostream& os) const
 template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::next() // next
 {
-    Iterator temp(*this);
-    return temp.inorder_successor();
-   
+	RBNode<T>* temp_node = inorder_successor();
+	return (temp_node == nullptr) ? Iterator(NIL.get()) : Iterator(temp_node);
 }
 
 template<typename T, typename Compare>
@@ -113,8 +112,8 @@ bool RBTree<T, Compare>::Iterator::hasnext()
 template<typename T, typename Compare>
 typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::prev() // prev
 {
-    Iterator temp(*this);
-    return temp.inorder_predecessor();
+	RBNode<T>* temp_node = inorder_predecessor();
+	return (temp_node == nullptr) ? Iterator(NIL.get()) : Iterator(temp_node);
 }
 
 template<typename T, typename Compare>
