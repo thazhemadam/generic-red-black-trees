@@ -124,6 +124,9 @@ template<typename T, typename Compare>
 RBTree<T, Compare>::RBTree(const RBTree<T, Compare> &rhs)
 : tree_size_(rhs.tree_size_)
 {
+	#ifdef DEBUG
+		cout << "Copy constructor was called";
+	#endif
 	if(rhs.root_ == NIL.get()) {
 		root_ = NIL.get();
 		return;
@@ -161,6 +164,9 @@ RBNode<T>* RBTree<T, Compare>::copy_tree(RBNode<T> *root)
 template<typename T, typename Compare>
 RBTree<T, Compare>& RBTree<T,Compare>::operator=(const RBTree<T, Compare> &rhs)
 {
+	#ifdef DEBUG
+		cout << "Copy assignment was called";
+	#endif
 	if(this != &rhs) {
 		delete_tree();
 		root_ = copy_tree(rhs.root_);
@@ -175,6 +181,9 @@ template<typename T, typename Compare>
 RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
 : tree_size_(rhs.tree_size_)
 {
+	#ifdef DEBUG
+		cout << "Move constructor was called";
+	#endif
 	root_ = rhs.root_;
 	rhs.root_ = NIL.get();
 	rhs.tree_size_ = 0;
@@ -184,6 +193,9 @@ RBTree<T, Compare>::RBTree(RBTree<T, Compare> &&rhs)
 template<typename T, typename Compare>
 RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
 {
+	#ifdef DEBUG
+		cout << "Move assignment was called";
+	#endif
 	if(this != &rhs) {
 		delete_tree();
 		root_= rhs.root_;
@@ -695,7 +707,7 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 	if(y_original_color == BLACK)
 		#ifdef DEBUG
 		
-						cout << "\nNode "<< node->value_ <<" color before deletion was BLACK hence remove_fix called \n";
+			cout << "\nNode "<< node->value_ <<" color before deletion was BLACK hence remove_fix called \n";
 						
 		#endif
 		remove_fixup(x);
