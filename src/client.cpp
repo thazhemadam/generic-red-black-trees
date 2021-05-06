@@ -186,11 +186,15 @@ int main(void)
 	RBTree<int>::Iterator it_12 = tree->insert(ny12);
 	RBTree<int>::Iterator it_15 = tree->insert(ny15);
 	RBTree<int>::Iterator it_4 = tree->insert(ny4);
+
+	tree->remove(8);
+	tree->remove(15);
+	tree->remove(7);
 	#endif
 	
 
 	
-	#if 1 // tree 1 creation - object
+	#if 0 // tree 1 creation - object
 	RBNode<int> *ny10_ = new RBNode<int>(10);
 	RBNode<int> *ny2_ = new RBNode<int>(2);
 	RBNode<int> *ny1_ = new RBNode<int>(1);
@@ -211,7 +215,7 @@ int main(void)
 	RBTree<int>::Iterator it_6_ = tree1.insert(ny6_);
 	#endif
 
-	#if 1 // user defined type tree creation
+	#if 0 // user defined type tree creation
 	struct temp y1 = {5, 13}; // 5 < 13 T/F
 	struct temp y2 = {6, 12};
 	struct temp y3 = {7, 11};
@@ -254,13 +258,13 @@ int main(void)
 	#endif
 
 	#if 0 // search n delete
-	cout << tree->search(it_3);
+	//cout << tree->search(it_3);
 	tree->remove(4);
 	tree->remove(3);
-	cout << tree->search(it_3);
+	//cout << tree->search(it_3);
 
 	tree->remove(42);
-	tree->delete_tree();
+	//tree->delete_tree();
 
 	cout << *tree;
 	#endif
@@ -276,10 +280,10 @@ int main(void)
 	//cout << tree1;
 
 	//tree = move(tree1); //move assignment
-	RBTree<int> tree2 = std::move(tree1); //move ctr  // tree 2 dummy
-	cout << tree2;
-	cout << "--\n";
-	cout << tree1;
+	//RBTree<int> tree2 = std::move(tree1); //move ctr  // tree 2 dummy
+	//cout << tree2;
+	//cout << "--\n";
+	//cout << tree1;
 	
 
 	#if 0  // iterators

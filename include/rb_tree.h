@@ -197,6 +197,12 @@ RBTree<T,Compare>& RBTree<T,Compare>::operator=(RBTree<T, Compare> &&rhs)
 template<typename T, typename Compare>
 void RBTree<T, Compare>::rotate_left(RBNode<T> *pivot)
 {
+	#ifdef DEBUG
+		
+		cout << "\t-> Before left rotation on node " << pivot->value_ <<" - \n";
+		display();
+	#endif
+
 	RBNode<T>* pivot_right = pivot->right_;
 
 	if(pivot_right == NIL.get())
@@ -220,12 +226,24 @@ void RBTree<T, Compare>::rotate_left(RBNode<T> *pivot)
 
 	pivot_right->left_ = pivot;
 	pivot->parent_ = pivot_right;
+	
+	#ifdef DEBUG
+		
+		cout << "\t-> After left rotation on node " << pivot->value_ <<" - \n";
+		display();
+	#endif
 }
 
 
 template<typename T, typename Compare>
 void RBTree<T, Compare>::rotate_right(RBNode<T> *pivot)
 {
+	#ifdef DEBUG
+		
+		cout << "\t-> Before right rotation on node " << pivot->value_ <<" - \n";
+		display();
+	#endif
+
 	RBNode<T>* pivot_left = pivot->left_;
 
 	if(pivot_left == NIL.get())
@@ -249,6 +267,12 @@ void RBTree<T, Compare>::rotate_right(RBNode<T> *pivot)
 
 	pivot_left->right_ = pivot;
 	pivot->parent_ = pivot_left;
+
+	#ifdef DEBUG
+		
+		cout << "\t-> After right rotation on node " << pivot->value_ <<" - \n";
+		display();
+	#endif
 }
 
 
@@ -316,11 +340,31 @@ void RBTree<T, Compare>::insert_fixup(RBNode<T> *node)
 			else {
 				if(node == node->parent_->right_) {
 					node = node->parent_;
+					#ifdef DEBUG
+		
+						cout << "\nLeft rotate called for insertion----\n";
+						
+					#endif
 					rotate_left(node);
+					#ifdef DEBUG
+		
+						cout << "Left rotate finished for insertion----\n";
+						
+					#endif
 				}
 				node->parent_->color_ = BLACK;
 				node->parent_->parent_->color_ = RED;
+				#ifdef DEBUG
+		
+						cout << "\nRight rotate called for insertion----\n";
+						
+					#endif
 				rotate_right(node->parent_->parent_);
+				#ifdef DEBUG
+		
+						cout << "Right rotate finished for insertion----\n";
+						
+				#endif
 			}
 		}
 		else {
@@ -334,11 +378,31 @@ void RBTree<T, Compare>::insert_fixup(RBNode<T> *node)
 			else {
 				if(node == node->parent_->left_) {
 					node = node->parent_;
+					#ifdef DEBUG
+		
+						cout << "\nRight rotate called for insertion----\n";
+						
+					#endif
 					rotate_right(node);
+					#ifdef DEBUG
+		
+						cout << "Right rotate finished for insertion----\n";
+						
+				#endif
 				}
 				node->parent_->color_ = BLACK;
 				node->parent_->parent_->color_ = RED;
+				#ifdef DEBUG
+		
+						cout << "\nLeft rotate called for insertion----\n";
+						
+				#endif
 				rotate_left(node->parent_->parent_);
+				#ifdef DEBUG
+		
+						cout << "Left rotate finished for insertion----\n";
+						
+				#endif
 			}
 
 		}
@@ -452,7 +516,7 @@ template<typename T,typename Compare>
 void RBTree<T, Compare>::remove_fixup(RBNode<T> *node)
 {
 	RBNode<T>* sibling;
-
+	
 	while(node != root_ && node->color_ == BLACK) {
 
 		if(node == node->parent_->left_) {
@@ -461,11 +525,26 @@ void RBTree<T, Compare>::remove_fixup(RBNode<T> *node)
 			if(sibling->color_ == RED) {
 				sibling->color_ = BLACK;
 				node->parent_->color_ = RED;
+				#ifdef DEBUG
+		
+						cout << "\nLeft rotate called for deletion \n";
+						
+				#endif
 				rotate_left(node->parent_);
+				#ifdef DEBUG
+		
+						cout << "Left rotate finished for deletion \n";
+						
+				#endif
 				sibling = node->parent_->right_;
 			}
 
 			if(!sibling->left_ && !sibling->right_) 	// sibling is a NIL node
+			#ifdef DEBUG
+		
+						cout << "\tEncountered a left side sibling for node "<< node->value_ <<" which is NIL! Breaking out of while loop\n";
+						
+			#endif
 				break;
 
 			if(sibling->left_->color_ == BLACK && sibling->right_->color_ == BLACK) {
@@ -477,13 +556,32 @@ void RBTree<T, Compare>::remove_fixup(RBNode<T> *node)
 				if(sibling->right_->color_ == BLACK) {
 					sibling->left_->color_ = BLACK;
 					sibling->color_ = RED;
+					#ifdef DEBUG
+		
+						cout << "\nRight rotate called for deletion \n";
+						
+					#endif
 					rotate_right(sibling);
+					#ifdef DEBUG
+		
+						cout << "Right rotate finished for deletion \n";
+						
+					#endif
 					sibling = node->parent_->right_;
 				}
 				sibling->color_ = node->parent_->color_;
 				node->parent_->color_ = BLACK;
 				sibling->right_->color_ = BLACK;
+				#ifdef DEBUG
+		
+						cout << "\nLeft rotate called for deletion \n";
+				#endif
 				rotate_left(node->parent_);
+				#ifdef DEBUG
+		
+						cout << "Left rotate finished for deletion \n";
+						
+				#endif
 				node = root_;
 			}
 		}
@@ -493,11 +591,26 @@ void RBTree<T, Compare>::remove_fixup(RBNode<T> *node)
 			if(sibling->color_ == RED) {
 				sibling->color_ = BLACK;
 				node->parent_->color_ = RED;
+				#ifdef DEBUG
+		
+						cout << "\nRight rotate called for deletion \n";
+						
+				#endif
 				rotate_right(node->parent_);
+				#ifdef DEBUG
+		
+						cout << "Right rotate finished for deletion \n";
+						
+				#endif
 				sibling = node->parent_->left_;
 			}
 
 			if(!sibling->left_ && !sibling->right_)	// sibling is a NIL node
+				#ifdef DEBUG
+		
+						cout << "\tEncountered a right side sibling for node "<< node->value_ <<" which is NIL! Breaking out of while loop\n";
+						
+				#endif
 				break;
 
 			if(sibling->right_->color_ == BLACK && sibling->left_->color_ == BLACK) {
@@ -509,13 +622,33 @@ void RBTree<T, Compare>::remove_fixup(RBNode<T> *node)
 				if(sibling->left_->color_ == BLACK) {
 					sibling->right_->color_ = BLACK;
 					sibling->color_ = RED;
+					#ifdef DEBUG
+		
+						cout << "\nLeft rotate called for deletion \n";
+						
+					#endif
 					rotate_left(sibling);
+					#ifdef DEBUG
+		
+						cout << "Left rotate finished for deletion \n";
+						
+				#endif
 					sibling = node->parent_->left_;
 				}
 				sibling->color_ = node->parent_->color_;
 				node->parent_->color_ = BLACK;
 				sibling->left_->color_ = BLACK;
+				#ifdef DEBUG
+		
+						cout << "\nRight rotate called for deletion \n";
+						
+				#endif
 				rotate_right(node->parent_);
+				#ifdef DEBUG
+		
+						cout << "Right rotate called for deletion \n";
+						
+				#endif
 				node = root_;
 			}
 		}
@@ -560,6 +693,11 @@ void RBTree<T, Compare>::remove(RBNode<T> *node)
 	}
 
 	if(y_original_color == BLACK)
+		#ifdef DEBUG
+		
+						cout << "\nNode "<< node->value_ <<" color before deletion was BLACK hence remove_fix called \n";
+						
+		#endif
 		remove_fixup(x);
 	delete node;
 	--tree_size_;
