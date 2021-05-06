@@ -107,12 +107,7 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::next() // ne
 template<typename T, typename Compare>
 bool RBTree<T, Compare>::Iterator::hasnext() 
 {
-    Iterator temp(*this);
-    if(temp.inorder_successor()==nullptr)
-    {
-            return false;
-    }
-    return true;
+	return (inorder_successor() == nullptr) ? true : false;
 }
 
 template<typename T, typename Compare>
@@ -125,12 +120,7 @@ typename RBTree<T, Compare>::Iterator RBTree<T, Compare>::Iterator::prev() // pr
 template<typename T, typename Compare>
 bool RBTree<T, Compare>::Iterator::hasprev() 
 {
-    Iterator temp(*this);
-    if(temp.inorder_predecessor()==nullptr)
-    {
-        return false;
-    }
-    return true;
+	return (inorder_predecessor() == nullptr) ? true : false;
 }
 
 template<typename T, typename Compare>
