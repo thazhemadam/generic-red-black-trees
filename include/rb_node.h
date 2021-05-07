@@ -23,7 +23,14 @@ public:
 	: value_(value), left_(left), right_(right), parent_(parent), color_(color)
 	{}
 
-	RBNode(const RBNode<T> &rhs);
+	RBNode(const RBNode<T> &rhs);				// copy ctor
+	RBNode<T>& operator=(const RBNode<T> &rhs);		// copy assignment
+	RBNode(RBNode<T> &&rhs) = default; 			// move constructor
+	RBNode<T>& operator=(RBNode<T> &&rhs) = default;	//move assignment
+
+	bool operator==(const RBNode<T> &rhs) const;	// equality
+	bool operator!=(const RBNode<T> &rhs) const;	// inequality
+
 
 // friends
 	template <typename O, typename Compare>
@@ -53,12 +60,14 @@ public:
 	template<typename O>
 	friend void postorder(RBNode<O> *root);
 
-	Color get_color();
 };
 
 template<typename T>
 RBNode<T>::RBNode(const RBNode<T> &rhs)
 {
+	#ifdef DEBUG
+		std::cout << "Copy constructor was called for node";
+	#endif
 	parent_ = nullptr;
 	left_ = nullptr;
 	right_ = nullptr;
@@ -67,11 +76,34 @@ RBNode<T>::RBNode(const RBNode<T> &rhs)
 }
 
 template<typename T>
-Color RBNode<T>::get_color() {
-	if (this == nullptr)
-		return BLACK;
+RBNode<T>& RBNode<T>::operator=(const RBNode<T> &rhs)
+{
+	#ifdef DEBUG
+		std::cout << "Copy assignment was called for node";
+	#endif
+	if(this != &rhs) {
+		parent_ = nullptr;
+		left_ = nullptr;
+		right_ = nullptr;
+		value_ = rhs.value_;
+		color_ = rhs.color_;
+	}
+	return *this;
 
-	return this->color_;
+}
+
+
+template<typename T>
+bool RBNode<T>::operator==(const RBNode<T> &rhs) const
+{
+	return (value_ == rhs.value_);
+}
+
+
+template<typename T>
+bool RBNode<T>::operator!=(const RBNode<T> &rhs) const
+{
+	return (value_ != rhs.value_);
 }
 
 #endif
